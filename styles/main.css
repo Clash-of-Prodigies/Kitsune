@@ -1,3 +1,7 @@
+html {
+    font-size: 62.5%;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -9,17 +13,86 @@ body {
 }
 
 header {
-    display: flex;
-    justify-content: space-between;
-    height: 64px;
-    background-color: rgb(6, 1, 44);
+    height: 50px;
+    padding: 12px;
+    background-color: #111517fa;
 }
 
 a {
     text-decoration: none;
+    color: white;
 }
 
-#logo a img {
+button {
+    cursor: pointer;
+}
+
+.fa {
+    color: lightgray;
+}
+
+#head {
     height: 100%;
-    float: left;
+    display: flex;
+    justify-content: space-between;
+}
+
+#logo {
+    font-weight: bold;
+    font-size: 3rem;
+    width: 25%;
+}
+
+#logo a {
+    display: flex;
+    text-decoration: none;
+    width: 100%;
+    height: 100%;
+}
+
+#head #search {
+    width: 40%;
+}
+
+#bar {
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    background-color: #272C32;
+    padding: 8px;
+    font-weight: 400;
+    font-size: 2rem;
+    width: 100%;
+}
+
+input[type='search'], input[type='search']:focus {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    margin: 0.5rem;
+    color: white;
+    flex-grow: 1;
+}
+
+#tools {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 2rem;
+    width: 25%;
+    font-size: 1.75rem;
+}
+
+#tools button {
+    height: 30px;
+    min-width: 70px;
+    border-radius: 4px;
+    background-color: #FCFCFE;
+    border: none;
+}
+
+#tools button, #tools button i {
+    color: #0c0c0d;
+    font-weight: 700;
+    font-size: 1.15rem;
 }
