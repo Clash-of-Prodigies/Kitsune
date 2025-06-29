@@ -14,3 +14,11 @@ header {
     height: 64px;
     background-color: rgb(6, 1, 44);
 }
+
+#logo {
+    text-decoration: none;
+}
+
+#logo img {
+    border-radius: 50%;
+}
