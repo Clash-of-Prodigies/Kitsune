@@ -18,3 +18,8 @@ header {
 a {
     text-decoration: none;
 }
+
+#logo a img {
+    height: 100%;
+    float: left;
+}
