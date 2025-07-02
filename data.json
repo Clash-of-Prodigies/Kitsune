@@ -1,0 +1,119 @@
+{
+    "left": [
+        {
+            "title": "Top Competitions",
+            "items": [
+                {
+                    "logo": "https://www.sofascore.com/static/images/flags/uefa.png",
+                    "name": "UEFA Champions League",
+                    "starred": true,
+                    "link": ""
+                },
+                {
+                    "logo": "https://www.sofascore.com/static/images/flags/uefa.png",
+                    "name": "FIFA Club World Cup",
+                    "starred": false,
+                    "link": ""
+                },
+                {
+                    "logo": "https://www.sofascore.com/static/images/flags/uefa.png",
+                    "name": "UEFA Europa League",
+                    "starred": true,
+                    "link": ""
+                },
+                {
+                    "logo": "https://www.sofascore.com/static/images/flags/uefa.png",
+                    "name": "Premier League",
+                    "starred": false,
+                    "link": ""
+                },
+                {
+                    "logo": "https://www.sofascore.com/static/images/flags/uefa.png",
+                    "name": "LaLiga",
+                    "starred": true,
+                    "link": ""
+                }
+            ]
+        },
+        {
+            "title": "Rankings",
+            "items": [
+                {
+                    "logo": "https://www.sofascore.com/static/images/flags/fifa.png",
+                    "name": "FIFA Rankings",
+                    "starred": null,
+                    "link": ""
+                },
+                {
+                    "logo": "https://www.sofascore.com/static/images/flags/uefa.png",
+                    "name": "UEFA Rankings",
+                    "starred": null,
+                    "link": ""
+                }
+            ]
+        }
+    ],
+    "middle": {
+        "all": {
+            "live": [
+                {
+                    "region": "World",
+                    "desc": "FIFA Club World Cup, Knockout stage",
+                    "logo": "https://www.sofascore.com/static/images/flags/uefa.png",
+                    "starred": false,
+                    "matches": [{
+                        "time": ["14:00", "1st set"],
+                        "teams": ["Real Madrid", "Juventus"],
+                        "points": [30, 15],
+                        "sets": [7, 6],
+                        "rounds": [0, 1],
+                        "logos": ["https://www.sofascore.com/static/images/flags/uefa.png", "https://www.sofascore.com/static/images/flags/uefa.png"],
+                        "starred": false
+                    }]
+                }
+            ],
+            "finished": [
+                {
+                    "region": "World",
+                    "desc": "FIFA Club World Cup, Knockout stage",
+                    "logo": "https://www.sofascore.com/static/images/flags/uefa.png",
+                    "starred": false,
+                    "matches": [{
+                        "time": ["14:00", "FT"],
+                        "teams": ["Real Madrid", "Juventus"],
+                        "points": [],
+                        "sets": [],
+                        "rounds": [2, 1],
+                        "logos": ["https://www.sofascore.com/static/images/flags/uefa.png", "https://www.sofascore.com/static/images/flags/uefa.png"],
+                        "starred": false
+                    }]
+                }
+            ],
+            "upcoming": [
+                {
+                    "region": "World",
+                    "desc": "FIFA Club World Cup, Knockout stage",
+                    "logo": "https://www.sofascore.com/static/images/flags/uefa.png",
+                    "starred": false,
+                    "matches": [{
+                        "time": ["14:00", "-"],
+                        "teams": ["Real Madrid", "Juventus"],
+                        "points": [],
+                        "sets": [],
+                        "rounds": [],
+                        "logos": ["https://www.sofascore.com/static/images/flags/uefa.png", "https://www.sofascore.com/static/images/flags/uefa.png"],
+                        "starred": false
+                    }]
+                }
+            ]
+        },
+        "favourites": {
+            "live": [],
+            "finished": [],
+            "upcoming": []
+        }
+    },
+    "right": [
+
+    ]
+}
