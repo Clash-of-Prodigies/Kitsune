@@ -1,7 +1,8 @@
 const globalVariable = {
     _variables: {
-        'tab': 'all',
-        'filter': 'upcoming',
+        'tab': 'All',
+        'filter': 'Upcoming',
+        'data': null
     },
     
     getVariable(variable) {
@@ -9,27 +10,31 @@ const globalVariable = {
     },
     
     setVariable(variable, val) {
-        const valueToSet = val.toLowerCase();
-
         switch (variable) {
             case "tab":
+                const valueToSetForTab = val.toLowerCase();
                 const tabElements = document.querySelector('#tabs div').children;
                 for (const element of tabElements) {
-                    if (element.textContent.toLowerCase() === valueToSet) {
-                        element.classList.add('active_tab');
-                        this._variables[variable] = valueToSet;
-                    } else element.classList.remove('active_tab');
+                    if (element.textContent.toLowerCase() === valueToSetForTab) {
+                        element.id = 'active_tab';
+                        this._variables[variable] = valueToSetForTab;
+                    } else element.id = '';
                 }
             break;
             
             case "filter":
+                const valueToSetForFilter = val.toLowerCase();
                 const filterElements = document.querySelector('#filter').children;
                 for (const element of filterElements) {
-                    if (element.textContent.toLowerCase() === valueToSet) {
-                        element.classList.add('active_filter');
-                        this._variables[variable] = valueToSet;
-                    } else element.classList.remove('active_filter');
+                    if (element.textContent.toLowerCase() === valueToSetForFilter) {
+                        element.id = 'active_filter';
+                        this._variables[variable] = valueToSetForFilter;
+                    } else element.id = '';
                 }
+            break;
+
+            default:
+                this._variables[variable] = val;
             break;
         }
     }
@@ -37,15 +42,13 @@ const globalVariable = {
 
 async function load_data_into_cards() {
     try {
-        const sides = await load_data_from_json();
+        const sides = globalVariable.getVariable('data');
 
         for (const side in sides) {
-            /* Sides should contains left, middle, right */
             let original_card = document.querySelector('#o-card');
             switch (side) {
                 case 'left':
                     for (const field of sides[side]) {
-                        /* Field contain be {Top competition, items...}, {Rankings, items...} */
                         const card = original_card.cloneNode(true);
                         const title = card.querySelector('.card_title');
                         title.appendChild(document.createElement('span'));
@@ -69,10 +72,10 @@ async function load_data_into_cards() {
                         card.style.display = 'flex'; card.id = ''; card.classList.add('card');
                         document.querySelector('#cards #left').appendChild(card);
                     }
-                    break;
+                break;
                 case 'middle':
                     load_data_into_middle_card(['all', 'upcoming'], sides[side]);
-                    break;
+                break;
             }
         }
     } catch(error) {
@@ -90,12 +93,19 @@ async function load_data_from_json() {
 	    }).then(response => response.json());
 }
 
-async function load_data_into_middle_card(
-    sieve=[globalVariable.getVariable('tab'), globalVariable.getVariable('filter')], data = Object()) {
-    if (Object.keys(data).length === 0) data = (await load_data_from_json())['middle'];
+function load_data_into_middle_card(
+    sieve=[
+        globalVariable.getVariable('tab'),
+        globalVariable.getVariable('filter')
+    ],
+    data = Object()) {
+    if (Object.keys(data).length === 0) data = (globalVariable.getVariable('data'))['middle'];
     const card = document.querySelector('#o-card').cloneNode(true);
     const title = card.querySelector('.card_title');
-    title.append(...document.querySelector('#middle_header').childNodes);
+    for (const node of document.querySelector('#middle_header').childNodes) {
+        const clonedNode = node.cloneNode(true);
+        title.append(clonedNode);
+    }
     
     const tabs = Object.keys(data);
     for (const tab of tabs) {
@@ -109,9 +119,10 @@ async function load_data_into_middle_card(
         const new_tab = document.createElement('button');
         new_tab.addEventListener('click', () => {filter_data('filter', filter.toLowerCase());});
         new_tab.textContent = filter.charAt(0).toUpperCase() + filter.slice(1);
+        new_tab.classList.add('filter_button');
         title.querySelector('#filter').appendChild(new_tab);
     }
-                    
+
     competitions = data[sieve[0]][sieve[1]];
     for (const items of competitions) {
         const middle_item_header = document.querySelector('#middle_item_header').cloneNode(true);
@@ -159,15 +170,18 @@ async function load_data_into_middle_card(
 }
 
 function filter_data(key, value) {
-    globalVariable.setVariable(key, value);
+    document.querySelector('#cards #middle').replaceChildren();
     load_data_into_middle_card();
+    globalVariable.setVariable(key, value);
 }
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
+    const data = await load_data_from_json();
+    globalVariable.setVariable('data', data);
     load_data_into_cards();
 });
 
 window.onload = function() {
     globalVariable.setVariable('tab', 'All');
-
+    globalVariable.setVariable('filter', 'Upcoming');
 }

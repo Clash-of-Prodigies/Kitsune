@@ -210,9 +210,13 @@ input[type='search'], input[type='search']:focus {
     padding: 8px;
 }
 
-.active_tab {
+#active_tab {
     border-bottom: 2px #7A84FF solid;
     color: #7A84FF;
+}
+
+#active_filter {
+    background-color: #7A84FF;
 }
 
 #tabs > div > a:hover {
@@ -229,7 +233,7 @@ input[type='search'], input[type='search']:focus {
     padding-top: 8px;
 }
 
-#filter > button {
+.filter_button {
     border-radius: 2rem;
     background-color: rgb(0, 0, 0, 0.5);
     border: none;
