@@ -84,7 +84,7 @@ async function load_data_into_cards() {
 }
 
 async function load_data_from_json() {
-    return fetch('../data.json', {
+    return fetch('data.json', {
 		    headers: {
                 "ngrok-skip-browser-warning": "true",
                 "Content-Type": "application/json"
