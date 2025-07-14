@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/Kitsune/static/css/main.f855e6bc.css",
-    "main.js": "/Kitsune/static/js/main.0166dd77.js",
+    "main.css": "/Kitsune/static/css/main.7779c04d.css",
+    "main.js": "/Kitsune/static/js/main.ee8f86ef.js",
     "static/js/453.c73f27a3.chunk.js": "/Kitsune/static/js/453.c73f27a3.chunk.js",
-    "static/media/logo.svg": "/Kitsune/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "static/media/unknown.svg": "/Kitsune/static/media/unknown.f36e03b536de55bbb3e564ce029b4948.svg",
     "index.html": "/Kitsune/index.html",
-    "main.f855e6bc.css.map": "/Kitsune/static/css/main.f855e6bc.css.map",
-    "main.0166dd77.js.map": "/Kitsune/static/js/main.0166dd77.js.map",
+    "main.7779c04d.css.map": "/Kitsune/static/css/main.7779c04d.css.map",
+    "main.ee8f86ef.js.map": "/Kitsune/static/js/main.ee8f86ef.js.map",
     "453.c73f27a3.chunk.js.map": "/Kitsune/static/js/453.c73f27a3.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f855e6bc.css",
-    "static/js/main.0166dd77.js"
+    "static/css/main.7779c04d.css",
+    "static/js/main.ee8f86ef.js"
   ]
 }
