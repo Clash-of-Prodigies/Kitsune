@@ -1,33 +1,38 @@
+import { useState } from 'react';
 import ResourceBar from '../components/ResourceBar';
 import BottomNav from '../components/BottomNav';
-import { Box, Container, Text, Center, Stack } from '@mantine/core';
-import { IconSparkles, IconNews, IconCalendar } from '@tabler/icons-react';
-import { IconMusic, IconDiscount2, IconTicket, IconUser } from '@tabler/icons-react';
+import { Box, Container, Center, Stack } from '@mantine/core';
+import { IconNews, IconCalendar, IconTournament, IconHours24, IconMessages, IconSparkles  } from '@tabler/icons-react';
+import { IconHome, IconUser, IconTrophy, IconBarbell } from '@tabler/icons-react';
 import SidebarButton from '../components/SideBarButton';
+import ProfileCard from '../components/ProfileCard';
+import EditProfile from '../components/EditProfile';
 
-function LeftSidebar() {
+function LeftSidebar({ ui }) {
   return (
-    <Stack spacing="sm" style={{ position: 'absolute', top: 80, left: 10 }}>
-		<SidebarButton icon={<IconUser />} />
-		<SidebarButton icon={<IconSparkles />} />
+    <Stack spacing="sm" style={{ position: 'absolute', left: 10 }}>
+		<SidebarButton icon={<IconUser />} action={() => ui.ProfileCardToggle(true)}/>
+		<SidebarButton icon={<IconMessages />} badge={10} />
 		<SidebarButton icon={<IconNews />} />
 		<SidebarButton icon={<IconCalendar />} />
     </Stack>
   );
 }
 
-function RightSidebar() {
+function RightSidebar({ ui }) {
 	return (
-    <Stack spacing="sm" style={{ position: 'absolute', top: 80, right: 10 }}>
-		<SidebarButton icon={<IconDiscount2 />} />
-		<SidebarButton icon={<IconTicket />} />
-		<SidebarButton icon={<IconUser />} />
-		<SidebarButton icon={<IconMusic />} badge={1} />
+    <Stack spacing="sm" style={{ position: 'absolute', right: 10 }}>
+		<SidebarButton icon={<IconTrophy />} />
+		<SidebarButton icon={<IconHome />} />
+		<SidebarButton icon={<IconTournament />} />
+		<SidebarButton icon={<IconHours24 />}  badge={1}/>
+		<SidebarButton icon={<IconBarbell />} />
+		<SidebarButton icon={<IconSparkles />} />
     </Stack>
   );
 }
 
-function Layout({ children }) {
+function Layout({ children, ui }) {
 	return (
     <Container
 	fluid
@@ -47,8 +52,8 @@ function Layout({ children }) {
 		
 		{/* Main content */}
 		<Box style={{ flex: 1, overflowY: 'auto', position: 'relative' }} px="md" pt="sm">
-			<LeftSidebar />
-			<RightSidebar />{children}
+			<LeftSidebar ui={ui}/>
+			<RightSidebar ui={ui}/>{children}
 		</Box>
 
       {/* Bottom nav */}
@@ -60,11 +65,25 @@ function Layout({ children }) {
 }
 
 export default function Home() {
+	const [profileCardToggle, ProfileCardToggle] = useState(false);
+	const [updateProfileName, UpdateProfileName] = useState(false)
+	const [shareProfile, ShareProfile] = useState(false)
+
+	const uiState = {
+		profileCardToggle,
+		ProfileCardToggle,
+		updateProfileName,
+		UpdateProfileName,
+		shareProfile,
+		ShareProfile
+	}
+
 	return (
-	<Layout>
+	<Layout ui={uiState}>
 		<Center style={{ height: '100%' }}>
-        <Text size="xl" fw={700}>Tap to Play</Text>
-      </Center>
+			<ProfileCard ui={uiState} />
+			<EditProfile ui={uiState} />
+      	</Center>
 	</Layout>
   );
 }
