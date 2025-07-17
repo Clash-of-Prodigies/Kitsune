@@ -7,7 +7,7 @@ import { MantineProvider } from '@mantine/core';
 import '@mantine/core/styles.css';
 import React from 'react';
 
-function App() {
+export default function App() {
 	return (
 	<HashRouter>
 		<Routes>
@@ -36,5 +36,3 @@ function App() {
 	</HashRouter>		
   );
 }
-
-export default App;
