@@ -1,17 +1,12 @@
 // src/components/BottomNav.jsx
 import { Group, Paper, Text, Badge, Stack, ActionIcon } from '@mantine/core';
-import {
-  IconMessages,
-  IconShoppingCart,
-  IconWorld,
-  IconUsersGroup,
-} from '@tabler/icons-react';
+import { IconShoppingCart, IconUsersGroup, IconSettings, IconHome} from '@tabler/icons-react';
 
 const navButtons = [
-  { icon: <IconUsersGroup size={24} />, label: 'Team', badge: 1 },
-  { icon: <IconMessages size={24} />, label: 'Chat', badge: 1 },
+  { icon: <IconHome size={24} />, label: 'Home', color: 'purple' },
+  { icon: <IconUsersGroup size={24} />, label: 'Team'},
   { icon: <IconShoppingCart size={24} />, label: 'Shop', badge: 1 },
-  { icon: <IconWorld size={24} />, label: 'Events', badge: 5 },
+  { icon: <IconSettings size={24} />, label: 'Settings' },
 ];
 
 export default function BottomNav() {
@@ -26,7 +21,7 @@ export default function BottomNav() {
   <Group position="apart" justify='space-evenly'>
     {navButtons.map((btn, index) => (
       <Stack spacing={2} align="center" key={index}  style={{ gap: '0', cursor: 'pointer' }}>
-        <ActionIcon variant="transparent" size="xl" style={{ width: '100%', height: '100%', color: 'black' }}>
+        <ActionIcon variant="transparent" size="xl" style={{ width: '100%', height: '100%', color: btn.color || 'black' }}>
           {btn.badge > 0 && (
             <Badge
             color="red"
@@ -39,7 +34,7 @@ export default function BottomNav() {
             )}
             {btn.icon}
         </ActionIcon>
-        <Text size="xs" fw={600}>{btn.label}</Text>
+        <Text size="xs" fw={600} c={btn.color}>{btn.label}</Text>
       </Stack>
       ))}
     </Group>
