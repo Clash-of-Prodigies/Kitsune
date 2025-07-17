@@ -1,12 +1,13 @@
 import { Paper, ActionIcon, Badge } from '@mantine/core';
 
-export default function SidebarButton({ icon, badge }) {
+export default function SidebarButton({ icon, badge, action }) {
     return (
     <Paper
       shadow="sm"
       radius="lg"
       withBorder
       style={{ position: 'relative', width: 50, height: 50 }}
+      onClick={action}
     >
         {badge && (
             <Badge
