@@ -6,7 +6,7 @@ import { IconNews, IconCalendar, IconTournament, IconHours24, IconMessages, Icon
 import { IconHome, IconUser, IconTrophy, IconBarbell } from '@tabler/icons-react';
 import SidebarButton from '../components/SideBarButton';
 import ProfileCard from '../components/ProfileCard';
-import News from '../components/NewsVendor';
+import NewsCard from '../components/NewsCard';
 
 function LeftSidebar({ ui }) {
   return (
@@ -79,7 +79,7 @@ export default function Home() {
 	<Layout ui={uiState}>
 		<Center style={{ height: '100%' }}>
 			<ProfileCard ui={uiState} />
-			<News ui={uiState} />
+			<NewsCard ui={uiState} />
       	</Center>
 	</Layout>
   );
