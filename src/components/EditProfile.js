@@ -1,4 +1,4 @@
-import { Modal, Paper, Group, Avatar, Text, Grid, Button, Box, Center, TextInput, Stack } from '@mantine/core';
+import { Modal, Paper, Group, Avatar, Text, Grid, Button, Box, Center, TextInput, Stack, Textarea } from '@mantine/core';
 import { IconUser, IconRobot, IconAlien, IconSpy, IconStar, IconMoodHappy, IconFaceIdError, } from '@tabler/icons-react';
 import { IconFaceId, IconUserCircle, IconUserSearch, IconUserEdit, IconLock, IconCheck, } from '@tabler/icons-react';
 import { useState } from 'react';
@@ -16,18 +16,31 @@ const portraits = [
   { icon: <IconUserCircle />, label: 'Zoe' },
   { icon: <IconStar />, label: 'King' },
   { icon: <IconLock />, label: 'Locked', locked: true },
+{ icon: <IconUser />, label: 'Jack' },
+  { icon: <IconMoodHappy />, label: 'Trick' },
+  { icon: <IconRobot />, label: 'Rob' },
+  { icon: <IconSpy />, label: 'Yutan' },
+  { icon: <IconAlien />, label: 'Alie' },
+  { icon: <IconFaceId />, label: 'Tagbo' },
+  { icon: <IconUserSearch />, label: 'Luci' },
+  { icon: <IconFaceIdError />, label: 'Fres' },
+  { icon: <IconUserEdit />, label: 'Fran' },
+  { icon: <IconUserCircle />, label: 'Zo' },
+  { icon: <IconStar />, label: 'Kin' },
+  { icon: <IconLock />, label: 'Lock', locked: true },
 ];
 
 function handleSubmit(e, ui={}) {
 	e.preventDefault();
 
-	//alert(`${ui.username} and ${ui.selected.label}`)
+	//alert(`${ui.username} and ${ui.selected.label} and ${ui.bio}`)
 	fetch('/api/update-profile', {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({
 			username: ui.username,
 			avatar: ui.selected.label,
+			bio: ui.bio,
 		}),
 	}).then(res => {
 		if (res.ok) {
@@ -40,13 +53,16 @@ function handleSubmit(e, ui={}) {
 export default function EditProfile({ ui={} }) {
 	const [selected, setSelected] = useState(portraits[0]);
 	const [username, setUsername] = useState('Oracle');
+	const [bio, setBio] = useState('For Fortune and Glory');
 	
 	const uiState = {
 		ui,
 		selected,
 		setSelected,
 		username,
-		setUsername
+		setUsername,
+		bio,
+		setBio,
 	}
 
 	return (
@@ -72,49 +88,67 @@ export default function EditProfile({ ui={} }) {
 					{/* Header: avatar + name */}
 					<Group mb="sm">
 						<Avatar color="blue" radius="xl">{selected.icon}</Avatar>
-						<TextInput label="Username" value={username} variant="filled" radius="md" size="md"
+						<TextInput value={username} variant="filled" radius="md" size="md"
   						onChange={(event) => setUsername(event.currentTarget.value)}
-  						styles={{
-    					input: {
-      						textAlign: 'center',
-      						fontWeight: 700,
-						},
-						}}
+  						styles={{ input: { fontWeight: 700, }, }}
 						/>
         			</Group>
+					
+					{/* ✍️ Bio input */}
+  					<Textarea name='bio' value={bio} autosize minRows={2} maxRows={4} maxLength={400}
+					variant="filled" radius="md" size="md" placeholder="Describe yourself..."
+    				onChange={(e) => setBio(e.currentTarget.value)}
+    				styles={{ input: { fontStyle: 'italic', }, }}
+  					/>
 
         			{/* Portrait Grid */}
-        			<Grid gutter="xs" mb="sm">
-						{portraits.map((p, i) => (
-							<Grid.Col span={3} key={i}>
-								<Box onClick={() => !p.locked && setSelected(p)}
-                				style={{
-                				cursor: p.locked ? 'not-allowed' : 'pointer',
-                				position: 'relative',
-                				backgroundColor: '#f4f9ff',
-                				borderRadius: 12,
-                				border: selected.label === p.label ? '2px solid green' : '2px solid transparent',
-                				padding: 10,
-                				}}
-								>
-									<Center>{p.icon}</Center>
-                						{p.locked && (
-                  							<Center style={{ position: 'absolute', top: 0, right: 0 }}>
+					<Box style={{
+						maxHeight: 200,
+						overflowY: 'auto',
+						overflowX: 'hidden',
+						paddingRight: 4,
+						}}
+						sx={{
+						'&::-webkit-scrollbar': {width: '8px',},
+						'&::-webkit-scrollbar-thumb': {
+							backgroundColor: '#888',
+							borderRadius: '8px',
+						},
+						'&::-webkit-scrollbar-track': {backgroundColor: 'transparent',},
+						}}
+					>
+						<Grid gutter="xs" mb="sm">
+							{portraits.map((p, i) => (
+								<Grid.Col span={3} key={i}>
+									<Box onClick={() => !p.locked && setSelected(p)} style={{
+										cursor: p.locked ? 'not-allowed' : 'pointer',
+										position: 'relative',
+										backgroundColor: '#f4f9ff',
+										borderRadius: 12,
+										border: selected.label === p.label ? '2px solid green': '2px solid transparent',
+										padding: 10,
+										}}
+									>
+										<Center>{p.icon}</Center>
+										{p.locked && (
+											<Center style={{ position: 'absolute', top: 0, right: 0 }}>
 												<IconLock size={14} />
 											</Center>
-                						)}
+										)}
 										{selected.label === p.label && (
 											<IconCheck size={16} style={{
-												position: 'absolute',
-												top: 5,
-												left: 5,
-												color: 'green'
-											}} />
+                								position: 'absolute',
+                								top: 5,
+                								left: 5,
+                								color: 'green',
+              									}}
+            								/>
 										)}
-              					</Box>
-            				</Grid.Col>
-        				))}
-        			</Grid>
+									</Box>
+								</Grid.Col>
+							))}
+						</Grid>
+					</Box>
 
         			{/* Selected name (readonly for now) */}
         			<Text align="center" fw={600} mb="xs">{selected.label}</Text>
