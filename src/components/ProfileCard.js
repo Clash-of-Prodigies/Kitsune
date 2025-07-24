@@ -1,6 +1,8 @@
 import { Paper, Text, Avatar, Group, Stack, Grid, Center, Divider, Modal, Box, rem, ActionIcon } from '@mantine/core';
 import { IconPencil, IconUpload, IconTarget, IconSkateboard } from '@tabler/icons-react';
 import { IconAward, IconMapPin } from '@tabler/icons-react';
+import { useState } from 'react';
+import EditProfile from './EditProfile';
 
 function ProfileCardTool({icon, action}) {
 	return (
@@ -135,12 +137,25 @@ function Profile({ ui }) {
 }
 
 export default function ProfileCard({ ui={} }) {
+    const [updateProfileName, UpdateProfileName] = useState(false)
+    const [shareProfile, ShareProfile] = useState(false)
+
+    const uiState = {
+        ...ui,
+        updateProfileName,
+		UpdateProfileName,
+		shareProfile,
+		ShareProfile,
+    }
 	return (
+        <>
         <Modal radius="xl" padding={0} size="auto" centered opened={ui.profileCardToggle} withCloseButton={false}
-        onClose={() => ui.ProfileCardToggle(false)}
+        onClose={() => uiState.ProfileCardToggle(false)}
 	    overlayProps={{ opacity: '0.6' }}
         >
-		    <Profile ui={ui} />
+		    <Profile ui={uiState} />
 	    </Modal>
+        <EditProfile ui={uiState} />
+        </>
 	);
 }
