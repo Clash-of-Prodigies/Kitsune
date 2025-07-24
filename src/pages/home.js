@@ -6,14 +6,14 @@ import { IconNews, IconCalendar, IconTournament, IconHours24, IconMessages, Icon
 import { IconHome, IconUser, IconTrophy, IconBarbell } from '@tabler/icons-react';
 import SidebarButton from '../components/SideBarButton';
 import ProfileCard from '../components/ProfileCard';
-import EditProfile from '../components/EditProfile';
+import News from '../components/NewsVendor';
 
 function LeftSidebar({ ui }) {
   return (
     <Stack spacing="sm" style={{ position: 'absolute', left: 10 }}>
 		<SidebarButton icon={<IconUser />} action={() => ui.ProfileCardToggle(true)}/>
 		<SidebarButton icon={<IconMessages />} badge={10} />
-		<SidebarButton icon={<IconNews />} />
+		<SidebarButton icon={<IconNews />} action={() => ui.ReadNews(true)}/>
 		<SidebarButton icon={<IconCalendar />} />
     </Stack>
   );
@@ -66,23 +66,20 @@ function Layout({ children, ui }) {
 
 export default function Home() {
 	const [profileCardToggle, ProfileCardToggle] = useState(false);
-	const [updateProfileName, UpdateProfileName] = useState(false)
-	const [shareProfile, ShareProfile] = useState(false)
+	const [readNews, ReadNews] = useState(false)
 
 	const uiState = {
 		profileCardToggle,
 		ProfileCardToggle,
-		updateProfileName,
-		UpdateProfileName,
-		shareProfile,
-		ShareProfile
+		readNews,
+		ReadNews,
 	}
 
 	return (
 	<Layout ui={uiState}>
 		<Center style={{ height: '100%' }}>
 			<ProfileCard ui={uiState} />
-			<EditProfile ui={uiState} />
+			<News ui={uiState} />
       	</Center>
 	</Layout>
   );
