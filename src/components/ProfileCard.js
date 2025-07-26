@@ -1,4 +1,4 @@
-import { Paper, Text, Avatar, Group, Stack, Grid, Center, Divider, Modal, Box, rem, ActionIcon } from '@mantine/core';
+import { Paper, Text, Avatar, Group, Stack, Grid, Center, Divider, Modal, Box, ActionIcon } from '@mantine/core';
 import { IconPencil, IconUpload, IconTarget, IconSkateboard } from '@tabler/icons-react';
 import { IconAward, IconMapPin } from '@tabler/icons-react';
 import { useState } from 'react';
@@ -70,7 +70,6 @@ function Profile({ ui }) {
   return (
     <Paper shadow="lg" radius="xl" p="md" withBorder style={{
         width: '100%',
-        maxWidth: rem(400),
         margin: 'auto',
         background: 'linear-gradient(to bottom, #d2ebff, #a2c4ff)',
         border: '3px solid #1a629cff'
@@ -124,7 +123,7 @@ function Profile({ ui }) {
         {/* Badges */}
         <Divider my="xs" />
         <ProfileCardBar title={'Accolades'}>
-            <Box style={{ width: 320}} >
+            <Box style={{ width: 320 }} ml='auto' mr='auto'>
                 <Group style={{'--group-justify': 'space-evenly'}}>
                     {medals.map((m, i) => (
                         <Box key={i}>{m.medal}</Box>
@@ -149,7 +148,7 @@ export default function ProfileCard({ ui={} }) {
     }
 	return (
         <>
-        <Modal radius="xl" padding={0} size="auto" centered opened={ui.profileCardToggle} withCloseButton={false}
+        <Modal radius="xl" padding={0} size="sm" centered opened={ui.profileCardToggle} withCloseButton={false}
         onClose={() => uiState.ProfileCardToggle(false)}
 	    overlayProps={{ opacity: '0.6' }}
         >
