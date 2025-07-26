@@ -8,7 +8,7 @@ const articles = [
     {
         id: 1,
         title: "Floor is Lava",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        description: "Lore ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
         imageUrl: imagi,
         icon: <IconNews size={24} />,
         timeLeft: "7d 17h",
