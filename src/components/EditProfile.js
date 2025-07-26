@@ -74,6 +74,7 @@ export default function EditProfile({ ui={} }) {
       radius="xl"
       padding={0}
       overlayProps={{ opacity: 0.6 }}
+	  size="sm"
     >
 		<Paper
         p="md"
