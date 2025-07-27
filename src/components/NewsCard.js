@@ -74,13 +74,13 @@ function NewsArticle({ui = {}, article={}}) {
                 <IconClockHour4 size={16} />
                 <Text size="xs" fw={700}>{article.timeLeft}</Text>
             </Group>
-            <Badge color="red" variant="filled" size="xs" pos='absolute' top={0} right={0} style={{
+            <Badge color="red" variant="filled" size="xs" pos='absolute' top={0} right={0}
+            display={article.unread ? "default" : "none"} style={{
                 zIndex: 2, border: '2px solid white',
                 boxShadow: 
                 `0 0 4px #070707ff,
                 inset 0 0 1px #070707ff`,
-            }}
-            display={article.unread ? "default" : "none"}>
+            }}>
             </Badge>
         </Stack>
     </Box>
