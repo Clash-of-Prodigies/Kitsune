@@ -1,4 +1,4 @@
-import { Modal, Stack, Paper, Text, Box, Group, Badge, } from '@mantine/core';
+import { Modal, Stack, Paper, Text, Box, Group, Badge, ScrollArea, } from '@mantine/core';
 import { IconClockHour4, IconGift, IconNews } from '@tabler/icons-react';
 import { useState } from 'react';
 import Article from './Article';
@@ -53,39 +53,32 @@ const articles = [
 
 function NewsArticle({ui = {}, article={}}) {
     return (
-    <Box key={article.id} onClick={() => ui.ReadArticle(article)} style={{
-        backgroundColor: '#f8fdffff', borderRadius: 10, cursor: 'pointer', padding: 3,
-        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        boxShadow: `
-        inset 0 -2px 0 #ffffff,
-        0 2px 4px rgba(0, 0, 0, 0.15)
-        `,
-        }}
+    <Box key={article.id} display='flex' mt='xs' mb='xs' bdrs={10} p={3}
+    onClick={() => ui.ReadArticle(article)}  style={{
+        backgroundColor: '#f8fdffff', cursor: 'pointer',
+        justifyContent: 'space-between', alignItems: 'center',
+        boxShadow:
+        `inset 0 -2px 0 #ffffff,
+        0 2px 4px rgba(0, 0, 0, 0.15)`,
+    }}
     >
-        <Stack p='md' style={{ backgroundColor: '#c4e1fcff', width: '100%', borderRadius: 10, position: 'relative'}}>
+        <Stack p='md' w='100%' bdrs={10} pos='relative' style={{ backgroundColor: '#c4e1fcff', }}>
             <Group spacing="sm">
                 {article.icon}
-                <Text c='#290dddff' style={{ fontFamily: 'sans-serif', fontWeight: 900, }}>{article.title}</Text>
+                <Text c='#290dddff' ff='sans-serif' fw={900}>{article.title}</Text>
             </Group>
-            <Group c='white' style={{
-                position: 'absolute', bottom: 3, right: 5,
-                backgroundColor: 'purple', borderRadius: 10, paddingLeft: 5, paddingRight: 5,
-                '--group-gap': '3px',
+            <Group c='white' pos='absolute' bottom={3} right={5} bdrs={10} pl={5} pr={5} style={{
+                backgroundColor: 'purple', '--group-gap': '3px',
             }}
             >
                 <IconClockHour4 size={16} />
-                <Text size="xs" style={{ fontWeight: 700}}>{article.timeLeft}</Text>
+                <Text size="xs" fw={700}>{article.timeLeft}</Text>
             </Group>
-            <Badge color="red" variant="filled" size="xs" style={{
-                position: 'absolute',
-                top: 0,
-                right: 0,
-                zIndex: 2,
-                border: '2px solid white',
+            <Badge color="red" variant="filled" size="xs" pos='absolute' top={0} right={0} style={{
+                zIndex: 2, border: '2px solid white',
                 boxShadow: 
                 `0 0 4px #070707ff,
-                inset 0 0 1px #070707ff
-                `,
+                inset 0 0 1px #070707ff`,
             }}
             display={article.unread ? "default" : "none"}>
             </Badge>
@@ -96,26 +89,16 @@ function NewsArticle({ui = {}, article={}}) {
 
 function News({ui = {}}) {
     return (
-    <Paper p="xs" radius="xs" style={{ backgroundColor: '#96cbfdff', width: '100%', }}>
-        <Text align="center" c='#f8fdffff' size="xl" mb="sm" style={{
-            fontFamily: 'sans-serif',
-            fontWeight: 900,
+    <Paper p="xs" radius="lg" w='100%' style={{ backgroundColor: '#96cbfdff', border: '3px solid #1a629cff'}}>
+        <Text align="center" c='#f8fdffff' size="xl" mb="sm" ff='sans-serif' fw={900} style={{
             textShadow:
             `0px 2px 0px #070707ff,
             0px 4px 0px #2b2b2cff
             `,
         }}>What's New?</Text>
-        <Stack spacing="sm" p="xs" style={{
-            backgroundColor: '#d3eaff',
-            borderRadius: 12,
-			maxHeight: 400,
-			overflowY: 'auto',
-			overflowX: 'hidden',
-			paddingRight: 4,
-		}}
-        >
+        <ScrollArea p="md" h={400} bdrs={12} scrollbars="y" style={{ backgroundColor: '#d3eaff', }}>
             {articles.map((article) => (<NewsArticle ui={ui} article={article} key={article.id}/>))}
-        </Stack>
+        </ScrollArea>
     </Paper>
     );
 }
@@ -132,8 +115,7 @@ export default function NewsCard({ ui={} }) {
     return (
     <>
     <Modal centered withCloseButton={false} radius="lg" padding={0} overlayProps={{ opacity: 0.6 }}
-    opened={ui.readNews} onClose={() => ui.ReadNews(false)}
-    >
+    opened={ui.readNews} onClose={() => ui.ReadNews(false)}>
         <News ui={uiState} />
     </Modal>
     <Article ui={uiState} />
