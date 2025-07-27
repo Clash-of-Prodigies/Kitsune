@@ -7,21 +7,22 @@ import { IconHome, IconUser, IconTrophy, IconBarbell } from '@tabler/icons-react
 import SidebarButton from '../components/SideBarButton';
 import ProfileCard from '../components/ProfileCard';
 import NewsCard from '../components/NewsCard';
+import CalendarCard from '../components/CalendarCard';
 
 function LeftSidebar({ ui }) {
-  return (
-    <Stack spacing="sm" style={{ position: 'absolute', left: 10 }}>
-		<SidebarButton icon={<IconUser />} action={() => ui.ProfileCardToggle(true)}/>
+	return (
+    <Stack spacing="sm" pos='absolute' left={10}>
+		<SidebarButton icon={<IconUser />} action={() => ui.ProfileCardToggle(true)} />
 		<SidebarButton icon={<IconMessages />} badge={10} />
-		<SidebarButton icon={<IconNews />} action={() => ui.ReadNews(true)}/>
-		<SidebarButton icon={<IconCalendar />} />
+		<SidebarButton icon={<IconNews />} action={() => ui.ReadNews(true)} />
+		<SidebarButton icon={<IconCalendar />} action={() => ui.ViewCalendar(true)} />
     </Stack>
-  );
+	);
 }
 
 function RightSidebar({ ui }) {
 	return (
-    <Stack spacing="sm" style={{ position: 'absolute', right: 10 }}>
+    <Stack spacing="sm" pos='absolute' right={10}>
 		<SidebarButton icon={<IconTrophy />} />
 		<SidebarButton icon={<IconHome />} />
 		<SidebarButton icon={<IconTournament />} />
@@ -34,53 +35,46 @@ function RightSidebar({ ui }) {
 
 function Layout({ children, ui }) {
 	return (
-    <Container
-	fluid
-    px={0}
-    style={{
-        height: '100vh',
-        overflow: 'hidden',
-        backgroundColor: '#e0f0ff',
-        display: 'flex',
-        flexDirection: 'column',
-    }}
-    >
+    <Container fluid px={0} h='100vh' display='flex' style={{
+        overflow: 'hidden', backgroundColor: '#e0f0ff', flexDirection: 'column',
+    }}>
 		{/* Top bar */}
-		<Box p="sm">
-			<ResourceBar />
-		</Box>
+		<Box p="sm"><ResourceBar /></Box>
 		
 		{/* Main content */}
-		<Box style={{ flex: 1, overflowY: 'auto', position: 'relative' }} px="md" pt="sm">
+		<Box flex={1} pos='relative'  px="md" pt="sm" style={{ overflowY: 'auto',}}>
 			<LeftSidebar ui={ui}/>
-			<RightSidebar ui={ui}/>{children}
+			<RightSidebar ui={ui}/>
+			{children}
 		</Box>
 
-      {/* Bottom nav */}
-      <Box p="sm">
-		<BottomNav />
-      </Box>
+      	{/* Bottom nav */}
+      	<Box p="sm"><BottomNav /></Box>
     </Container>
-  );
+	);
 }
 
 export default function Home() {
 	const [profileCardToggle, ProfileCardToggle] = useState(false);
 	const [readNews, ReadNews] = useState(false)
+	const [viewCalendar, ViewCalendar] = useState(false)
 
 	const uiState = {
 		profileCardToggle,
 		ProfileCardToggle,
 		readNews,
 		ReadNews,
+		viewCalendar,
+		ViewCalendar,
 	}
 
 	return (
 	<Layout ui={uiState}>
-		<Center style={{ height: '100%' }}>
+		<Center h='100%'>
 			<ProfileCard ui={uiState} />
 			<NewsCard ui={uiState} />
+			<CalendarCard ui={uiState} />
       	</Center>
 	</Layout>
-  );
+	);
 }
