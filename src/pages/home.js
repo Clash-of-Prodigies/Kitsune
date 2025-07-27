@@ -2,7 +2,7 @@ import { useState } from 'react';
 import ResourceBar from '../components/ResourceBar';
 import BottomNav from '../components/BottomNav';
 import { Box, Container, Center, Stack } from '@mantine/core';
-import { IconNews, IconCalendar, IconTournament, IconHours24, IconMessages, IconSparkles  } from '@tabler/icons-react';
+import { IconNews, IconCalendar, IconTournament, IconHours24, IconSparkles, IconSettings  } from '@tabler/icons-react';
 import { IconHome, IconUser, IconTrophy, IconBarbell } from '@tabler/icons-react';
 import SidebarButton from '../components/SideBarButton';
 import ProfileCard from '../components/ProfileCard';
@@ -13,7 +13,7 @@ function LeftSidebar({ ui }) {
 	return (
     <Stack spacing="sm" pos='absolute' left={10}>
 		<SidebarButton icon={<IconUser />} action={() => ui.ProfileCardToggle(true)} />
-		<SidebarButton icon={<IconMessages />} badge={10} />
+		<SidebarButton icon={<IconSettings />} action={() => {}}/>
 		<SidebarButton icon={<IconNews />} action={() => ui.ReadNews(true)} />
 		<SidebarButton icon={<IconCalendar />} action={() => ui.ViewCalendar(true)} />
     </Stack>
