@@ -1,4 +1,4 @@
-import { Modal, Paper, Group, Avatar, Text, Grid, Button, Box, Center, TextInput, Stack, Textarea } from '@mantine/core';
+import { Modal, Paper, Group, Avatar, Text, Grid, Button, Box, Center, TextInput, Stack, Textarea, ScrollArea } from '@mantine/core';
 import { IconUser, IconRobot, IconAlien, IconSpy, IconStar, IconMoodHappy, IconFaceIdError, } from '@tabler/icons-react';
 import { IconFaceId, IconUserCircle, IconUserSearch, IconUserEdit, IconLock, IconCheck, } from '@tabler/icons-react';
 import { useState } from 'react';
@@ -16,7 +16,7 @@ const portraits = [
   { icon: <IconUserCircle />, label: 'Zoe' },
   { icon: <IconStar />, label: 'King' },
   { icon: <IconLock />, label: 'Locked', locked: true },
-{ icon: <IconUser />, label: 'Jack' },
+  { icon: <IconUser />, label: 'Jack' },
   { icon: <IconMoodHappy />, label: 'Trick' },
   { icon: <IconRobot />, label: 'Rob' },
   { icon: <IconSpy />, label: 'Yutan' },
@@ -49,6 +49,25 @@ function handleSubmit(e, ui={}) {
 	});
 }
 
+function Portrait({portrait = {}, ui = {}}) {
+	return (
+	<Box p={10} bdrs={12} pos='relative'
+	onClick={() => !portrait.locked && ui.setSelected(portrait)}
+	style={{
+		cursor: portrait.locked ? 'not-allowed' : 'pointer',
+		backgroundColor: '#f4f9ff',
+		border: ui.selected.label === portrait.label ? '2px solid green': '2px solid transparent',
+	}}>
+		<Center>{portrait.icon}</Center>
+		{portrait.locked && (
+			<Box style={{ position: 'absolute', top: 0, right: 0 }}><IconLock size={14} /></Box>
+		)}
+		{ui.selected.label === portrait.label && (
+			<IconCheck size={16} style={{ position: 'absolute', top: 5, left: 5, color: 'green', }} />
+		)}
+	</Box>
+	);
+}
 
 export default function EditProfile({ ui={} }) {
 	const [selected, setSelected] = useState(portraits[0]);
@@ -66,24 +85,12 @@ export default function EditProfile({ ui={} }) {
 	}
 
 	return (
-    <Modal
-      opened={ui.updateProfileName}
-      onClose={ui.UpdateProfileName}
-      centered
-      withCloseButton={false}
-      radius="xl"
-      padding={0}
-      overlayProps={{ opacity: 0.6 }}
-	  size="sm"
+    <Modal centered withCloseButton={false} radius="xl" padding={0} overlayProps={{ opacity: 0.6 }} size="sm"
+    opened={ui.updateProfileName} onClose={ui.UpdateProfileName}
     >
-		<Paper
-        p="md"
-        style={{
+		<Paper p="md" bdrs={20} w='100%' style={{
 			background: 'linear-gradient(to bottom, #d2ebff, #a2c4ff)',
-			borderRadius: 20,
-          	width: '100%',
-        }}
-		>
+		}}>
 			<form onSubmit={(e) => handleSubmit(e, ui=uiState)}>
 				<Stack>
 					{/* Header: avatar + name */}
@@ -103,62 +110,26 @@ export default function EditProfile({ ui={} }) {
   					/>
 
         			{/* Portrait Grid */}
-					<Box style={{
-						maxHeight: 200,
-						overflowY: 'auto',
-						overflowX: 'hidden',
-						paddingRight: 4,
-						}}
-						sx={{
-						'&::-webkit-scrollbar': {width: '8px',},
-						'&::-webkit-scrollbar-thumb': {
-							backgroundColor: '#888',
-							borderRadius: '8px',
-						},
-						'&::-webkit-scrollbar-track': {backgroundColor: 'transparent',},
-						}}
-					>
+					<ScrollArea h={200} p="md" scrollbars="y">
 						<Grid gutter="xs" mb="sm">
 							{portraits.map((p, i) => (
 								<Grid.Col span={3} key={i}>
-									<Box onClick={() => !p.locked && setSelected(p)} style={{
-										cursor: p.locked ? 'not-allowed' : 'pointer',
-										position: 'relative',
-										backgroundColor: '#f4f9ff',
-										borderRadius: 12,
-										border: selected.label === p.label ? '2px solid green': '2px solid transparent',
-										padding: 10,
-										}}
-									>
-										<Center>{p.icon}</Center>
-										{p.locked && (
-											<Center style={{ position: 'absolute', top: 0, right: 0 }}>
-												<IconLock size={14} />
-											</Center>
-										)}
-										{selected.label === p.label && (
-											<IconCheck size={16} style={{
-                								position: 'absolute',
-                								top: 5,
-                								left: 5,
-                								color: 'green',
-              									}}
-            								/>
-										)}
-									</Box>
+									<Portrait portrait={p} ui={uiState} />
 								</Grid.Col>
 							))}
 						</Grid>
-					</Box>
+					</ScrollArea>
 
         			{/* Selected name (readonly for now) */}
         			<Text align="center" fw={600} mb="xs">{selected.label}</Text>
 
         			{/* Save Button */}
-        			<Center><Button type='submit' color="lime" radius="xl" size="md" fw={700}>SAVE</Button></Center>
+        			<Center>
+						<Button type='submit' color="lime" radius="xl" size="md" fw={700}>SAVE</Button>
+					</Center>
 				</Stack>
 			</form>
 		</Paper>
-    </Modal>
-  );
+	</Modal>
+	);
 }
