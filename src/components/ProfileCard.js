@@ -57,14 +57,6 @@ function ProfileCardBar({children, title, value={}, icon}) {
     );
 }
 
-const medals = [
-    {medal: <Medal image={<IconAward />} />, label: 'Award'},
-    {medal: <Medal image={<IconTarget />} />, label: 'Target'},
-    {medal: <Medal image={<IconSkateboard />} />, label: 'Skateboard'},
-    {medal: <Medal image={<IconPencil />} />, label: 'Pencil'},
-    {medal: <Medal image={<IconUpload />} />, label: 'Upload'},
-]
-
 function Profile({ ui = {}, data = {} }) {
   return (
     <Paper shadow="lg" radius="xl" w='100%' m='auto' p="md" withBorder style={{
