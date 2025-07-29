@@ -1,87 +1,65 @@
 import { Modal, Paper, Group, Avatar, Text, Grid, Button, Box, Center, TextInput, Stack, Textarea, ScrollArea } from '@mantine/core';
-import { IconUser, IconRobot, IconAlien, IconSpy, IconStar, IconMoodHappy, IconFaceIdError, } from '@tabler/icons-react';
-import { IconFaceId, IconUserCircle, IconUserSearch, IconUserEdit, IconLock, IconCheck, } from '@tabler/icons-react';
-import { useState } from 'react';
-
-const portraits = [
-  { icon: <IconUser />, label: 'Jake' },
-  { icon: <IconMoodHappy />, label: 'Tricky' },
-  { icon: <IconRobot />, label: 'Robo' },
-  { icon: <IconSpy />, label: 'Yutani' },
-  { icon: <IconAlien />, label: 'Alien' },
-  { icon: <IconFaceId />, label: 'Tagbot' },
-  { icon: <IconUserSearch />, label: 'Lucia' },
-  { icon: <IconFaceIdError />, label: 'Fresh' },
-  { icon: <IconUserEdit />, label: 'Frank' },
-  { icon: <IconUserCircle />, label: 'Zoe' },
-  { icon: <IconStar />, label: 'King' },
-  { icon: <IconLock />, label: 'Locked', locked: true },
-  { icon: <IconUser />, label: 'Jack' },
-  { icon: <IconMoodHappy />, label: 'Trick' },
-  { icon: <IconRobot />, label: 'Rob' },
-  { icon: <IconSpy />, label: 'Yutan' },
-  { icon: <IconAlien />, label: 'Alie' },
-  { icon: <IconFaceId />, label: 'Tagbo' },
-  { icon: <IconUserSearch />, label: 'Luci' },
-  { icon: <IconFaceIdError />, label: 'Fres' },
-  { icon: <IconUserEdit />, label: 'Fran' },
-  { icon: <IconUserCircle />, label: 'Zo' },
-  { icon: <IconStar />, label: 'Kin' },
-  { icon: <IconLock />, label: 'Lock', locked: true },
-];
+import { IconLock, IconCheck, } from '@tabler/icons-react';
+import { useState, } from 'react';
+import iconMap from './IconMap';
 
 function handleSubmit(e, ui={}) {
 	e.preventDefault();
 
-	//alert(`${ui.username} and ${ui.selected.label} and ${ui.bio}`)
-	fetch('/api/update-profile', {
+	//alert(`${ui.username} and ${ui.avatar} and ${ui.bio}`)
+	fetch('http://localhost:5000/update', {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({
-			username: ui.username,
-			avatar: ui.selected.label,
+			name: ui.name,
+			avatar: ui.avatar,
 			bio: ui.bio,
 		}),
 	}).then(res => {
 		if (res.ok) {
-			ui.ui.UpdateProfileName(false);
+			ui.Load(true);
+			ui.UpdateProfileName(false);
 		}
 	});
 }
 
-function Portrait({portrait = {}, ui = {}}) {
+function Portrait({avatar = {}, ui = {}}) {
 	return (
-	<Box p={10} bdrs={12} pos='relative'
-	onClick={() => !portrait.locked && ui.setSelected(portrait)}
+	<Box p={10} bdrs={12} pos='relative' onClick={() => !avatar.locked && ui.setAvatar(avatar.label)}
 	style={{
-		cursor: portrait.locked ? 'not-allowed' : 'pointer',
+		cursor: avatar.locked ? 'not-allowed' : 'pointer',
 		backgroundColor: '#f4f9ff',
-		border: ui.selected.label === portrait.label ? '2px solid green': '2px solid transparent',
+		border: ui.avatar === avatar.label ? '2px solid green': '2px solid transparent',
 	}}>
-		<Center>{portrait.icon}</Center>
-		{portrait.locked && (
+		<Center>
+			{typeof avatar.label === 'string' && iconMap[avatar.label] ?
+                (() => {
+                    const IconComponent = iconMap[avatar.label];
+                    return IconComponent ? <IconComponent size={24} /> : null;
+                })()
+                : avatar.label
+			}
+		</Center>
+		{avatar.locked && (
 			<Box style={{ position: 'absolute', top: 0, right: 0 }}><IconLock size={14} /></Box>
 		)}
-		{ui.selected.label === portrait.label && (
+		{ui.avatar === avatar.label && (
 			<IconCheck size={16} style={{ position: 'absolute', top: 5, left: 5, color: 'green', }} />
 		)}
 	</Box>
 	);
 }
 
-export default function EditProfile({ ui={} }) {
-	const [selected, setSelected] = useState(portraits[0]);
-	const [username, setUsername] = useState('Oracle');
-	const [bio, setBio] = useState('For Fortune and Glory');
+export default function EditProfile({ ui = {}, data = {}, avatars = [] }) {
+	const [avatar, setAvatar] = useState(data.avatar);
+	const [name, setUsername] = useState(data.name);
+	const [bio, setBio] = useState(data.bio);
 	
 	const uiState = {
-		ui,
-		selected,
-		setSelected,
-		username,
-		setUsername,
-		bio,
-		setBio,
+		...ui,
+		avatar, setAvatar,
+		name, setUsername,
+		bio, setBio,
 	}
 
 	return (
@@ -95,9 +73,17 @@ export default function EditProfile({ ui={} }) {
 				<Stack>
 					{/* Header: avatar + name */}
 					<Group mb="sm">
-						<Avatar color="blue" radius="xl">{selected.icon}</Avatar>
-						<TextInput value={username} variant="filled" radius="md" size="md"
-  						onChange={(event) => setUsername(event.currentTarget.value)}
+						<Avatar color="blue" radius="xl">
+							{typeof avatar === 'string' && iconMap[avatar] ? 
+                 				(() => {
+                    				const IconComponent = iconMap[avatar];
+                    				return IconComponent ? <IconComponent size={24} /> : null;
+                				})()
+                			: avatar
+							}
+						</Avatar>
+						<TextInput value={name} variant="filled" radius="md" size="md"
+  						onChange={(e) => setUsername(e.currentTarget.value)}
   						styles={{ input: { fontWeight: 700, }, }}
 						/>
         			</Group>
@@ -112,16 +98,16 @@ export default function EditProfile({ ui={} }) {
         			{/* Portrait Grid */}
 					<ScrollArea h={200} p="md" scrollbars="y">
 						<Grid gutter="xs" mb="sm">
-							{portraits.map((p, i) => (
+							{avatars.map((avatar, i) => (
 								<Grid.Col span={3} key={i}>
-									<Portrait portrait={p} ui={uiState} />
+									<Portrait avatar={avatar} ui={uiState} />
 								</Grid.Col>
 							))}
 						</Grid>
 					</ScrollArea>
 
         			{/* Selected name (readonly for now) */}
-        			<Text align="center" fw={600} mb="xs">{selected.label}</Text>
+        			<Text align="center" fw={600} mb="xs">{avatar}</Text>
 
         			{/* Save Button */}
         			<Center>
