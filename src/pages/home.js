@@ -1,26 +1,27 @@
-import { useState } from 'react';
+import { Box, Container, Center, Stack } from '@mantine/core';
+import { IconNews, IconCalendar, IconTournament, IconHours24, IconSparkles, } from '@tabler/icons-react';
+import { IconHome, IconUser, IconTrophy, IconBarbell, IconSettings, } from '@tabler/icons-react';
+import { useState, useEffect } from 'react';
 import ResourceBar from '../components/ResourceBar';
 import BottomNav from '../components/BottomNav';
-import { Box, Container, Center, Stack } from '@mantine/core';
-import { IconNews, IconCalendar, IconTournament, IconHours24, IconSparkles, IconSettings  } from '@tabler/icons-react';
-import { IconHome, IconUser, IconTrophy, IconBarbell } from '@tabler/icons-react';
 import SidebarButton from '../components/SideBarButton';
 import ProfileCard from '../components/ProfileCard';
 import NewsCard from '../components/NewsCard';
 import CalendarCard from '../components/CalendarCard';
+import SettingsCard from '../components/SettingsCard';
 
-function LeftSidebar({ ui }) {
+function LeftSidebar({ ui = {} }) {
 	return (
     <Stack spacing="sm" pos='absolute' left={10}>
-		<SidebarButton icon={<IconUser />} action={() => ui.ProfileCardToggle(true)} />
-		<SidebarButton icon={<IconSettings />} action={() => {}}/>
+		<SidebarButton icon={<IconUser />} action={() => ui.AdmireProfile(true)} />
+		<SidebarButton icon={<IconSettings />} action={() => ui.OpenSettings(true)}/>
 		<SidebarButton icon={<IconNews />} action={() => ui.ReadNews(true)} />
 		<SidebarButton icon={<IconCalendar />} action={() => ui.ViewCalendar(true)} />
     </Stack>
 	);
 }
 
-function RightSidebar({ ui }) {
+function RightSidebar({ ui = {} }) {
 	return (
     <Stack spacing="sm" pos='absolute' right={10}>
 		<SidebarButton icon={<IconTrophy />} />
@@ -55,25 +56,47 @@ function Layout({ children, ui }) {
 }
 
 export default function Home() {
-	const [profileCardToggle, ProfileCardToggle] = useState(false);
-	const [readNews, ReadNews] = useState(false)
-	const [viewCalendar, ViewCalendar] = useState(false)
+	const [dossier, Mutate] = useState({});
+	const [broadcast, Listen] = useState({});
+	const [calendar, Schedule] = useState({});
+  	const [loading, Load] = useState(true);  // Tracks loading state
+  	const [error, Spit] = useState(null);      // Tracks errors
+	const [admireProfile, AdmireProfile] = useState(false);
+	const [readNews, ReadNews] = useState(false);
+	const [viewCalendar, ViewCalendar] = useState(false);
+	const [openSettings, OpenSettings] = useState(false);
 
-	const uiState = {
-		profileCardToggle,
-		ProfileCardToggle,
-		readNews,
-		ReadNews,
-		viewCalendar,
-		ViewCalendar,
+  	useEffect(() => {
+		if (!loading) return;
+		Promise.all([
+			fetch('http://localhost:5000/my-data').then(res => res.json()),
+			fetch('http://localhost:5000/broadcast').then(res => res.json()),
+			fetch('http://localhost:5000/my-calendar').then(res => res.json()),
+		])
+		.then(([user, announcements, schedules,]) =>  [user, announcements, schedules,])
+		.then((res) => {Mutate(res[0]); Listen(res[1]); Schedule(res[2]); /*console.log(res); */})
+		.catch((err) => Spit(err))
+		.finally(() => Load(false));
+	}, [loading]);
+	
+	if (loading) return <p>Loading data...</p>;
+	if (error) return <p>Error: {error.message}</p>;
+
+	const globalUI = {
+		admireProfile, AdmireProfile,
+		readNews, ReadNews,
+		viewCalendar, ViewCalendar,
+		openSettings, OpenSettings,
+		loading, Load,
 	}
 
 	return (
-	<Layout ui={uiState}>
+	<Layout ui={globalUI}>
 		<Center h='100%'>
-			<ProfileCard ui={uiState} />
-			<NewsCard ui={uiState} />
-			<CalendarCard ui={uiState} />
+			<ProfileCard ui={globalUI} data={dossier.info} avatars={broadcast.avatars} />
+			<NewsCard ui={globalUI} articles={broadcast.news}/>
+			<CalendarCard ui={globalUI} />
+			<SettingsCard ui={globalUI} />
       	</Center>
 	</Layout>
 	);
