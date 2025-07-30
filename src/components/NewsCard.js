@@ -1,70 +1,27 @@
-import { Modal, Stack, Paper, Text, Box, Group, Badge, ScrollArea, } from '@mantine/core';
-import { IconClockHour4, IconGift, IconNews } from '@tabler/icons-react';
-import { useState } from 'react';
+import { Modal, Stack, Paper, Text, Box, Group, Badge, ScrollArea, Center, Title } from '@mantine/core';
+import { IconClockHour4, } from '@tabler/icons-react';
+import { useState, } from 'react';
 import Article from './Article';
-import imagi from '../media/dark.png'
-
-const articles = [
-    {
-        id: 1,
-        title: "Floor is Lava",
-        description: "Lore ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        imageUrl: imagi,
-        icon: <IconNews size={24} />,
-        timeLeft: "7d 17h",
-        unread: true,
-    },
-    {
-        id: 2,
-        title: "Plant Invasion",
-        icon: <IconNews size={24} />,
-        timeLeft: "3d 17h",
-        unread: true,
-    },
-    {
-        id: 3,
-        title: "Season Challenge",
-        icon: <IconNews size={24} />,
-        timeLeft: "2d 17h",
-        unread: true,
-    },
-    {
-        id: 4,
-        title: "Season Hunt Rewards",
-        icon: <IconNews size={24} />,
-        timeLeft: "7d 17h",
-        unread: true,
-    },
-    {
-        id: 5,
-        title: "Welcome!",
-        icon: <IconGift size={24} />,
-        timeLeft: "4d 17h",
-        unread: false,
-    },
-        {
-        id: 6,
-        title: "Welcome!",
-        icon: <IconGift size={24} />,
-        timeLeft: "4d 17h",
-        unread: false,
-    },
-];
+import iconMap from './IconMap';
 
 function NewsArticle({ui = {}, article={}}) {
     return (
     <Box key={article.id} display='flex' mt='xs' mb='xs' bdrs={10} p={3}
-    onClick={() => ui.ReadArticle(article)}  style={{
+    onClick={() => {article.unread = false; ui.ReadArticle(article)}}  style={{
         backgroundColor: '#f8fdffff', cursor: 'pointer',
         justifyContent: 'space-between', alignItems: 'center',
         boxShadow:
         `inset 0 -2px 0 #ffffff,
         0 2px 4px rgba(0, 0, 0, 0.15)`,
-    }}
-    >
+    }}>
         <Stack p='md' w='100%' bdrs={10} pos='relative' style={{ backgroundColor: '#c4e1fcff', }}>
             <Group spacing="sm">
-                {article.icon}
+                {typeof article.icon === 'string' && iconMap[article.icon] ? 
+                 (() => {
+                    const IconComponent = iconMap[article.icon];
+                    return IconComponent ? <IconComponent size={24} /> : null;
+                })()
+                : article.icon}
                 <Text c='#290dddff' ff='sans-serif' fw={900}>{article.title}</Text>
             </Group>
             <Group c='white' pos='absolute' bottom={3} right={5} bdrs={10} pl={5} pr={5} style={{
@@ -87,15 +44,13 @@ function NewsArticle({ui = {}, article={}}) {
     );
 }
 
-function News({ui = {}}) {
+function News({ui = {}, articles = []}) {
     return (
-    <Paper p="xs" radius="lg" w='100%' style={{ backgroundColor: '#96cbfdff', border: '3px solid #1a629cff'}}>
-        <Text align="center" c='#f8fdffff' size="xl" mb="sm" ff='sans-serif' fw={900} style={{
-            textShadow:
-            `0px 2px 0px #070707ff,
-            0px 4px 0px #2b2b2cff
-            `,
-        }}>What's New?</Text>
+    <Paper p="xs" radius="lg" w='100%' style={{
+        background: 'linear-gradient(to bottom, #d2ebff, #a2c4ff)',
+        border: '3px solid #1a629cff',
+    }}>
+        <Center><Title order={3} style={{ textShadow: '1px 1px #3772ff' }}>What's New?</Title></Center>
         <ScrollArea p="md" h={400} bdrs={12} scrollbars="y" style={{ backgroundColor: '#d3eaff', }}>
             {articles.map((article) => (<NewsArticle ui={ui} article={article} key={article.id}/>))}
         </ScrollArea>
@@ -103,22 +58,21 @@ function News({ui = {}}) {
     );
 }
 
-export default function NewsCard({ ui={} }) {
+export default function NewsCard({ ui = {}, articles = [] }) {
     const [article, ReadArticle] = useState(null);
 
-    const uiState = {
+    const localUI = {
         ...ui,
-        article,
-        ReadArticle,
+        article, ReadArticle,
     };
     
     return (
     <>
     <Modal centered withCloseButton={false} radius="lg" padding={0} overlayProps={{ opacity: 0.6 }}
     opened={ui.readNews} onClose={() => ui.ReadNews(false)}>
-        <News ui={uiState} />
+        <News ui={localUI} articles={articles} />
     </Modal>
-    <Article ui={uiState} />
+    <Article ui={localUI} />
     </>
     );
 }
