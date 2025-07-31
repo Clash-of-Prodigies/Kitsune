@@ -55,37 +55,27 @@ function Layout({ children, ui }) {
 	);
 }
 
-export default function Home() {
-	const [dossier, Mutate] = useState({});
+export default function Home({ ui = {}, dossier = {} }) {
 	const [broadcast, Listen] = useState({});
-  	const [loading, Load] = useState(true);  // Tracks loading state
-  	const [error, Spit] = useState(null);      // Tracks errors
 	const [admireProfile, AdmireProfile] = useState(false);
 	const [readNews, ReadNews] = useState(false);
 	const [viewCalendar, ViewCalendar] = useState(false);
 	const [openSettings, OpenSettings] = useState(false);
 
   	useEffect(() => {
-		if (!loading) return;
 		Promise.all([
-			fetch('http://localhost:5000/data').then(res => res.json()),
 			fetch('http://localhost:5000/broadcast').then(res => res.json()),
 		])
-		.then(([user, announcements,]) =>  [user, announcements,])
-		.then((res) => {Mutate(res[0]); Listen(res[1]); /*console.log(res); */})
-		.catch((err) => Spit(err))
-		.finally(() => Load(false));
-	}, [loading]);
-	
-	if (loading) return <p>Loading data...</p>;
-	if (error) return <p>Error: {error.message}</p>;
+		.then(([announcements,]) =>  [announcements,])
+		.then((res) => {Listen(res[0]); /*console.log(res); */})
+	}, []);
 
 	const globalUI = {
+		...ui,
 		admireProfile, AdmireProfile,
 		readNews, ReadNews,
 		viewCalendar, ViewCalendar,
 		openSettings, OpenSettings,
-		loading, Load,
 	}
 
 	return (
