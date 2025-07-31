@@ -92,7 +92,7 @@ export default function CalendarCard({ ui = {} }) {
 		const prev_epoch = epoch;
 		fetch(`http://localhost:5000/calendar?month=${epoch + 1}`).then((res) => res.json())
 		.then((schedule) => CollectEvents(schedule))
-		.catch(SetEpoch(prev_epoch))
+		.catch(() => {if (epoch !== prev_epoch) SetEpoch(prev_epoch);})
 	}, [epoch])
 
 	const localUI = {

@@ -92,9 +92,9 @@ export default function Home() {
 	<Layout ui={globalUI}>
 		<Center h='100%'>
 			<ProfileCard ui={globalUI} data={dossier.info} avatars={broadcast.avatars} />
-			<NewsCard ui={globalUI} articles={broadcast.news}/>
+			<NewsCard ui={globalUI} articles={broadcast.news} />
 			<CalendarCard ui={globalUI} />
-			<SettingsCard ui={globalUI} />
+			<SettingsCard ui={globalUI} data={dossier.info} />
       	</Center>
 	</Layout>
 	);
