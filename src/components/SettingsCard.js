@@ -1,9 +1,9 @@
 import { Paper, Stack, Title, Center, Button, Group, Divider, Text, Slider, Box, Modal, } from '@mantine/core';
-import { IconDeviceGamepad, IconMusic, IconVolume, } from '@tabler/icons-react';
-import { IconBrandFacebook, IconWorld, IconCheck, } from '@tabler/icons-react';
-import { useState } from 'react';
+import { IconDeviceGamepad, IconMoon, IconMusic, IconSun, IconVolume, IconVolumeOff, } from '@tabler/icons-react';
+import { IconBrandFacebook, IconCheck, } from '@tabler/icons-react';
+import { useState, useEffect } from 'react';
 
-function Setting({icon = {}, title = "", subtitle = "", action = () => {}, slider = null }) {
+function Setting({icon = {}, title = "", subtitle = "", action = () => {}, slider = null, sliderValue = 50 }) {
     return (
     <Group style={{ cursor: 'pointer'}}>
         <Group gap="xs" onClick={action}>
@@ -14,17 +14,19 @@ function Setting({icon = {}, title = "", subtitle = "", action = () => {}, slide
             </Box>
         </Group>
         {typeof slider === 'function' && (
-            <Slider size="sm" color="blue" defaultValue={50} w={180} onChangeEnd={slider} />
+            <Slider size="sm" color="blue" defaultValue={sliderValue} w={180} onChangeEnd={slider} />
         )}
     </Group>
     );
 }
 
-function Settings({ ui = {} }) {
+function Settings({ ui = {}, data = {} }) {
+    function capitalize(str) {
+        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+    }
     return (
     <Paper shadow="lg" radius="lg" w='100%' m='auto' p="xs" withBorder style={{
-            background: 'linear-gradient(to bottom, #d2ebff, #a2c4ff)',
-            border: '3px solid #1a629cff'
+        background: 'linear-gradient(to bottom, #d2ebff, #a2c4ff)', border: '3px solid #1a629cff'
     }}>
         {/* Title */}
         <Center><Title order={3} style={{ textShadow: '1px 1px #3772ff' }}>Settings</Title></Center>
@@ -62,18 +64,21 @@ function Settings({ ui = {} }) {
 
             {/* Audio Settings */}
             <Stack>
-                <Setting icon={<IconMusic size={20} />} title="Boombox" subtitle="Default" action={() => {}} />
-                <Setting icon={<IconVolume size={20} />} title='Music' action={() => {}} slider={(val) => alert(`Volume changed to ${val}`)} />
+                <Setting icon={<IconMusic size={20} />} title="Boombox" subtitle={capitalize(data.playlist)}
+                action={() => {}} />
+                <Setting icon={ui.muteMusic ? <IconVolumeOff size={20} /> : <IconVolume size={20} />}
+                title='Music' sliderValue={ui.volume}
+                action={() => ui.MuteMusic((state) => !state)} slider={(val) => ui.AdjustVolume(val)} />
             </Stack>
 
-            <Divider />
+            <Divider color='white'/>
 
-            {/* Region & Language */}
             <Stack>
-                <Setting icon={<IconWorld size={20} />} title='Theme' subtitle='Light' />
+                <Setting icon={data.theme === "light" ? <IconSun size={20} /> : <IconMoon size={20} />}
+                title='Theme' subtitle={capitalize(data.theme)} />
             </Stack>
 
-            <Divider />
+            <Divider color='white' />
 
             {/* App Version */}
             <Center><Text size="xs" c="dimmed">3.48.5~82956</Text></Center>
@@ -82,23 +87,35 @@ function Settings({ ui = {} }) {
     );
 }
 
-export default function SettingsCard({ ui = {} }) {
+export default function SettingsCard({ ui = {}, data = {} }) {
     const [openPlaylists, OpenPlaylists] = useState(false);
     const [muteMusic, MuteMusic] = useState(true);
     const [viewThemes, ViewThemes] = useState(false);
+    const [volume, AdjustVolume] = useState(10);
+
+    const musicPlayer = ui.musicPlayer;
+    useEffect(() => {
+        if (musicPlayer?.current) musicPlayer.current.muted = muteMusic;
+        if (!muteMusic) musicPlayer.current.play();
+    }, [muteMusic, musicPlayer])
+
+    useEffect(() => {
+        if (musicPlayer?.current) musicPlayer.current.volume = volume / 100;
+    }, [volume, musicPlayer])
     
     const localUI = {
         ...ui,
         openPlaylists, OpenPlaylists,
         muteMusic, MuteMusic,
         viewThemes, ViewThemes,
+        volume, AdjustVolume,
     };
 
     return (
     <>
     <Modal centered withCloseButton={false} radius="lg" padding={0} overlayProps={{ opacity: 0.6 }}
     opened={ui.openSettings} onClose={() => ui.OpenSettings(false)}>
-        <Settings ui={localUI} />
+        <Settings ui={localUI} data={data} />
     </Modal>
     </>
     );
