@@ -1,6 +1,6 @@
 import { IconNews, IconGift, IconAward, IconTarget, IconPencil, IconUpload, IconSkateboard } from '@tabler/icons-react';
-import { IconUser, IconUserEdit, IconUserCircle, IconUserSearch } from '@tabler/icons-react';
-import { IconMoodHappy } from '@tabler/icons-react';
+import { IconUser, IconUserEdit, IconUserCircle, IconUserSearch, IconCoin, IconFlame, } from '@tabler/icons-react';
+import { IconMoodHappy, IconBox, IconKey, } from '@tabler/icons-react';
 import { IconSpy, IconRobot, IconAlien } from '@tabler/icons-react';
 import { IconFaceId, IconFaceIdError } from '@tabler/icons-react';
 import { IconStar, IconLock } from '@tabler/icons-react';
@@ -37,6 +37,10 @@ const iconMap = {
   Pencil: IconPencil,
   Upload: IconUpload,
   Skateboard: IconSkateboard,
+  Coin: IconCoin,
+  Flame: IconFlame,
+  Box: IconBox,
+  Key: IconKey
 };
 
 export default iconMap;

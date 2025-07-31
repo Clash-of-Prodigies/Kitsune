@@ -1,30 +1,30 @@
-import { Card, Grid, Text, Title, Stack, Center, ScrollArea, Modal, Paper, } from '@mantine/core';
-import { IconCoin, IconFlame, IconKey, IconBox, IconGift } from '@tabler/icons-react';
+import { Card, Grid, Text, Title, Stack, Center, ScrollArea, Modal, Paper, Group, Button, Box } from '@mantine/core';
+import { IconBox, IconArrowLeft, IconArrowRight } from '@tabler/icons-react';
+import { useEffect, useState } from 'react';
+import iconMap from './IconMap';
 
-const days = [
-  { date: 'Jul 1', label: '1,000', icon: <IconCoin size={28} /> },
-  { date: 'Jul 2', label: '300', icon: <IconCoin size={28} /> },
-  { date: 'Jul 3', label: '1', icon: <IconFlame size={28} /> },
-  { date: 'Jul 4', label: '200', icon: <IconCoin size={28} /> },
-  { date: 'Jul 5', label: '', icon: <IconBox size={28} /> },
-  { date: 'Jul 6', label: '5', icon: <IconFlame size={28} /> },
-  { date: 'Jul 7', label: '300', icon: <IconCoin size={28} /> },
-  { date: 'Jul 8', label: '', icon: <IconBox size={28} /> },
-  { date: 'Jul 9', label: '', icon: <IconKey size={28} /> },
-  { date: 'Jul 10', label: '', icon: <IconKey size={28} /> },
-  { date: 'Jul 11', label: '300', icon: <IconCoin size={28} /> },
-  { date: 'Jul 12', label: '500', icon: <IconCoin size={28} /> },
-  { date: 'Jul 13', label: '2', icon: <IconFlame size={28} /> },
-  { date: 'Jul 14', label: '3', icon: <IconGift size={28} /> },
-  { date: 'Jul 15', locked: true },
-  { date: 'Jul 16', locked: true },
-  { date: 'Jul 17', locked: true },
-  { date: 'Jul 18', locked: true },
-  { date: 'Jul 19', locked: true },
-  { date: 'Jul 20', locked: true },
-];
+function generateCalendarData(month, calendar) {
+	const year = new Date().getFullYear()
+	const daysInMonth = new Date(year, month, 0).getDate();
 
-function CalendarDay({day = {}}) {
+  	const schedule = [];
+	let currentIndex = 0;
+	for (let currentDay = 1; currentDay <= daysInMonth; currentDay++) {
+		if (!calendar[currentIndex] || (currentDay !== (calendar[currentIndex]).day)) {
+			const date = new Date(year, month, currentDay);
+			const formatted = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+			schedule.push({ date: formatted, locked: true });
+			continue;
+		}
+		const date = new Date(year, month, currentDay);
+		const formatted = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+		schedule.push({ date: formatted, icon: calendar[currentIndex].icon, label: calendar[currentIndex].label });
+		currentIndex++;
+	}
+	return schedule;
+}
+
+function DayCard({ day = {} }) {
 	return (
 	<Card h={120} shadow="sm" radius="md" p="sm" style={{
 		opacity: day.locked ? 0.5 : 1, background: day.locked ? '#e0e0e0' : '#fff5db',
@@ -32,38 +32,80 @@ function CalendarDay({day = {}}) {
 		<Stack align="center">
             <Text size="xs" c="dimmed">{day.date}</Text>
             {day.locked ? (<IconBox size={28} stroke={1.5} />) : (
-				<>{day.icon}<Text size="sm" weight={700}>{day.label}</Text></>
+				<>{typeof day.icon === 'string' && iconMap[day.icon] ?
+                (() => {
+                    const IconComponent = iconMap[day.icon];
+                    return IconComponent ? <IconComponent size={24} /> : null;
+                })()
+                : day.icon}<Text size="sm" weight={700}>{day.label}</Text></>
 			)}
         </Stack>
     </Card>
 	);
 }
 
-export default function CalendarCard({ ui = {} }) {
+function Calendar({ ui = {} }) {
 	return (
+	<Paper shadow="md" radius="lg" p="xs" w='100%' style={{
+		background: 'linear-gradient(to bottom, #d2ebff, #a2c4ff)', border: 'solid #1a629cff',
+	}}>
+		<Center><Title order={3} style={{ textShadow: '1px 1px #3772ff' }}>Timeline</Title></Center>
+		<Text align="center" c='#080aa0ff' size="xs" mb="sm" fw={900}>
+			Learn from the Past, Focus on Today, Prepare for your Future
+		</Text>
+		
+		<ScrollArea p="md" pt="xs" h={400} scrollbars="y" bdrs={12} style={{ backgroundColor: '#d3eaff', }}>
+			<Center pos="sticky" top={0} mb='xs' style={{ backgroundColor: 'transparent', zIndex: 1 }}>
+				<Group gap="xs">
+					<Button variant='transparent' disabled={ui.epoch < 1} size="compact-sm" p={0}
+					onClick={() => ui.SetEpoch(curr => curr - 1)} style={{
+						cursor: ui.epoch < 1 ? "not-allowed": "pointer",
+					}}>
+						<IconArrowLeft />
+					</Button>
+					<Box><Text fw={700}>{new Date(new Date().getFullYear(), ui.epoch).toLocaleString('en-US', { month: 'long' })}</Text></Box>
+					<Button variant='transparent' disabled={ui.epoch > 10} size="compact-sm" p={0}
+					onClick={() => ui.SetEpoch(curr => curr + 1)} style={{
+						cursor: ui.epoch > 10 ? "not-allowed": "pointer",
+					}}>
+						<IconArrowRight />
+					</Button>
+				</Group>
+			</Center>
+          	<Grid gutter="sm">
+            	{generateCalendarData(ui.epoch, ui.events).map((d) => (
+              		<Grid.Col span={4} key={parseInt(d.date.split(' ')[1], 10)}>
+						<DayCard day={d}/>
+              		</Grid.Col>
+            	))}
+          	</Grid>
+      	</ScrollArea>
+    </Paper>
+	);
+}
+
+export default function CalendarCard({ ui = {} }) {
+	const [epoch, SetEpoch] = useState(new Date().getMonth())
+	const [events, CollectEvents] = useState([])
+
+	useEffect(() => {
+		const prev_epoch = epoch;
+		fetch(`http://localhost:5000/calendar?month=${epoch + 1}`).then((res) => res.json())
+		.then((schedule) => CollectEvents(schedule))
+		.catch(SetEpoch(prev_epoch))
+	}, [epoch])
+
+	const localUI = {
+		...ui,
+		epoch, SetEpoch,
+		events,
+	}
+	return (
+	<>
     <Modal centered withCloseButton={false} radius="lg" padding={0} overlayProps={{ opacity: 0.6 }}
     opened={ui.viewCalendar} onClose={() => ui.ViewCalendar(false)}>
-		<Paper shadow="md" radius="xs" p="xs" w='100%' style={{ backgroundColor: '#96cbfdff', }}>
-			<Center>
-				<Title c='#f8fdffff' size="xl" ff='sans-serif' fw={900} style={{
-            		textShadow:
-            			`0px 2px 0px #070707ff,
-            			0px 4px 0px #2b2b2cff`,
-					}}>Timeline</Title>
-        	</Center>
-        	<Text align="center" c='#080aa0ff' size="xs" mb="sm" fw={900}>
-				Learn from the Past, Focus on Today, Prepare for your Future
-			</Text>
-			<ScrollArea p="md" h={400} scrollbars="y" bdrs={12} style={{ backgroundColor: '#d3eaff', }}>
-          		<Grid gutter="sm">
-            		{days.map((d, i) => (
-              			<Grid.Col span={4} key={i}>
-							<CalendarDay day={d}/>
-              			</Grid.Col>
-            		))}
-          		</Grid>
-      		</ScrollArea>
-    	</Paper>
+		<Calendar ui={localUI} />
     </Modal>
+	</>
 	);
 }

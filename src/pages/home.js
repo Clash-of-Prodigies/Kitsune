@@ -15,7 +15,7 @@ function LeftSidebar({ ui = {} }) {
     <Stack spacing="sm" pos='absolute' left={10}>
 		<SidebarButton icon={<IconUser />} action={() => ui.AdmireProfile(true)} />
 		<SidebarButton icon={<IconSettings />} action={() => ui.OpenSettings(true)}/>
-		<SidebarButton icon={<IconNews />} action={() => ui.ReadNews(true)} />
+		<SidebarButton icon={<IconNews />} action={() => ui.ReadNews(true)}/>
 		<SidebarButton icon={<IconCalendar />} action={() => ui.ViewCalendar(true)} />
     </Stack>
 	);
@@ -58,7 +58,6 @@ function Layout({ children, ui }) {
 export default function Home() {
 	const [dossier, Mutate] = useState({});
 	const [broadcast, Listen] = useState({});
-	const [calendar, Schedule] = useState({});
   	const [loading, Load] = useState(true);  // Tracks loading state
   	const [error, Spit] = useState(null);      // Tracks errors
 	const [admireProfile, AdmireProfile] = useState(false);
@@ -69,12 +68,11 @@ export default function Home() {
   	useEffect(() => {
 		if (!loading) return;
 		Promise.all([
-			fetch('http://localhost:5000/my-data').then(res => res.json()),
+			fetch('http://localhost:5000/data').then(res => res.json()),
 			fetch('http://localhost:5000/broadcast').then(res => res.json()),
-			fetch('http://localhost:5000/my-calendar').then(res => res.json()),
 		])
-		.then(([user, announcements, schedules,]) =>  [user, announcements, schedules,])
-		.then((res) => {Mutate(res[0]); Listen(res[1]); Schedule(res[2]); /*console.log(res); */})
+		.then(([user, announcements,]) =>  [user, announcements,])
+		.then((res) => {Mutate(res[0]); Listen(res[1]); /*console.log(res); */})
 		.catch((err) => Spit(err))
 		.finally(() => Load(false));
 	}, [loading]);
