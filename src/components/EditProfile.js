@@ -3,7 +3,7 @@ import { IconLock, IconCheck, } from '@tabler/icons-react';
 import { useState, } from 'react';
 import iconMap from './IconMap';
 
-function handleSubmit(e, ui={}) {
+function handleSubmit(e, ui={}, data={}) {
 	e.preventDefault();
 
 	//alert(`${ui.username} and ${ui.avatar} and ${ui.bio}`)
@@ -20,10 +20,14 @@ function handleSubmit(e, ui={}) {
 			ui.Load(true);
 			ui.UpdateProfileName(false);
 		}
+	}).catch(() => {
+		ui.setUsername(data.name);
+		ui.setAvatar(data.avatar);
+		ui.setBio(data.bio);
 	});
 }
 
-function Portrait({avatar = {}, ui = {}}) {
+function Portrait({ avatar = {}, ui = {} }) {
 	return (
 	<Box p={10} bdrs={12} pos='relative' onClick={() => !avatar.locked && ui.setAvatar(avatar.label)}
 	style={{
@@ -69,7 +73,7 @@ export default function EditProfile({ ui = {}, data = {}, avatars = [] }) {
 		<Paper p="md" bdrs={20} w='100%' style={{
 			background: 'linear-gradient(to bottom, #d2ebff, #a2c4ff)',
 		}}>
-			<form onSubmit={(e) => handleSubmit(e, ui=uiState)}>
+			<form onSubmit={(e) => handleSubmit(e, ui=uiState, data={data})}>
 				<Stack>
 					{/* Header: avatar + name */}
 					<Group mb="sm">
