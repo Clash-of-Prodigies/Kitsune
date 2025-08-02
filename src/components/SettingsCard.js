@@ -2,6 +2,7 @@ import { Paper, Stack, Title, Center, Button, Group, Divider, Text, Slider, Box,
 import { IconDeviceGamepad, IconMoon, IconMusic, IconSun, IconVolume, IconVolumeOff, } from '@tabler/icons-react';
 import { IconBrandFacebook, IconCheck, } from '@tabler/icons-react';
 import { useState, useEffect } from 'react';
+import Playlists from './Playlists';
 
 function Setting({icon = {}, title = "", subtitle = "", action = () => {}, slider = null, sliderValue = 50 }) {
     return (
@@ -22,7 +23,7 @@ function Setting({icon = {}, title = "", subtitle = "", action = () => {}, slide
 
 function Settings({ ui = {}, data = {} }) {
     function capitalize(str) {
-        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+        return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
     }
     return (
     <Paper shadow="lg" radius="lg" w='100%' m='auto' p="xs" withBorder style={{
@@ -65,7 +66,7 @@ function Settings({ ui = {}, data = {} }) {
             {/* Audio Settings */}
             <Stack>
                 <Setting icon={<IconMusic size={20} />} title="Boombox" subtitle={capitalize(data.playlist)}
-                action={() => {}} />
+                action={() => ui.OpenPlaylists(true)} />
                 <Setting icon={ui.muteMusic ? <IconVolumeOff size={20} /> : <IconVolume size={20} />}
                 title='Music' sliderValue={ui.volume}
                 action={() => ui.MuteMusic((state) => !state)} slider={(val) => ui.AdjustVolume(val)} />
@@ -87,7 +88,7 @@ function Settings({ ui = {}, data = {} }) {
     );
 }
 
-export default function SettingsCard({ ui = {}, data = {} }) {
+export default function SettingsCard({ ui = {}, data = {}, playlists = {} }) {
     const [openPlaylists, OpenPlaylists] = useState(false);
     const [muteMusic, MuteMusic] = useState(true);
     const [viewThemes, ViewThemes] = useState(false);
@@ -117,6 +118,7 @@ export default function SettingsCard({ ui = {}, data = {} }) {
     opened={ui.openSettings} onClose={() => ui.OpenSettings(false)}>
         <Settings ui={localUI} data={data} />
     </Modal>
+    <Playlists ui={localUI} playlists={playlists} data={data} />
     </>
     );
 }
