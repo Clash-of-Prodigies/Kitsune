@@ -2,7 +2,7 @@ import { Modal, Stack, Paper, Text, Box, Group, Badge, ScrollArea, Center, Title
 import { IconClockHour4, } from '@tabler/icons-react';
 import { useState, } from 'react';
 import Article from './Article';
-import iconMap from './IconMap';
+import IconOrImage from './IconMap';
 
 function NewsArticle({ui = {}, article={}}) {
     return (
@@ -16,12 +16,7 @@ function NewsArticle({ui = {}, article={}}) {
     }}>
         <Stack p='md' w='100%' bdrs={10} pos='relative' style={{ backgroundColor: '#c4e1fcff', }}>
             <Group spacing="sm">
-                {typeof article.icon === 'string' && iconMap[article.icon] ? 
-                 (() => {
-                    const IconComponent = iconMap[article.icon];
-                    return IconComponent ? <IconComponent size={24} /> : null;
-                })()
-                : article.icon}
+                {IconOrImage(article.icon)}
                 <Text c='#290dddff' ff='sans-serif' fw={900}>{article.title}</Text>
             </Group>
             <Group c='white' pos='absolute' bottom={3} right={5} bdrs={10} pl={5} pr={5} style={{
