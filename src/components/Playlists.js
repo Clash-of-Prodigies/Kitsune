@@ -43,12 +43,7 @@ function Playlist({ui = {}, title={}, songs=[] }) {
     }}>
         <Stack p='xs' w='100%' bdrs={10} pos='relative' style={{ backgroundColor: '#c4e1fcff', }}>
             <Group spacing="sm">
-                {/* {typeof playlist.icon === 'string' && iconMap[playlist.icon] ? 
-                 (() => {
-                    const IconComponent = iconMap[playlist.icon];
-                    return IconComponent ? <IconComponent size={24} /> : null;
-                })()
-                : playlist.icon} */}
+                {/* IconOrImage(playlist.icon) */}
                 <Text c='#290dddff' ff='sans-serif' fw={900}>{capitalize(title)}</Text>
             </Group>
             {title === ui.favPlaylist && (<IconCheck style={{
