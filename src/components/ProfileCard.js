@@ -3,7 +3,7 @@ import { IconPencil, IconUpload, IconTarget, IconSkateboard, } from '@tabler/ico
 import { IconAward, IconMapPin } from '@tabler/icons-react';
 import { useState } from 'react';
 import EditProfile from './EditProfile';
-import iconMap from './IconMap';
+import IconOrImage from './IconMap';
 
 function ProfileCardTool({icon, action}) {
 	return (
@@ -17,12 +17,7 @@ function Medal({ image, size = 32, frameColor = '#a2c4ff' }) {
         width: size, height: size, overflow: 'hidden', transform: 'scale(0.85)', backgroundColor: 'white',
         border: `4px solid ${frameColor}`, boxShadow: `0 0 8px ${frameColor}`,
     }}>
-        {typeof image === 'string' && iconMap[image] ? 
-            (() => {
-                const IconComponent = iconMap[image];
-                return IconComponent ? <IconComponent size={24} /> : null;
-            })()
-            : image}
+        {IconOrImage(image)}
     </Box>
   );
 }
@@ -70,15 +65,7 @@ function Profile({ ui = {}, data = {} }) {
                     <ProfileCardTool icon={<IconPencil size={20}/>} action={() => {ui.UpdateProfileName(true)}} />
                     <ProfileCardTool icon={<IconUpload size={20}/>} action={() => {ui.ShareProfile(true)}} />
                 </Stack>
-                <Avatar src="/avatar.png" size="lg" radius="xl">
-                {typeof data.avatar === 'string' && iconMap[data.avatar] ? 
-                    (() => {
-                        const IconComponent = iconMap[data.avatar];
-                        return IconComponent ? <IconComponent size={24} /> : null;
-                    })()
-                    : data.avatar
-                }
-                </Avatar>
+                <Avatar src="/avatar.png" size="lg" radius="xl">{IconOrImage(data.avatar)}</Avatar>
                 <Stack spacing={0} gap={0}>
                     <Text fw={700} size="lg">{data.name}</Text>
                     <Text size="sm" c="dimmed">{data.team}</Text>
