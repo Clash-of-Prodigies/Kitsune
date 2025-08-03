@@ -1,7 +1,7 @@
 import { Modal, Paper, Group, Avatar, Text, Grid, Button, Box, Center, TextInput, Stack, Textarea, ScrollArea } from '@mantine/core';
 import { IconLock, IconCheck, } from '@tabler/icons-react';
 import { useState, } from 'react';
-import iconMap from './IconMap';
+import IconOrImage from './IconMap';
 
 function handleSubmit(e, ui={}, data={}) {
 	e.preventDefault();
@@ -35,15 +35,7 @@ function Portrait({ avatar = {}, ui = {} }) {
 		backgroundColor: '#f4f9ff',
 		border: ui.avatar === avatar.label ? '2px solid green': '2px solid transparent',
 	}}>
-		<Center>
-			{typeof avatar.label === 'string' && iconMap[avatar.label] ?
-                (() => {
-                    const IconComponent = iconMap[avatar.label];
-                    return IconComponent ? <IconComponent size={24} /> : null;
-                })()
-                : avatar.label
-			}
-		</Center>
+		<Center>{IconOrImage(avatar.label)}</Center>
 		{avatar.locked && (
 			<Box style={{ position: 'absolute', top: 0, right: 0 }}><IconLock size={14} /></Box>
 		)}
@@ -77,15 +69,7 @@ export default function EditProfile({ ui = {}, data = {}, avatars = [] }) {
 				<Stack>
 					{/* Header: avatar + name */}
 					<Group mb="sm">
-						<Avatar color="blue" radius="xl">
-							{typeof avatar === 'string' && iconMap[avatar] ? 
-                 				(() => {
-                    				const IconComponent = iconMap[avatar];
-                    				return IconComponent ? <IconComponent size={24} /> : null;
-                				})()
-                			: avatar
-							}
-						</Avatar>
+						<Avatar color="blue" radius="xl">{IconOrImage(avatar)}</Avatar>
 						<TextInput value={name} variant="filled" radius="md" size="md"
   						onChange={(e) => setUsername(e.currentTarget.value)}
   						styles={{ input: { fontWeight: 700, }, }}
