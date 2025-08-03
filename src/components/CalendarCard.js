@@ -1,7 +1,7 @@
 import { Card, Grid, Text, Title, Stack, Center, ScrollArea, Modal, Paper, Group, Button, Box } from '@mantine/core';
 import { IconBox, IconArrowLeft, IconArrowRight } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
-import iconMap from './IconMap';
+import IconOrImage from './IconMap';
 
 function generateCalendarData(month, calendar) {
 	const year = new Date().getFullYear()
@@ -32,12 +32,7 @@ function DayCard({ day = {} }) {
 		<Stack align="center">
             <Text size="xs" c="dimmed">{day.date}</Text>
             {day.locked ? (<IconBox size={28} stroke={1.5} />) : (
-				<>{typeof day.icon === 'string' && iconMap[day.icon] ?
-                (() => {
-                    const IconComponent = iconMap[day.icon];
-                    return IconComponent ? <IconComponent size={24} /> : null;
-                })()
-                : day.icon}<Text size="sm" weight={700}>{day.label}</Text></>
+				<>{IconOrImage(day.icon)}<Text size="sm" weight={700}>{day.label}</Text></>
 			)}
         </Stack>
     </Card>
