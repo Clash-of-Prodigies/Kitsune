@@ -1,4 +1,4 @@
-import { Box, Container, Center, Stack, Paper, ActionIcon, Badge } from '@mantine/core';
+import { Box, Container, Center, Stack, Paper, ActionIcon, Badge, Group } from '@mantine/core';
 import { IconNews, IconCalendar, IconTournament, IconHours24, IconSparkles, } from '@tabler/icons-react';
 import { IconHome, IconUser, IconTrophy, IconBarbell, IconSettings, } from '@tabler/icons-react';
 import { useState, } from 'react';
@@ -8,6 +8,7 @@ import ProfileCard from '../components/ProfileCard';
 import NewsCard from '../components/NewsCard';
 import CalendarCard from '../components/CalendarCard';
 import SettingsCard from '../components/SettingsCard';
+import IconOrImage from '../components/IconMap';
 
 function LeftSidebarButton({ icon, badge, action = () => {} }) {
 	return (
@@ -26,23 +27,37 @@ function LeftSidebarButton({ icon, badge, action = () => {} }) {
 	);
 }
 
-function RightSidebarButton({ icon, badge, action = () => {} }) {
-    return (
-    <Paper shadow="sm" radius="lg" withBorder onClick={action} bdrs={'50%'} style={{
-		position: 'relative', width: 50, height: 50
-	}}>
-		{badge && (
-			<Badge color="red" variant="filled" size="xs" style={{
-				position: 'absolute', top: -5, right: -5
-			}}>
-				{badge}
-            </Badge>
-        )}
-    	<ActionIcon variant="transparent" size="xl" w='100%' h='100%'>{icon}</ActionIcon>
-    </Paper>
+function RightSidebarButton({ icon, badge, childIcons = [], }) {
+	const [expanded, setExpanded] = useState(false);
+
+	function ChildIcons({ childIcon }) {
+		return (
+		<Paper shadow="xs" radius="lg" withBorder bdrs="50%" w={50} h={50}>
+            <ActionIcon variant="transparent" size="xl" w="100%" h="100%">{IconOrImage(childIcon)}</ActionIcon>
+        </Paper>
+		);
+	}
+	
+	return (
+	<Box h={50} pos="relative" onClick={() => setExpanded((prev) => !prev)} style={{ cursor: 'pointer' }}>
+		<Paper shadow="sm" radius="lg" withBorder bdrs="50%" h="100%" w={50} style={{ zIndex: 2,}}>
+			{badge && (
+				<Badge color="red" variant="filled" size="xs" pos="absolute" top={-5} right={-5}>{badge}</Badge>
+        	)}
+        	<ActionIcon variant="transparent" size="xl" w="100%" h="100%"
+			>{icon}</ActionIcon>
+      	</Paper>
+
+      	<Group pos="absolute" h={50} top={0} justify='space-between' style={{
+			width: expanded ? 50 + childIcons.length * 50 : 50, overflow: 'hidden',
+			right: expanded ? 50 + (50  / (childIcons.length - 1)) : 0,
+			transition: 'width 0.3s ease', borderRadius: 12,
+        }}>
+        	{expanded && (<>{childIcons.map((icon, index) => (<ChildIcons childIcon={icon} key={index} />))}</>)}
+      	</Group>
+    </Box>
 	);
 }
-
 
 function LeftSidebar({ ui = {} }) {
 	return (
@@ -58,8 +73,8 @@ function LeftSidebar({ ui = {} }) {
 function RightSidebar({ ui = {} }) {
 	return (
     <Stack spacing="sm" pos='absolute' right={10}>
-		<RightSidebarButton icon={<IconTrophy />} />
-		<RightSidebarButton icon={<IconHome />} />
+		<RightSidebarButton icon={<IconTrophy />} childIcons={['Swords', 'Shield']}/>
+		<RightSidebarButton icon={<IconHome />} childIcons={['B', 'C', 'M', 'P']}/>
 		<RightSidebarButton icon={<IconTournament />} />
 		<RightSidebarButton icon={<IconHours24 />}  badge={1} />
 		<RightSidebarButton icon={<IconBarbell />} />
