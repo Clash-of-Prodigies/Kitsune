@@ -1,11 +1,11 @@
-import { IconNews, IconGift, IconAward, IconTarget, IconPencil, IconUpload, IconSkateboard } from '@tabler/icons-react';
+import { IconNews, IconGift, IconAward, IconTarget, IconPencil, IconUpload, IconSkateboard, IconSwords, IconShield } from '@tabler/icons-react';
 import { IconUser, IconUserEdit, IconUserCircle, IconUserSearch, IconCoin, IconFlame, } from '@tabler/icons-react';
 import { IconMoodHappy, IconBox, IconKey, } from '@tabler/icons-react';
 import { IconSpy, IconRobot, IconAlien } from '@tabler/icons-react';
 import { IconFaceId, IconFaceIdError } from '@tabler/icons-react';
 import { IconStar, IconLock } from '@tabler/icons-react';
 
-const iconMap = {
+export const iconMap = {
   News: IconNews,
   Gift: IconGift,
   Jake: IconUser,
@@ -40,7 +40,16 @@ const iconMap = {
   Coin: IconCoin,
   Flame: IconFlame,
   Box: IconBox,
-  Key: IconKey
+  Key: IconKey,
+  Swords: IconSwords,
+  Shield: IconShield,
 };
 
-export default iconMap;
+export default function IconOrImage(parameter) {
+	if (typeof parameter === 'string' && iconMap[parameter]) {
+		const IconComponent = iconMap[parameter];
+		return IconComponent ? <IconComponent size={24} /> : null;
+	} else {
+		return parameter
+	}
+}
