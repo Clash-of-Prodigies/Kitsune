@@ -1,24 +1,19 @@
-import { Group, Paper, Text, ActionIcon } from '@mantine/core';
-import { IconKey, IconCoin, IconFlame, IconStar, IconPlus } from '@tabler/icons-react';
+import { Group, Paper, Text, ActionIcon, Avatar } from '@mantine/core';
+import { IconPlus } from '@tabler/icons-react';
+import IconOrImage from './IconMap';
 
-const resources = [
-  { icon: IconKey, amount: 75 },
-  { icon: IconCoin, amount: 653278 },
-  { icon: IconFlame, amount: 93 },
-  { icon: IconStar, amount: 29 },
-];
-
-export default function ResourceBar() {
+export default function ResourceBar({ resources = {}}) {
 	return (
 	<Paper p="xs" radius="lg" shadow="sm" withBorder style={{
 		backgroundColor: '#fdf2c2', borderColor: '#ffc107', overflowX: 'auto',
 	}}>
-		<Group spacing="md" justify='space-evenly'>
+		<Group justify='space-evenly'>
 			{resources.map((res, index) => (
-				<Group spacing={4} key={index}>
-					<res.icon width={24} height={24} alt="icon" />
-					<Text fw={700} size="sm">{res.amount.toLocaleString()}</Text>
-					<ActionIcon variant="light" color="yellow" size="sm"><IconPlus size={14} /></ActionIcon>
+				<Group gap='xs' key={index} onClick={res.action} style={{ cursor: 'pointer'}}>
+					{res.title === 'avatar' ? <Avatar>{IconOrImage(res.icon)}</Avatar> : IconOrImage(res.icon, 20)}
+					<Text fw={700} size="sm">{res.label && typeof res.label === 'string' ? res.label : res.label.toLocaleString()}</Text>
+					{res.title !== 'avatar' && res.title !== 'settings' &&
+						<ActionIcon variant="light" color="yellow" size="sm"><IconPlus size={14} /></ActionIcon>}
         		</Group>
         	))}
       	</Group>
