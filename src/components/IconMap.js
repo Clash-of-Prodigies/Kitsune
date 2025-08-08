@@ -1,9 +1,11 @@
-import { IconNews, IconGift, IconAward, IconTarget, IconPencil, IconUpload, IconSkateboard, IconSwords, IconShield } from '@tabler/icons-react';
+import { IconNews, IconGift, IconAward, IconTarget, IconPencil, IconUpload, IconSkateboard, IconSwords, IconShield, IconSettings, IconDiscount2, IconAnkh, IconGenderFemale, IconWorld } from '@tabler/icons-react';
 import { IconUser, IconUserEdit, IconUserCircle, IconUserSearch, IconCoin, IconFlame, } from '@tabler/icons-react';
 import { IconMoodHappy, IconBox, IconKey, } from '@tabler/icons-react';
 import { IconSpy, IconRobot, IconAlien } from '@tabler/icons-react';
 import { IconFaceId, IconFaceIdError } from '@tabler/icons-react';
 import { IconStar, IconLock } from '@tabler/icons-react';
+import { IconBallFootball, IconSoccerField, IconCrown, IconGhost, IconRocket, IconMoonStars,
+   IconHorseToy, IconWaveSine, } from '@tabler/icons-react';
 
 export const iconMap = {
   News: IconNews,
@@ -43,12 +45,26 @@ export const iconMap = {
   Key: IconKey,
   Swords: IconSwords,
   Shield: IconShield,
+  Star: IconStar,
+  Settings: IconSettings,
+  Ticket: IconDiscount2,
+  Ankh: IconAnkh,
+  Female: IconGenderFemale,
+  World: IconWorld,
+  Ball: IconBallFootball,
+  Field: IconSoccerField,
+  Crown: IconCrown,
+  Ghost: IconGhost,
+  Rocket: IconRocket,
+  Moon: IconMoonStars,
+  Horse: IconHorseToy,
+  Pulse: IconWaveSine,
 };
 
-export default function IconOrImage(parameter) {
-	if (typeof parameter === 'string' && iconMap[parameter]) {
-		const IconComponent = iconMap[parameter];
-		return IconComponent ? <IconComponent size={24} /> : null;
+export default function IconOrImage(parameter, size=24) {
+  if (typeof parameter === 'string' && iconMap[parameter]) {
+    const IconComponent = iconMap[parameter];
+		return IconComponent ? <IconComponent size={size} /> : null;
 	} else {
 		return parameter
 	}
