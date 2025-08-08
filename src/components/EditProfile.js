@@ -60,8 +60,7 @@ export default function EditProfile({ ui = {}, data = {}, avatars = [] }) {
 
 	return (
     <Modal centered withCloseButton={false} radius="xl" padding={0} overlayProps={{ opacity: 0.6 }} size="sm"
-    opened={ui.updateProfileName} onClose={ui.UpdateProfileName}
-    >
+    opened={ui.updateProfileName} onClose={ui.UpdateProfileName}>
 		<Paper p="md" bdrs={20} w='100%' style={{
 			background: 'linear-gradient(to bottom, #d2ebff, #a2c4ff)',
 		}}>
