@@ -24,31 +24,27 @@ function Medal({ image, size = 32, frameColor = '#a2c4ff' }) {
 
 function ProfileCardBar({children, title, value={}, icon}) {
     return (
-        <Box style={{
-            background: 'linear-gradient(to bottom, #e0edff, #c5dfff)',
-            borderRadius: '16px',
-            boxShadow: '0 4px 6px rgba(0,0,0,0.25)',
-            textAlign: 'center',
-            padding: '0.25rem',
-            position: 'relative',
-            }}
-        >
-            <ActionIcon variant='transparent' size={'xl'} radius={'xl'} style={{position: 'absolute', left: -10, top: 0,}}>{icon}</ActionIcon>
-            <Text size="sm" fw={500} c="#1a629cff" style={{ textTransform: 'uppercase' }}>{title}</Text>
-            <Text size={value.size} fw={700} fs={value.style || 'normal'} style={{
-                color: 'white',
-                textShadow: `
+    <Box style={{
+        background: 'linear-gradient(to bottom, #e0edff, #c5dfff)', boxShadow: '0 4px 6px rgba(0,0,0,0.25)',
+        borderRadius: '16px', padding: '0.25rem',
+        textAlign: 'center',position: 'relative',
+    }}>
+        <ActionIcon variant='transparent' size={'xl'} radius={'xl'} style={{
+            position: 'absolute', left: -10, top: 0,
+        }}>{icon}</ActionIcon>
+        <Text size="sm" fw={500} c="#1a629cff" style={{ textTransform: 'uppercase' }}>{title}</Text>
+        <Text size={value.size} fw={700} fs={value.style || 'normal'} style={{
+            color: 'white', textShadow: `
                 -1px -1px 0 #2e2e2e,
                 1px -1px 0 #2e2e2e,
                 -1px  1px 0 #2e2e2e,
                 1px  1px 0 #2e2e2e
                 `,
-            }}
-            >
+        }}>
             {value.text}
-            </Text>
-            {children}
-        </Box>
+        </Text>
+        {children}
+    </Box>
     );
 }
 
