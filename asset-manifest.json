@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/Kitsune/static/css/main.7779c04d.css",
-    "main.js": "/Kitsune/static/js/main.0e891395.js",
+    "main.js": "/Kitsune/static/js/main.b9c0b344.js",
     "static/js/453.c73f27a3.chunk.js": "/Kitsune/static/js/453.c73f27a3.chunk.js",
     "static/media/unknown.svg": "/Kitsune/static/media/unknown.f36e03b536de55bbb3e564ce029b4948.svg",
     "index.html": "/Kitsune/index.html",
     "main.7779c04d.css.map": "/Kitsune/static/css/main.7779c04d.css.map",
-    "main.0e891395.js.map": "/Kitsune/static/js/main.0e891395.js.map",
+    "main.b9c0b344.js.map": "/Kitsune/static/js/main.b9c0b344.js.map",
     "453.c73f27a3.chunk.js.map": "/Kitsune/static/js/453.c73f27a3.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.7779c04d.css",
-    "static/js/main.0e891395.js"
+    "static/js/main.b9c0b344.js"
   ]
 }
