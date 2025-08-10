@@ -1,7 +1,7 @@
 import './App.css';
 import { HashRouter, Route, Routes} from 'react-router-dom';
 import Home from './pages/home.js';
-import About from './pages/about.js';
+import Shop from './pages/shop.js';
 import Unknown from './pages/unknown.js';
 import { MantineProvider } from '@mantine/core';
 import '@mantine/core/styles.css';
@@ -15,6 +15,13 @@ export default function App() {
 	const [error, Spit] = useState(null);
 	const [playlist, Stream] = useState([])
 	const musicPlayer = useRef(null);
+
+	const navButtons = [
+	  { icon: 'Home', label: 'Home', color: 'purple', link: '/' },
+	  { icon: 'Team', label: 'Team', link: '/#team-management'},
+	  { icon: 'Shop', label: 'Shop', badge: 1, link: '/#shop'},
+	  { icon: 'Chat', label: 'Chat', badge: 10, link: '/#chat' },
+	];
 
 	useEffect(() => {
 		if (!loading) return;
@@ -54,14 +61,14 @@ export default function App() {
 			<Route index path="/" element={
 				<React.StrictMode>
 					<MantineProvider withGlobalStyles withNormalizeCSS>
-						<Home ui={globalUI} dossier={dossier} broadcast={broadcast} />
+						<Home ui={globalUI} dossier={dossier} broadcast={broadcast} pages={navButtons}/>
 					</MantineProvider>
 				</React.StrictMode>
 			} />
-			<Route path="/about" element={
+			<Route path="/shop" element={
 				<React.StrictMode>
 					<MantineProvider withGlobalStyles withNormalizeCSS>
-						<About />
+						<Shop dossier={dossier.info} items={broadcast.shop} />
 					</MantineProvider>
 				</React.StrictMode>
 				} />
