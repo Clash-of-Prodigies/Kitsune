@@ -1,4 +1,4 @@
-import { IconNews, IconGift, IconAward, IconTarget, IconPencil, IconUpload, IconSkateboard, IconSwords, IconShield, IconSettings, IconDiscount2, IconAnkh, IconGenderFemale, IconWorld } from '@tabler/icons-react';
+import { IconNews, IconGift, IconAward, IconTarget, IconPencil, IconUpload, IconSkateboard, IconSwords, IconShield, IconSettings, IconDiscount2, IconAnkh, IconGenderFemale, IconWorld, IconMusic, IconTool, IconHome, IconUsersGroup, IconShoppingCart, IconMessages } from '@tabler/icons-react';
 import { IconUser, IconUserEdit, IconUserCircle, IconUserSearch, IconCoin, IconFlame, } from '@tabler/icons-react';
 import { IconMoodHappy, IconBox, IconKey, } from '@tabler/icons-react';
 import { IconSpy, IconRobot, IconAlien } from '@tabler/icons-react';
@@ -59,6 +59,12 @@ export const iconMap = {
   Moon: IconMoonStars,
   Horse: IconHorseToy,
   Pulse: IconWaveSine,
+  Music: IconMusic,
+  Tool: IconTool,
+  Home: IconHome,
+  Team: IconUsersGroup,
+  Shop: IconShoppingCart,
+  Chat: IconMessages,
 };
 
 export default function IconOrImage(parameter, size=24) {
