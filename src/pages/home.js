@@ -1,15 +1,55 @@
-import { Box, Container, Center, Stack, Paper, ActionIcon, Badge, Group } from '@mantine/core';
+import { Box, Container, Center, Stack, Paper, ActionIcon, Badge, Group, Text, Avatar, } from '@mantine/core';
 import { IconNews, IconCalendar, IconHours24, IconSparkles, IconBuildingCastle, } from '@tabler/icons-react';
-import { IconTrophy, IconBarbell, } from '@tabler/icons-react';
+import { IconTrophy, IconBarbell, IconPlus, } from '@tabler/icons-react';
 import { useEffect, useState, } from 'react';
-import ResourceBar from '../components/ResourceBar';
-import BottomNav from '../components/BottomNav';
 import ProfileCard from '../components/ProfileCard';
 import NewsCard from '../components/NewsCard';
 import CalendarCard from '../components/CalendarCard';
 import SettingsCard from '../components/SettingsCard';
 import IconOrImage from '../components/IconMap';
 import CompetitionCard from '../components/CompetitionCard';
+
+function ResourceBar({ resources = {}}) {
+	return (
+	<Paper p="xs" radius="lg" shadow="sm" withBorder style={{
+		backgroundColor: '#fdf2c2', borderColor: '#ffc107', overflowX: 'auto',
+	}}>
+		<Group justify='space-evenly'>
+			{resources.map((res, index) => (
+				<Group gap='xs' key={index} onClick={res.action} style={{ cursor: 'pointer'}}>
+					{res.title === 'avatar' ? <Avatar>{IconOrImage(res.icon)}</Avatar> : IconOrImage(res.icon, 20)}
+					<Text fw={700} size="sm">{res.label && typeof res.label === 'string' ? res.label : res.label.toLocaleString()}</Text>
+					{res.title !== 'avatar' && res.title !== 'settings' &&
+						<ActionIcon variant="light" color="yellow" size="sm"><IconPlus size={14} /></ActionIcon>}
+				</Group>
+			))}
+		</Group>
+	</Paper>
+	);
+}
+
+function BottomNav({ navButtons = [] }) {
+	return (
+	<Paper p="xs" radius="lg" shadow="sm" withBorder style={{
+		backgroundColor: '#fffbe6', borderColor: '#ffc107'
+	}}>
+		<Group position="apart" justify='space-evenly'>
+		{navButtons.map((btn, i) => (
+			<Stack align='center' gap={0} key={i} style={{ cursor: 'pointer' }} p={0}>
+				<ActionIcon component='a' href={btn.link} variant="transparent" size="xl" w='100%' h='100%' c={btn.color || 'black'}>
+				{btn.badge > 0 && (
+					<Badge color="red" variant="filled" size="xs" pos='absolute' top={0} right={0}
+					style={{ zIndex: 2 }}>{btn.badge}</Badge>
+				)}
+					{IconOrImage(btn.icon, 24)}
+				</ActionIcon>
+				<Text size="xs" fw={600} c={btn.color}>{btn.label}</Text>
+			</Stack>
+		))}
+		</Group>
+	</Paper>
+	);
+}
 
 function LeftSidebarButton({ icon, badge, action = () => {} }) {
 	return (
@@ -90,20 +130,18 @@ function RightSidebar({ ui = {} }) {
 	);
 }
 
-function Layout({ children, ui, user = {}, competitions = {} }) {
+function Layout({ children, ui, user = {}, competitions = {}, pages = [] }) {
 	const resources = [
 		{ title: 'avatar', icon: user.avatar, label: user.name, action: () => ui.AdmireProfile(true) },
-		{ icon: 'Coin', label: 653278 },
-		{ icon: 'Ticket', label: 75 },
+		{ icon: 'Coin', label: user.coins },
+		{ icon: 'Ticket', label: user.tickets },
 		{ title: 'settings', icon: 'Settings', label: '', action: () => ui.OpenSettings(true) },
 	];
-
 	return (
     <Container fluid px={0} h='100vh' display='flex' style={{
         overflow: 'hidden', backgroundColor: '#e0f0ff', flexDirection: 'column',
     }}>
 		{/* Top bar */}
-		
 		<Box p="sm"><ResourceBar resources={resources}/></Box>
 		
 		{/* Main content */}
@@ -114,12 +152,12 @@ function Layout({ children, ui, user = {}, competitions = {} }) {
 		</Box>
 
       	{/* Bottom nav */}
-      	<Box p="sm"><BottomNav /></Box>
+      	<Box p="sm"><BottomNav navButtons={pages} /></Box>
     </Container>
 	);
 }
 
-export default function Home({ ui = {}, dossier = {}, broadcast = {} }) {
+export default function Home({ ui = {}, dossier = {}, broadcast = {}, pages = [] }) {
 	const [admireProfile, AdmireProfile] = useState(false);
 	const [readNews, ReadNews] = useState(false);
 	const [viewCalendar, ViewCalendar] = useState(false);
@@ -136,7 +174,7 @@ export default function Home({ ui = {}, dossier = {}, broadcast = {} }) {
 	}
 
 	return (
-	<Layout ui={globalUI} user={dossier.info} competitions={broadcast.events}>
+	<Layout ui={globalUI} user={dossier.info} competitions={broadcast.events} pages={pages}>
 		<Center h='100%'>
 			<ProfileCard ui={globalUI} data={dossier.info} avatars={broadcast.avatars} />
 			<NewsCard ui={globalUI} articles={broadcast.news} />
