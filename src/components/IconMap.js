@@ -1,11 +1,14 @@
-import { IconNews, IconGift, IconAward, IconTarget, IconPencil, IconUpload, IconSkateboard, IconSwords, IconShield, IconSettings, IconDiscount2, IconAnkh, IconGenderFemale, IconWorld, IconMusic, IconTool, IconHome, IconUsersGroup, IconShoppingCart, IconMessages } from '@tabler/icons-react';
+import { IconNews, IconGift, IconAward, IconTarget, IconPencil, IconUpload, IconSkateboard, IconHeadset, } from '@tabler/icons-react';
 import { IconUser, IconUserEdit, IconUserCircle, IconUserSearch, IconCoin, IconFlame, } from '@tabler/icons-react';
 import { IconMoodHappy, IconBox, IconKey, } from '@tabler/icons-react';
 import { IconSpy, IconRobot, IconAlien } from '@tabler/icons-react';
 import { IconFaceId, IconFaceIdError } from '@tabler/icons-react';
 import { IconStar, IconLock } from '@tabler/icons-react';
-import { IconBallFootball, IconSoccerField, IconCrown, IconGhost, IconRocket, IconMoonStars,
-   IconHorseToy, IconWaveSine, } from '@tabler/icons-react';
+import { IconBallFootball, IconSoccerField, IconCrown, IconGhost, IconRocket,  } from '@tabler/icons-react';
+import { IconTool, IconHome, IconUsersGroup, IconShoppingCart, IconMessages, } from '@tabler/icons-react';
+import { IconSwords, IconShield, IconSettings, IconDiscount2, IconAnkh,} from '@tabler/icons-react';
+import {  IconGenderFemale, IconWorld, IconMusic, IconHelp, } from '@tabler/icons-react';
+import { IconMoonStars, IconHorseToy, IconWaveSine, } from '@tabler/icons-react';
 
 export const iconMap = {
   News: IconNews,
@@ -65,6 +68,8 @@ export const iconMap = {
   Team: IconUsersGroup,
   Shop: IconShoppingCart,
   Chat: IconMessages,
+  Help: IconHelp,
+  Headset: IconHeadset,
 };
 
 export default function IconOrImage(parameter, size=24) {
