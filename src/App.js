@@ -61,14 +61,14 @@ export default function App() {
 			<Route index path="/" element={
 				<React.StrictMode>
 					<MantineProvider withGlobalStyles withNormalizeCSS>
-						<Home ui={globalUI} dossier={dossier} broadcast={broadcast} pages={navButtons}/>
+						<Home ui={globalUI} dossier={dossier} broadcast={broadcast} pages={navButtons} />
 					</MantineProvider>
 				</React.StrictMode>
 			} />
 			<Route path="/shop" element={
 				<React.StrictMode>
 					<MantineProvider withGlobalStyles withNormalizeCSS>
-						<Shop dossier={dossier.info} items={broadcast.shop} pages={navButtons} />
+						<Shop ui={globalUI} dossier={dossier.info} items={broadcast.shop} pages={navButtons} />
 					</MantineProvider>
 				</React.StrictMode>
 				} />
