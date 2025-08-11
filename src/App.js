@@ -68,7 +68,7 @@ export default function App() {
 			<Route path="/shop" element={
 				<React.StrictMode>
 					<MantineProvider withGlobalStyles withNormalizeCSS>
-						<Shop dossier={dossier.info} items={broadcast.shop} />
+						<Shop dossier={dossier.info} items={broadcast.shop} pages={navButtons} />
 					</MantineProvider>
 				</React.StrictMode>
 				} />
