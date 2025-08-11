@@ -17,10 +17,10 @@ export default function App() {
 	const musicPlayer = useRef(null);
 
 	const navButtons = [
-	  { icon: 'Home', label: 'Home', color: 'purple', link: '/' },
-	  { icon: 'Team', label: 'Team', link: '/#team-management'},
-	  { icon: 'Shop', label: 'Shop', badge: 1, link: '/#shop'},
-	  { icon: 'Chat', label: 'Chat', badge: 10, link: '/#chat' },
+	  { icon: 'Home', label: 'Home', color: 'purple', link: '/Kitsune' },
+	  { icon: 'Team', label: 'Team', link: '/Kitsune/#team-management'},
+	  { icon: 'Shop', label: 'Shop', badge: 1, link: '/Kitsune/#shop'},
+	  { icon: 'Chat', label: 'Chat', badge: 10, link: '/Kitsune/#chat' },
 	];
 
 	useEffect(() => {
