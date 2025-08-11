@@ -3,6 +3,22 @@ import { Drawer, Stack, Group, Paper, Text, Divider, Badge, ActionIcon, } from '
 import { Button, ScrollArea, TextInput, Box, Avatar, Tooltip, } from '@mantine/core';
 import { IconTrash, IconMinus, IconPlus, IconCoin, IconTicket, IconShoppingBag } from '@tabler/icons-react';
 import IconOrImage from './IconMap';
+import axios from 'axios';
+
+async function Checkout( ui = {}, cart = []) {
+	let res = {}
+	try {
+		res = await axios.post('http://localhost:5000/shop/checkout',
+			cart,
+		);
+		alert(res.data.message);
+		ui.Load(true);
+	} catch (error) {
+		alert(error);
+	} finally {
+		
+	}
+}
 
 function CartItemRow({ item, onIncrease, onDecrease, onRemove }) {
 	const { coin, ticket } = item.price;
@@ -45,7 +61,7 @@ function CartItemRow({ item, onIncrease, onDecrease, onRemove }) {
 	);
 }
 
-export default function RightDrawer({ ui = {}, onCheckout, }) {
+export default function RightDrawer({ ui = {}, }) {
 	const cart = useMemo(() => {
 		if (!ui.cart) return []
 		return ui.cart
@@ -146,10 +162,9 @@ export default function RightDrawer({ ui = {}, onCheckout, }) {
 			borderTop: '1px solid #d0dcff', borderRadius: 12,
         }}>
 			<Group justify="space-between" align="center">
-
           		<Group gap="sm" justify='space-evenly'>
 					<Button radius="xl" color="gray" onClick={clearCart}>Clear cart</Button>
-            		<Button radius="xl" onClick={() => (onCheckout ? onCheckout(cartSafe) : null)}
+            		<Button radius="xl" onClick={() => Checkout(ui, cartSafe)}
               		disabled={cartSafe.length === 0}>Proceed to checkout</Button>
           		</Group>
         	</Group>
