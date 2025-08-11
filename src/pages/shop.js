@@ -1,21 +1,28 @@
 import { useState, useEffect } from 'react';
-import { Box, Group, Text, Paper, Button, Drawer, Avatar, Image, Title, Divider } from '@mantine/core';
+import { Box, Group, Text, Paper, Button, Avatar, Image, Title, Tooltip, } from '@mantine/core';
 import { Badge, Input, ScrollArea, ActionIcon, Stack, } from '@mantine/core';
-import { IconShoppingCart, IconSearch } from '@tabler/icons-react';
+import { IconShoppingCart, IconSearch, IconPlus, IconInfoCircleFilled } from '@tabler/icons-react';
 import IconOrImage from '../components/IconMap';
+import RightDrawer from '../components/RightShopDrawer';
+import LeftDrawer from '../components/LeftShopDrawer';
 
 function TallCard ({ ui = {}, item = {} })  {
 	const addToCart = (item) => ui.setCart([...ui.cart, item]);
 	return (
     <Paper shadow="sm" radius="md" p="md" withBorder w={160}>
       	<Box ta="center" mb="sm">
-        	<Avatar color="blue" size={64} radius="xl">
-          	{IconOrImage(item.icon)}
-        	</Avatar>
+        	<ActionIcon color="blue" size={64} radius="xl" m={'auto'}>{IconOrImage(item.icon)}</ActionIcon>
       	</Box>
-      	<Text fw={700} size="sm" ta="center">{item.name}</Text>
-      	<Text size="xs" ta="center" c="dimmed">{item.price}</Text>
-      	<Button fullWidth mt="sm" size="xs" onClick={() => addToCart(item)}>Add to Cart</Button>
+      	<Text fw={700} size="sm" ta="center" truncate w={'100%'}>{item.name}</Text>
+      	<Text size="xs" ta="center" c="dimmed">
+			{Object.keys(item.price).length > 0 ?
+			`${Object.entries(item.price).map(([currency, amount]) => `${amount} ${currency}`).join(", ")}`
+			:'Free'}
+		</Text>
+		<Group display={'flex'} justify='space-between' mt={'sm'}>
+			<Tooltip label={item.description}><IconInfoCircleFilled color='#228be6'/></Tooltip>
+      		<Button p={0} h={'max-content'} onClick={() => addToCart(item)} ><IconPlus /></Button>
+		</Group>
     </Paper>
 	);
 }
@@ -43,10 +50,10 @@ function Collections({ ui = {}, items = [] }) {
 	)));
 }
 
-export default function Shop({ items = {}, dossier = {} }) {
+export default function Shop({ items = {}, dossier = {}, pages = [] }) {
 	const [cart, setCart] = useState([]);
-	const [leftDrawerOpened, setLeftDrawerOpened] = useState(false);
-	const [rightDrawerOpened, setRightDrawerOpened] = useState(false);
+	const [leftDrawer, OpenLeftDrawer] = useState(false);
+	const [rightDrawer, OpenRightDrawer] = useState(false);
 	const [category, setCategory] = useState('Me');
 
 	useEffect(() => {
@@ -71,8 +78,8 @@ export default function Shop({ items = {}, dossier = {} }) {
 
 	const localUI = {
 		cart, setCart,
-		leftDrawerOpened, setLeftDrawerOpened,
-		rightDrawerOpened, setRightDrawerOpened,
+		leftDrawer, OpenLeftDrawer,
+		rightDrawer, OpenRightDrawer,
 		category, setCategory,
 	}
 
@@ -81,7 +88,7 @@ export default function Shop({ items = {}, dossier = {} }) {
   	return (
     <Box pos={'relative'}>
 		<ActionIcon variant="filled" size={'xl'} color='green' pos={'absolute'} bottom={45} right={15}
-		radius={'xl'} onClick={() => setRightDrawerOpened(true)} style={{ zIndex: 2}}>
+		radius={'xl'} onClick={() => OpenRightDrawer(true)} style={{ zIndex: 2}}>
             <Badge size='xs' color="transparent" c='white' pos="absolute" top={0} style={{
 				zIndex: 3
 			}}>{cart.length}</Badge>
@@ -92,7 +99,7 @@ export default function Shop({ items = {}, dossier = {} }) {
 			borderBottom: '1px solid #ccc',
 			overflow: 'hidden',
 		}}>
-			<Group gap={1} onClick={() => setLeftDrawerOpened(true)} style={{ cursor: 'pointer'}}>
+			<Group gap={1} onClick={() => OpenLeftDrawer(true)} style={{ cursor: 'pointer'}}>
 				<ActionIcon variant="transparent"><Image src={'http://localhost:5000/media/dark.png'}/></ActionIcon>
         		<Text fw={900} size="lg">Prodigy</Text>
 			</Group>
@@ -118,34 +125,10 @@ export default function Shop({ items = {}, dossier = {} }) {
       	</ScrollArea>
 
       	{/* Left Drawer */}
-      	<Drawer opened={leftDrawerOpened} title="Categories" position="left"
-		onClose={() => setLeftDrawerOpened(false)}>
-        	<Stack>
-          	{categories.map((cat, i) => (
-            	<Button variant="subtle" fullWidth key={i} onClick={() => setCategory(cat)}>{cat}</Button>
-          	))}
-        	</Stack>
-			<Divider mt={'sm'} mb={'sm'} />
-			<Stack>
-				<Button component='a' variant='filled' color='orange' href='/' w={'fit-content'} m={'auto'} >Home</Button>
-			</Stack>
-      	</Drawer>
+		<LeftDrawer ui={localUI} categories={categories} pages={pages} dossier={dossier} />
 
       	{/* Right Drawer - Cart */}
-      	<Drawer opened={rightDrawerOpened} title="Cart" position="right"
-		onClose={() => setRightDrawerOpened(false)}>
-        	<Stack>
-          	{cart.length === 0 ? (<Text size="sm" c="dimmed">No items in cart.</Text>) : (
-            	cart.map((item, i) => (
-              		<Group key={i} justify="space-between">
-                		<Text size="sm">{item.name}</Text>
-                		<Text size="xs" c="dimmed">{item.price}</Text>
-              		</Group>
-            	))
-          	)}
-          	{cart.length > 0 && <Button fullWidth mt="sm">Checkout</Button>}
-        	</Stack>
-      	</Drawer>
+		<RightDrawer ui={localUI} />
     </Box>
 	);
 }
