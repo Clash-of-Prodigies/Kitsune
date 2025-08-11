@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, } from 'react';
 import { Box, Group, Text, Paper, Button, Avatar, Image, Title, Tooltip, } from '@mantine/core';
 import { Badge, Input, ScrollArea, ActionIcon, Stack, } from '@mantine/core';
 import { IconShoppingCart, IconSearch, IconPlus, IconInfoCircleFilled } from '@tabler/icons-react';
@@ -7,7 +7,16 @@ import RightDrawer from '../components/RightShopDrawer';
 import LeftDrawer from '../components/LeftShopDrawer';
 
 function TallCard ({ ui = {}, item = {} })  {
-	const addToCart = (item) => ui.setCart([...ui.cart, item]);
+	const addToCart = (item) => {
+		ui.setCart(prev => {
+			const map = new Map(prev.map(it => [it.id, { ...it }]));
+			const entry = map.get(item.id) || { ...item, qty: 0 };
+			entry.qty = (entry.qty || 0) + 1;
+			map.set(item.id, entry);
+			return Array.from(map.values());
+		});
+	};
+
 	return (
     <Paper shadow="sm" radius="md" p="md" withBorder w={160}>
       	<Box ta="center" mb="sm">
@@ -28,7 +37,6 @@ function TallCard ({ ui = {}, item = {} })  {
 }
 
 function Collections({ ui = {}, items = [] }) {
-	const addToCart = (item) => ui.setCart([...ui.cart, item]);
 	return (
 	items.map((item, i) => (
 	<Stack gap={0} key={i} id={item.category} className='section'>
@@ -40,7 +48,7 @@ function Collections({ ui = {}, items = [] }) {
 				<ScrollArea style={{ width: '100%' }}>
   					<Group gap="md" m={'auto'} style={{ display: 'flex', flexWrap: 'nowrap', width: 'max-content' }}>
     				{collection.products.map((p, i) => (
-      					<TallCard item={p} key={i} addToCart={addToCart} ui={ui} />
+      					<TallCard item={p} key={i} ui={ui} />
     				))}
   					</Group>
 				</ScrollArea>
@@ -50,7 +58,7 @@ function Collections({ ui = {}, items = [] }) {
 	)));
 }
 
-export default function Shop({ items = {}, dossier = {}, pages = [] }) {
+export default function Shop({ ui = {}, items = {}, dossier = {}, pages = [] }) {
 	const [cart, setCart] = useState([]);
 	const [leftDrawer, OpenLeftDrawer] = useState(false);
 	const [rightDrawer, OpenRightDrawer] = useState(false);
@@ -77,6 +85,7 @@ export default function Shop({ items = {}, dossier = {}, pages = [] }) {
 	}, [category])
 
 	const localUI = {
+		...ui,
 		cart, setCart,
 		leftDrawer, OpenLeftDrawer,
 		rightDrawer, OpenRightDrawer,
