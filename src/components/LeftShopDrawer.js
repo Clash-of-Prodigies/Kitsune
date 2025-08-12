@@ -4,6 +4,7 @@ import { ScrollArea, Divider, Avatar, NavLink, Switch, Box, Tooltip, } from '@ma
 import { IconSearch, IconChevronRight, IconChevronDown, IconSun, IconMoon } from '@tabler/icons-react'; 
 import { IconLogin, IconLogout, } from '@tabler/icons-react';
 import IconOrImage from '../components/IconMap';
+import { Link } from 'react-router-dom'
 
 function Dropdown({ children, title, dependency }) {
 	const [opened, setOpened] = useState(false);
@@ -87,7 +88,7 @@ export default function LeftDrawer({ ui = {}, categories = [], pages = [], dossi
       	</Stack>
 
       	{/* Scrollable content area */}
-      	<Stack gap="sm" style={{ height: 'calc(100vh - 260px)' }}>
+      	<Stack gap="sm" style={{ height: 'calc(100vh - 250px)' }}>
 			<ScrollArea style={{ flex: 1 }} type="auto" scrollbars="y">
 
           	{/* Categories */}
@@ -106,7 +107,7 @@ export default function LeftDrawer({ ui = {}, categories = [], pages = [], dossi
           	{/* Links / Navigation */}
 			<Dropdown title={'Navigation'}>
 			{pages?.map((p, idx) => (
-				<NavLink label={p.label} component='a' href={p.link} variant="light" bdrs={8}
+				<NavLink label={p.label} component={Link} to={p.link} variant="light" bdrs={8}
             	key={`${p.label}-${idx}`} leftSection={IconOrImage(p.icon)} />
 			))}
 			</Dropdown>
