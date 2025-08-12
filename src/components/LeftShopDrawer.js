@@ -42,14 +42,14 @@ export default function LeftDrawer({ ui = {}, categories = [], pages = [], dossi
   	const headerGradient = 'linear-gradient(180deg,#dff0ff,#e9edff)';
 
   	return (
-    <Drawer opened={ui.leftDrawer} onClose={ui.OpenLeftDrawer} pos="left" size="md" withCloseButton={false}
+    <Drawer opened={ui.leftDrawer} onClose={ui.OpenLeftDrawer} pos="left" size={325} withCloseButton={false}
     styles={{
 		content: { background: bgGradient, borderRight: '1px solid #dbe7ff',},
     }}>
       	{/* Profile / Header */}
-      	<Paper radius="md" p="md" withBorder mb="md" style={{ background: headerGradient }}>
+      	<Paper radius="md" p="sm" withBorder mb="md" style={{ background: headerGradient }}>
         	<Group justify="space-between" align="center">
-          		<Group gap="sm">
+          		<Group gap="md">
             		<Avatar radius="xl" color="blue">{IconOrImage(dossier.avatar)}</Avatar>
             		<Box>
               			<Text fw={800}>{dossier?.name || 'Guest'}</Text>
