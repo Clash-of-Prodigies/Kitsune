@@ -8,7 +8,7 @@ import LeftDrawer from '../components/LeftShopDrawer';
 
 function TallCard ({ ui = {}, item = {} })  {
 	const addToCart = (item) => {
-		ui.setCart(prev => {
+		ui.setCart((prev) => {
 			const map = new Map(prev.map(it => [it.id, { ...it }]));
 			const entry = map.get(item.id) || { ...item, qty: 0 };
 			entry.qty = (entry.qty || 0) + 1;
@@ -65,20 +65,22 @@ export default function Shop({ ui = {}, items = {}, dossier = {}, pages = [] }) 
 	const [category, setCategory] = useState('Me');
 
 	useEffect(() => {
-		const options = { rootMargin: '0px', threshold: 0.5, };
+		const options = { rootMargin: '0px', threshold: 0.5 };
+		let timerId = null;
 
-    	const observer = new IntersectionObserver((entries) => {
-			entries.forEach((entry) => {
-				if (entry.isIntersecting) setCategory(entry.target.id);
-      		});
-    	}, options);
+  		const observer = new IntersectionObserver((entries) => { entries.forEach((entry) => {
+      		if (entry.isIntersecting) {
+				clearTimeout(timerId); timerId = setTimeout(() => {
+					setCategory(entry.target.id);
+				}, 500);
+			}
+		});
+		}, options);
 
-    	document.querySelectorAll('.section').forEach((section) => {
-			observer.observe(section);
-    	});
+  		document.querySelectorAll('.section').forEach((section) => observer.observe(section));
+		return () => { clearTimeout(timerId); observer.disconnect(); };
+	}, []);
 
-    	return () => observer.disconnect();
-  	}, []);
 
 	useEffect(() => {
 		document.getElementById(category).scrollIntoView({behavior: 'smooth'})
@@ -93,7 +95,6 @@ export default function Shop({ ui = {}, items = {}, dossier = {}, pages = [] }) 
 	}
 
 	const categories = items.map((item) => item.category)
-
   	return (
     <Box pos={'relative'}>
 		<ActionIcon variant="filled" size={'xl'} color='green' pos={'absolute'} bottom={45} right={15}
