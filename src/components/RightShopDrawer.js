@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { Drawer, Stack, Group, Paper, Text, Divider, Badge, ActionIcon, } from '@mantine/core';
 import { Button, ScrollArea, TextInput, Box, Avatar, Tooltip, } from '@mantine/core';
-import { IconTrash, IconMinus, IconPlus, IconCoin, IconTicket, IconShoppingBag } from '@tabler/icons-react';
+import { IconTrash, IconMinus, IconPlus, IconCoin, IconTicket, IconShoppingBag, IconBackspace } from '@tabler/icons-react';
 import IconOrImage from './IconMap';
 import axios from 'axios';
 
@@ -29,19 +29,26 @@ function CartItemRow({ item, onIncrease, onDecrease, onRemove }) {
         background: 'linear-gradient(180deg, #eef6ff 0%, #e8efff 100%)',
         borderColor: '#d9e7ff',
     }}>
-		<Group justify="space-between" align="center" wrap="nowrap">
-			<Group gap="sm" wrap="nowrap">
-				<Avatar size="lg" radius="xl" color="blue">{IconOrImage(item.icon)}</Avatar>
-          		<Box>
-            		<Text fw={700} size="sm">{item.name}</Text>
-            		<Group gap={8} mt={4}>
+		<Stack gap={2}>
+			<Group justify='space-between' wrap="nowrap">
+				<Group>
+					<Avatar size="lg" radius="xl" color="blue">{IconOrImage(item.icon)}</Avatar>
+					<Box>
+            			<Text fw={700} size="sm">{item.name}</Text>
+            			<Group gap={8} mt={4}>
               			{coin && <Badge color="yellow" leftSection={<IconCoin size={12} />}>{coin}</Badge>}
               			{ticket && <Badge color="pink" leftSection={<IconTicket size={12} />}>{ticket}</Badge>}
-            		</Group>
-          		</Box>
+            			</Group>
+          			</Box>
+				</Group>
+				<Tooltip  label="Remove">
+            		<ActionIcon variant="subtle" color="red" onClick={onRemove} aria-label="Remove">
+              			<IconBackspace size={20} />
+            		</ActionIcon>
+          		</Tooltip>
         	</Group>
 
-        	<Group gap="xs" align="center" wrap="nowrap">
+        	<Group gap="xs" align="center" wrap="nowrap" m={'auto'}>
           		<ActionIcon variant="light" onClick={onDecrease} aria-label="Decrease">
             		<IconMinus size={16} />
           		</ActionIcon>
@@ -49,14 +56,8 @@ function CartItemRow({ item, onIncrease, onDecrease, onRemove }) {
           		<ActionIcon variant="light" onClick={onIncrease} aria-label="Increase">
             		<IconPlus size={16} />
           		</ActionIcon>
-
-          		<Tooltip label="Remove">
-            		<ActionIcon variant="subtle" color="red" onClick={onRemove} aria-label="Remove">
-              			<IconTrash size={16} />
-            		</ActionIcon>
-          		</Tooltip>
         	</Group>
-      	</Group>
+      	</Stack>
     </Paper>
 	);
 }
@@ -81,15 +82,15 @@ export default function RightDrawer({ ui = {}, }) {
 		{ coin: 0, ticket: 0 });
   	}, [cartSafe]);
 
-  	const updateQty = (idx, delta) => { ui.setCart((prev) => { prev.map((it, i) => (
-		i === idx ? { ...it, qty: Math.max(1, (it.qty ?? 1) + delta) } : it));
-    	});
+  	const updateQty = (id, delta) => { ui.setCart((prev) => prev.map((it) => 
+		it.id === id ? { ...it, qty: Math.max(1, (it.qty ?? 1) + delta) } : it));
   	};
-  	const removeItem = (idx) => { ui.setCart((prev) => prev.filter((_, i) => i !== idx)) };
+
+  	const removeItem = (id) => { ui.setCart((prev) => prev.filter((it) => it.id !== id)) };
 	const clearCart = () => ui.setCart([]);
 
   	return (
-    <Drawer opened={ui.rightDrawer} onClose={ui.OpenRightDrawer} position="right" size="md"
+    <Drawer opened={ui.rightDrawer} onClose={ui.OpenRightDrawer} position="right" size={325}
 	withCloseButton={false} styles={{
         content: {
 			background: 'linear-gradient(180deg, #eaf3ff 0%, #f4f7ff 100%)',
@@ -128,8 +129,8 @@ export default function RightDrawer({ ui = {}, }) {
             	):(
 					cartSafe.map((item, i) => (
 						<CartItemRow key={`${item.name}-${i}`} item={item}
-						onIncrease={() => updateQty(i, +1)} onDecrease={() => updateQty(i, -1)}
-						onRemove={() => removeItem(i)} />
+						onIncrease={() => updateQty(item.id, +1)} onDecrease={() => updateQty(item.id, -1)}
+						onRemove={() => removeItem(item.id)} />
 					))
 				)}
           		</Stack>
@@ -163,7 +164,7 @@ export default function RightDrawer({ ui = {}, }) {
         }}>
 			<Group justify="space-between" align="center">
           		<Group gap="sm" justify='space-evenly'>
-					<Button radius="xl" color="gray" onClick={clearCart}>Clear cart</Button>
+					<Button radius="xl" color="gray" onClick={clearCart}><IconTrash /></Button>
             		<Button radius="xl" onClick={() => Checkout(ui, cartSafe)}
               		disabled={cartSafe.length === 0}>Proceed to checkout</Button>
           		</Group>
