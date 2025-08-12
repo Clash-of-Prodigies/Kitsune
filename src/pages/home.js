@@ -2,6 +2,7 @@ import { Box, Container, Center, Stack, Paper, ActionIcon, Badge, Group, Text, A
 import { IconNews, IconCalendar, IconHours24, IconSparkles, IconBuildingCastle, } from '@tabler/icons-react';
 import { IconTrophy, IconBarbell, IconPlus, } from '@tabler/icons-react';
 import { useEffect, useState, } from 'react';
+import { Link } from 'react-router-dom';
 import ProfileCard from '../components/ProfileCard';
 import NewsCard from '../components/NewsCard';
 import CalendarCard from '../components/CalendarCard';
@@ -36,7 +37,7 @@ function BottomNav({ navButtons = [] }) {
 		<Group position="apart" justify='space-evenly'>
 		{navButtons.map((btn, i) => (
 			<Stack align='center' gap={0} key={i} style={{ cursor: 'pointer' }} p={0}>
-				<ActionIcon component='a' href={btn.link} variant="transparent" size="xl" w='100%' h='100%' c={btn.color || 'black'}>
+				<ActionIcon component={Link} to={btn.link} variant="transparent" size="xl" w='100%' h='100%' c={btn.color || 'black'}>
 				{btn.badge > 0 && (
 					<Badge color="red" variant="filled" size="xs" pos='absolute' top={0} right={0}
 					style={{ zIndex: 2 }}>{btn.badge}</Badge>
