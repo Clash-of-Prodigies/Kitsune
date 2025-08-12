@@ -1,7 +1,7 @@
 import { Paper, Stack, Title, Center, Button, Group, Divider, Text, Slider, Box, Modal, } from '@mantine/core';
 import { IconDeviceGamepad, IconMoon, IconMusic, IconSun, IconVolume, IconVolumeOff, } from '@tabler/icons-react';
 import { IconBrandFacebook, IconCheck, } from '@tabler/icons-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, } from 'react';
 import Playlists from './Playlists';
 
 function Setting({icon = {}, title = "", subtitle = "", action = () => {}, slider = null, sliderValue = 50 }) {
@@ -90,13 +90,16 @@ function Settings({ ui = {}, data = {} }) {
 
 export default function SettingsCard({ ui = {}, data = {}, playlists = {} }) {
     const [openPlaylists, OpenPlaylists] = useState(false);
-    const [muteMusic, MuteMusic] = useState(true);
+    const [muteMusic, MuteMusic] = useState(null);
     const [viewThemes, ViewThemes] = useState(false);
     const [volume, AdjustVolume] = useState(10);
 
     const musicPlayer = ui.musicPlayer;
+
     useEffect(() => {
-        if (musicPlayer?.current) musicPlayer.current.muted = muteMusic;
+        if (!musicPlayer.current) return
+        if (!muteMusic && muteMusic !== false) {MuteMusic(musicPlayer.current.muted); return};
+        musicPlayer.current.muted = muteMusic;
         if (!muteMusic) musicPlayer.current.play();
     }, [muteMusic, musicPlayer])
 
