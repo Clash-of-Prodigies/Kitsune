@@ -5,6 +5,7 @@ import { IconShoppingCart, IconSearch, IconPlus, IconInfoCircleFilled } from '@t
 import IconOrImage from '../components/IconMap';
 import RightDrawer from '../components/RightShopDrawer';
 import LeftDrawer from '../components/LeftShopDrawer';
+import axios from 'axios';
 
 function TallCard ({ ui = {}, item = {} })  {
 	const addToCart = (item) => {
@@ -58,11 +59,24 @@ function Collections({ ui = {}, items = [] }) {
 	)));
 }
 
-export default function Shop({ ui = {}, items = {}, dossier = {}, pages = [] }) {
+export default function Shop({ ui = {}, dossier = {}, pages = [] }) {
 	const [cart, setCart] = useState([]);
+	const [items, setItems] = useState([]);
+	const [loading, Load] = useState(true);
+	const [error, Spit] = useState(null);
 	const [leftDrawer, OpenLeftDrawer] = useState(false);
 	const [rightDrawer, OpenRightDrawer] = useState(false);
 	const [category, setCategory] = useState('Me');
+
+	useEffect(() => {
+		if (!loading) return;
+		Promise.all([
+			axios.get('http://localhost:5000/shop/items'),
+		])
+		.then((res) => {setItems(res[0].data); console.log(res);})
+		.catch((err) => Spit(err))
+		.finally(() => Load(false));
+	}, [loading]);
 
 	useEffect(() => {
 		const options = { rootMargin: '0px', threshold: 0.5 };
@@ -81,10 +95,14 @@ export default function Shop({ ui = {}, items = {}, dossier = {}, pages = [] }) 
 		return () => { clearTimeout(timerId); observer.disconnect(); };
 	}, []);
 
-
 	useEffect(() => {
-		document.getElementById(category).scrollIntoView({behavior: 'smooth'})
+		const section = document.getElementById(category);
+		if (section) section.scrollIntoView({behavior: 'smooth'})
 	}, [category])
+
+	if (loading) return null;
+	// if (loading) return <p>Loading data...</p>;
+	if (error) return <p>Error: {error.message}</p>;
 
 	const localUI = {
 		...ui,
@@ -97,7 +115,7 @@ export default function Shop({ ui = {}, items = {}, dossier = {}, pages = [] }) 
 	const categories = items.map((item) => item.category)
   	return (
     <Box pos={'relative'}>
-		<ActionIcon variant="filled" size={'xl'} color='green' pos={'absolute'} bottom={45} right={15}
+		<ActionIcon variant="filled" size={'xl'} color='green' pos={'absolute'} bottom={70} right={30}
 		radius={'xl'} onClick={() => OpenRightDrawer(true)} style={{ zIndex: 2}}>
             <Badge size='xs' color="transparent" c='white' pos="absolute" top={0} style={{
 				zIndex: 3
