@@ -1,13 +1,13 @@
 import { Modal, Stack, Paper, Text, Box, Group, Badge, ScrollArea, Center, Title, Image, Button } from '@mantine/core';
 import { IconClockHour4, } from '@tabler/icons-react';
-import { useState, } from 'react';
+import { useState, useEffect } from 'react';
 import IconOrImage from './IconMap';
+import axios from 'axios';
 
 function Article({ ui = {} }) {
     return (
     <Modal centered withCloseButton={false} radius="xl" padding={0} overlayProps={{ opacity: 0.6 }} size="sm"
-    opened={ui.article !== null} onClose={() => ui.ReadArticle(null)
-    }>
+    opened={Object.keys(ui.article).length > 0} onClose={() => ui.ReadArticle({})}>
         <Paper p="xs" radius="xs" style={{ backgroundColor: '#96cbfdff', width: '100%', }}>
             <Text align="center" c='#f8fdffff' size="xl" mb="sm" ff='sans-serif' fw={900} style={{
                 textShadow: '1px 1px #3772ff',
@@ -74,12 +74,27 @@ function News({ui = {}, articles = []}) {
     );
 }
 
-export default function NewsCard({ ui = {}, articles = [] }) {
-    const [article, ReadArticle] = useState(null);
+export default function NewsCard({ ui = {} }) {
+    const [article, ReadArticle] = useState({});
+    const [articles, GetArticles] = useState([]);
+    const [loading, Load] = useState(true);
+    const [error, Spit] = useState(null);
+
+    useEffect(() => {
+        if (!loading) return;
+        Promise.all([
+                axios.get('http://localhost:5000/news'),
+        ])
+        .then((res) => {GetArticles(res[0].data); console.log(res);})
+        .catch((err) => Spit(err))
+        .finally(() => Load(false));
+    }, [loading]);
 
     const localUI = {
         ...ui,
         article, ReadArticle,
+        loading, Load,
+        error, Spit,
     };
     
     return (

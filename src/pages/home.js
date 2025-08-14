@@ -178,7 +178,7 @@ export default function Home({ ui = {}, dossier = {}, broadcast = {}, pages = []
 	<Layout ui={globalUI} user={dossier.info} competitions={broadcast.events} pages={pages}>
 		<Center h='100%'>
 			<ProfileCard ui={globalUI} data={dossier.info} avatars={broadcast.avatars} />
-			<NewsCard ui={globalUI} articles={broadcast.news} />
+			<NewsCard ui={globalUI} />
 			<CalendarCard ui={globalUI} />
 			<SettingsCard ui={globalUI} data={dossier.info} playlists={broadcast.playlists} />
 			<CompetitionCard ui={globalUI} />
