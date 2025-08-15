@@ -20,7 +20,6 @@ export default function App() {
 	  { icon: 'Home', label: 'Home', color: 'purple', link: '/' },
 	  { icon: 'Team', label: 'Team', link: 'team-management'},
 	  { icon: 'Shop', label: 'Shop', badge: 1, link: 'shop'},
-	  { icon: 'Chat', label: 'Chat', badge: 10, link: 'chat' },
 	];
 
 	useEffect(() => {
