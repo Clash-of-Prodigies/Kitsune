@@ -48,7 +48,7 @@ export default function MatchRow({ m, onWatch }) {
       	<Group mt="sm" justify="flex-end">
         	<Button size="xs" leftSection={<IconPlayerPlay size={14} />} radius="xl"
 			variant={isLive ? 'filled' : 'light'} color={isLive ? 'red' : 'blue'} onClick={() => onWatch?.(m)}>
-          		{isLive ? 'Watch now' : isUpcoming ? 'Set reminder' : 'Replay'}
+          		{isLive ? 'Watch now' : isUpcoming ? 'Set reminder' : 'See results'}
         	</Button>
       	</Group>
     </Paper>

@@ -17,9 +17,9 @@ export default function App() {
 	const musicPlayer = useRef(null);
 
 	const navButtons = [
-	  { icon: 'Home', label: 'Home', color: 'purple', link: '/' },
-	  { icon: 'Team', label: 'Team', link: 'team-management'},
-	  { icon: 'Shop', label: 'Shop', badge: 1, link: 'shop'},
+		{ icon: 'Home', label: 'Home', color: 'purple', link: '/' },
+		{ icon: 'Team', label: 'Team', link: 'team-management'},
+		{ icon: 'Shop', label: 'Shop', badge: 1, link: 'shop'},
 	];
 
 	useEffect(() => {
