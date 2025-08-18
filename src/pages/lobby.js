@@ -2,13 +2,11 @@ import { useMemo, useState } from 'react';
 import { Box, Group, Stack, Paper, Text, Title, Badge, Button, } from '@mantine/core';
 import { ActionIcon, Avatar, Progress, ScrollArea, SimpleGrid, Image } from '@mantine/core';
 import { Tooltip, Indicator, CopyButton, rem } from '@mantine/core';
-import { IconCopy, IconCrown, IconUserX, IconArrowsLeftRight, IconBolt, IconUsers,
-    IconPlayerPlay, IconCheck, IconClock, IconBellRinging
-} from '@tabler/icons-react';
+import { IconCopy, IconCrown, IconUserX, IconArrowsLeftRight, IconBolt, } from '@tabler/icons-react';
+import { IconUsers, IconPlayerPlay, IconCheck, IconClock, IconBellRinging, } from '@tabler/icons-react';
 import IconOrImage from '../components/IconMap';
 import { Link } from 'react-router-dom';
 
-// ---- demo data (swap with backend data later) ----
 const demoPlayers = [
   { id: 'u1', name: 'Oracle (Me)', avatar: 'Jake', team: 'A', ready: true, role: 'host', ping: 23 },
   { id: 'u2', name: 'Tricky',       avatar: 'Tricky', team: 'A', ready: false, role: 'player', ping: 41 },
@@ -24,76 +22,61 @@ const roomInfo = {
 };
 
 function ReadyBadge({ ready }) {
-  return ready ? (
-    <Badge color="teal" size="xs" leftSection={<IconCheck size={12} />}>Ready</Badge>
-  ) : (
-    <Badge color="yellow" size="xs" leftSection={<IconClock size={12} />}>Waiting</Badge>
-  );
+	return ready ? (
+		<Badge color="teal" size="xs" leftSection={<IconCheck size={12} />}>Ready</Badge>
+  	) : (
+    	<Badge color="yellow" size="xs" leftSection={<IconClock size={12} />}>Waiting</Badge>
+  	);
 }
 
-// ---- Player Card ----
-function PlayerCard({
-  me = false,
-  player,
-  onToggleReady,
-  onKick,
-  onPromote,
-  onSwapTeam,
-  canManage = false,
-}) {
-  const gradient = player.ready
+function PlayerCard({ me = false, player, onToggleReady, onKick, onPromote, onSwapTeam, canManage = false, }) {
+	const gradient = player.ready
     ? 'linear-gradient(180deg, #e8fff5 0%, #ddfff6 100%)'
     : 'linear-gradient(180deg, #eef6ff 0%, #e8efff 100%)';
+	
+	return (
+	<Paper withBorder radius="md" p="sm" shadow="xs" style={{ background: gradient, borderColor: '#d9e7ff' }}>
+		<Group justify="space-between" align="center" wrap="nowrap">
+			<Group gap="sm" wrap="nowrap">
+				<Indicator color={player.ready ? 'teal' : 'gray'} processing={player.ready} inline>
+					<Avatar size="lg" radius="xl" color="blue">
+              		{IconOrImage(player.avatar)}
+            		</Avatar>
+          		</Indicator>
+          		<Box><Group gap={6}>
+              	<Text fw={700} size="sm">{player.name}</Text>
+              	{player.role === 'host' && (
+                	<Badge color="grape" size="xs" leftSection={<IconCrown size={12} />}>Host</Badge>
+              	)}
+            	</Group>
+            	<Group gap={8} mt={4}>
+              		<ReadyBadge ready={player.ready} />
+              		<Badge variant="light" size="xs" leftSection={<IconBolt size={12} />}>{player.ping} ms</Badge>
+            	</Group></Box>
+        	</Group>
 
-  return (
-    <Paper withBorder radius="md" p="sm" shadow="xs" style={{ background: gradient, borderColor: '#d9e7ff' }}>
-      <Group justify="space-between" align="center" wrap="nowrap">
-        <Group gap="sm" wrap="nowrap">
-          <Indicator color={player.ready ? 'teal' : 'gray'} processing={player.ready} inline>
-            <Avatar size="lg" radius="xl" color="blue">
-              {IconOrImage(player.avatar)}
-            </Avatar>
-          </Indicator>
-          <Box>
-            <Group gap={6}>
-              <Text fw={700} size="sm">{player.name}</Text>
-              {player.role === 'host' && (
-                <Badge color="grape" size="xs" leftSection={<IconCrown size={12} />}>Host</Badge>
-              )}
-            </Group>
-            <Group gap={8} mt={4}>
-              <ReadyBadge ready={player.ready} />
-              <Badge variant="light" size="xs" leftSection={<IconBolt size={12} />}>
-                {player.ping} ms
-              </Badge>
-            </Group>
-          </Box>
-        </Group>
-
-        <Group gap="xs" wrap="nowrap">
-          {me ? (
-            <Button size="xs" radius="xl" onClick={onToggleReady} variant={player.ready ? 'light' : 'filled'}>
-              {player.ready ? 'Unready' : 'Ready up'}
-            </Button>
-          ) : canManage ? (
-            <>
-              <Tooltip label="Swap team">
-                <ActionIcon variant="light" onClick={onSwapTeam}><IconArrowsLeftRight size={16} /></ActionIcon>
-              </Tooltip>
-              {player.role !== 'host' && (
-                <Tooltip label="Promote to host">
-                  <ActionIcon variant="light" onClick={onPromote}><IconCrown size={16} /></ActionIcon>
-                </Tooltip>
-              )}
-              <Tooltip label="Kick">
-                <ActionIcon variant="subtle" color="red" onClick={onKick}><IconUserX size={16} /></ActionIcon>
-              </Tooltip>
-            </>
-          ) : null}
-        </Group>
-      </Group>
+        	<Group gap="xs" wrap="nowrap">
+          	{me ? (
+            	<Button size="xs" radius="xl" onClick={onToggleReady} variant={player.ready ? 'light' : 'filled'}>
+              	{player.ready ? 'Unready' : 'Ready up'}
+            	</Button>
+          	) : canManage ? (
+            	<><Tooltip label="Swap team">
+                	<ActionIcon variant="light" onClick={onSwapTeam}><IconArrowsLeftRight size={16} /></ActionIcon>
+            	</Tooltip>
+              	{player.role !== 'host' && (
+                	<Tooltip label="Promote to host">
+                  		<ActionIcon variant="light" onClick={onPromote}><IconCrown size={16} /></ActionIcon>
+                	</Tooltip>
+              	)}
+              	<Tooltip label="Kick">
+                	<ActionIcon variant="subtle" color="red" onClick={onKick}><IconUserX size={16} /></ActionIcon>
+              	</Tooltip></>
+          	) : null}
+        	</Group>
+      	</Group>
     </Paper>
-  );
+	);
 }
 
 function TeamColumn({ team = {}, players, meId, onToggleReady, onKick, onPromote, onMove }) {
@@ -220,11 +203,6 @@ export default function Lobby() {
             		</CopyButton>
           		</Group>
         	</Group>
-
-        	{/* <Group align="center" gap="sm">
-          		<Text size="sm" c="dimmed">{totals.ready} / {totals.total} ready</Text>
-          		<Badge size="sm" variant="light" color={totals.pct === 100 ? 'teal' : 'blue'}>{totals.pct}%</Badge>
-        	</Group> */}
       	</Paper>
 
 		<Progress.Root my={'xs'} h={'max-content'} bdrs={'xl'}>
@@ -238,7 +216,6 @@ export default function Lobby() {
 			</Progress.Section>
 		</Progress.Root>
 
-      	{/* <Progress value={totals.pct} radius="xl" my={'sm'}/> */}
 
       	{/* Teams */}
       	<SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="md">
