@@ -1,6 +1,7 @@
 import { Group,  Paper, Text, Badge, Button, Avatar, Divider } from '@mantine/core';
-import { IconPlayerPlay, IconBellRinging, IconClock } from '@tabler/icons-react';
+import { IconPlayerPlay, IconBellRinging, IconClock, IconBell } from '@tabler/icons-react';
 import IconOrImage from './IconMap';
+import { Link } from 'react-router-dom';
 
 export default function MatchRow({ m, onWatch }) {
 	const isLive = m.live;
@@ -17,7 +18,7 @@ export default function MatchRow({ m, onWatch }) {
           	<Text fw={600} c="dimmed">{m.round}</Text>
         	</Group>
         	<Text size="sm" c="dimmed">
-				{new Date(m.datetime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+				{(new Date(m.datetime)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
         	</Text>
       	</Group>
 
@@ -46,9 +47,11 @@ export default function MatchRow({ m, onWatch }) {
       	</Group>
 
       	<Group mt="sm" justify="flex-end">
-        	<Button size="xs" leftSection={<IconPlayerPlay size={14} />} radius="xl"
-			variant={isLive ? 'filled' : 'light'} color={isLive ? 'red' : 'blue'} onClick={() => onWatch?.(m)}>
-          		{isLive ? 'Watch now' : isUpcoming ? 'Set reminder' : 'See results'}
+        	<Button size="xs" radius="xl"
+			leftSection={ isUpcoming ? <IconBell size={14} /> : <IconPlayerPlay size={14} /> }
+			variant={ isLive ? 'filled' : 'light'} color={ isLive ? 'red' : 'blue'}
+			component={ isLive ? Link: 'button'} {...( isLive ? {to: `lobby?v=${m.id}`} : {onClick: () => {}})}>
+          		{isLive ? 'Enter lobby' : isUpcoming ? 'Set Reminder': 'See results'}
         	</Button>
       	</Group>
     </Paper>
