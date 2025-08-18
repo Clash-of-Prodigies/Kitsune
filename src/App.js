@@ -3,6 +3,7 @@ import { HashRouter, Route, Routes} from 'react-router-dom';
 import Home from './pages/home.js';
 import Shop from './pages/shop.js';
 import Unknown from './pages/unknown.js';
+import Lobby from './pages/lobby.js';
 import { MantineProvider } from '@mantine/core';
 import '@mantine/core/styles.css';
 import {useState, useEffect, useRef} from 'react';
@@ -71,6 +72,13 @@ export default function App() {
 					</MantineProvider>
 				</React.StrictMode>
 				} />
+			<Route path='/lobby' element={
+				<React.StrictMode>
+					<MantineProvider withGlobalClasses withNormalizeCSS>
+						<Lobby />
+					</MantineProvider>
+				</React.StrictMode>
+			} />
 			<Route path="*" element={
 				<React.StrictMode>
 					<MantineProvider withGlobalStyles withNormalizeCSS>
