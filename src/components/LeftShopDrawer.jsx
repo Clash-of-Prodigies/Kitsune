@@ -3,7 +3,7 @@ import { Drawer, Stack, Group, Paper, Text, TextInput, ActionIcon, Badge, Button
 import { ScrollArea, Divider, Avatar, NavLink, Switch, Box, Tooltip, } from '@mantine/core';
 import { IconSearch, IconChevronRight, IconChevronDown, IconSun, IconMoon } from '@tabler/icons-react'; 
 import { IconLogin, IconLogout, } from '@tabler/icons-react';
-import IconOrImage from '../components/IconMap';
+import IconOrImage from './IconMap';
 import { Link } from 'react-router-dom'
 
 function Dropdown({ children, title, dependency }) {
@@ -43,7 +43,7 @@ export default function LeftDrawer({ ui = {}, categories = [], pages = [], dossi
   	const headerGradient = 'linear-gradient(180deg,#dff0ff,#e9edff)';
 
   	return (
-    <Drawer opened={ui.leftDrawer} onClose={ui.OpenLeftDrawer} pos="left" size={325} withCloseButton={false}
+    <Drawer opened={ui.leftDrawer} onClose={() => ui.OpenLeftDrawer(false)} position="left" size={325} withCloseButton={false}
     styles={{
 		content: { background: bgGradient, borderRight: '1px solid #dbe7ff',},
     }}>

@@ -90,7 +90,7 @@ export default function RightDrawer({ ui = {}, }) {
 	const clearCart = () => ui.setCart([]);
 
   	return (
-    <Drawer opened={ui.rightDrawer} onClose={ui.OpenRightDrawer} position="right" size={325}
+    <Drawer opened={ui.rightDrawer} onClose={() => ui.OpenRightDrawer(false)} position="right" size={325}
 	withCloseButton={false} styles={{
         content: {
 			background: 'linear-gradient(180deg, #eaf3ff 0%, #f4f7ff 100%)',

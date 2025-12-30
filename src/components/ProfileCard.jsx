@@ -1,4 +1,4 @@
-import { Paper, Text, Avatar, Group, Stack, Grid, Center, Divider, Modal, Box, ActionIcon } from '@mantine/core';
+import { Paper, Text, Avatar, Group, Stack, Grid, Center, Divider, Modal, Box, ActionIcon, Container } from '@mantine/core';
 import { IconPencil, IconUpload, IconTarget, IconSkateboard, } from '@tabler/icons-react';
 import { IconAward, IconMapPin } from '@tabler/icons-react';
 import { useState } from 'react';
@@ -50,7 +50,7 @@ function ProfileCardBar({children, title, value={}, icon}) {
 
 function Profile({ ui = {}, data = {} }) {
   return (
-    <Paper shadow="lg" radius="xl" w='100%' m='auto' p="md" withBorder style={{
+    <Paper shadow="lg" radius="xl" m='auto' p="md" withBorder style={{
         background: 'linear-gradient(to bottom, #d2ebff, #a2c4ff)',
         border: '3px solid #1a629cff'
     }}

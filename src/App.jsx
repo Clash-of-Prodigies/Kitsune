@@ -1,13 +1,13 @@
-import './App.css';
-import { HashRouter, Route, Routes} from 'react-router-dom';
-import Home from './pages/home.js';
-import Shop from './pages/shop.js';
-import Unknown from './pages/unknown.js';
-import Lobby from './pages/lobby.js';
-import { MantineProvider } from '@mantine/core';
+import React, {useState, useEffect, useRef} from 'react';
+import { Route, Routes} from 'react-router-dom';
+
 import '@mantine/core/styles.css';
-import {useState, useEffect, useRef} from 'react';
-import React from 'react';
+import './App.css';
+
+import Home from './pages/home';
+import Shop from './pages/shop';
+import Unknown from './pages/unknown';
+import Lobby from './pages/lobby';
 
 export default function App() {
 	const [dossier, Mutate] = useState({});
@@ -50,43 +50,29 @@ export default function App() {
 	}
 
 	return (
-	<HashRouter>
-		<audio ref={musicPlayer} muted autoPlay style={{ display: 'none' }}
+	<>
+		<audio ref={musicPlayer} muted style={{ display: 'none' }}
 		onEnded={() => {
 			const tempPlaylist = [...playlist];
 			tempPlaylist.push(tempPlaylist.shift());
 			Stream(tempPlaylist);
 		}}/>
 		<Routes>
-			<Route index path="/" element={
-				<React.StrictMode>
-					<MantineProvider withGlobalStyles withNormalizeCSS>
-						<Home ui={globalUI} dossier={dossier} broadcast={broadcast} pages={navButtons} />
-					</MantineProvider>
-				</React.StrictMode>
-			} />
-			<Route path="/shop" element={
-				<React.StrictMode>
-					<MantineProvider withGlobalStyles withNormalizeCSS>
-						<Shop ui={globalUI} dossier={dossier.info} pages={navButtons} />
-					</MantineProvider>
-				</React.StrictMode>
-				} />
-			<Route path='/lobby' element={
-				<React.StrictMode>
-					<MantineProvider withGlobalClasses withNormalizeCSS>
-						<Lobby />
-					</MantineProvider>
-				</React.StrictMode>
-			} />
-			<Route path="*" element={
-				<React.StrictMode>
-					<MantineProvider withGlobalStyles withNormalizeCSS>
-						<Unknown />
-					</MantineProvider>
-				</React.StrictMode>
-				} />
+			<Route index element={<Home ui={globalUI} dossier={dossier} broadcast={broadcast} pages={navButtons} />} />
+			<Route path="/shop" element={<Shop ui={globalUI} dossier={dossier.info} pages={navButtons} />} />
+			<Route path='/lobby' element={<Lobby />} />
+			<Route path="*" element={<Unknown />} />
 		</Routes>
-	</HashRouter>		
+	</>		
   );
 }
+
+import { CountdownTimer } from './components/CountdownTimer';
+export function Countdown() {
+	const [target, _] = useState(
+		() => new Date('2026-01-11T23:59:59')
+	);
+
+  return ( <CountdownTimer targetDate={target} label="Time remaining"   eventName="Clash of Prodigies"
+  tagline="The arena awakens. The prodigies arrive." />);
+};

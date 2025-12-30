@@ -19,7 +19,7 @@ function ResourceBar({ resources = {}}) {
 			{resources.map((res, index) => (
 				<Group gap='xs' key={index} onClick={res.action} style={{ cursor: 'pointer'}}>
 					{res.title === 'avatar' ? <Avatar>{IconOrImage(res.icon)}</Avatar> : IconOrImage(res.icon, 20)}
-					<Text fw={700} size="sm">{res.label && typeof res.label === 'string' ? res.label : res.label.toLocaleString()}</Text>
+					<Text fw={700} size="sm">{res.label && typeof res.label === 'string' ? res.label : "label"}</Text>
 					{res.title !== 'avatar' && res.title !== 'settings' &&
 						<ActionIcon variant="light" color="yellow" size="sm"><IconPlus size={14} /></ActionIcon>}
 				</Group>
@@ -112,7 +112,7 @@ function RightSidebarButton({ ui = {}, icon, badge, childIcons = [], }) {
 
 function LeftSidebar({ ui = {}, competitions = {} }) {
 	return (
-    <Stack spacing="sm" pos='absolute' left={10}>
+    <Stack spacing="sm" pos='absolute' left={10} className='left-10'>
 		<RightSidebarButton ui={ui} icon={<IconTrophy />} childIcons={competitions.interhouse} />
 		<RightSidebarButton ui={ui} icon={<IconBuildingCastle />} childIcons={competitions.houses} />
 		<LeftSidebarButton icon={<IconNews />} action={() => ui.ReadNews(true)} />
@@ -121,7 +121,7 @@ function LeftSidebar({ ui = {}, competitions = {} }) {
 	);
 }
 
-function RightSidebar({ ui = {} }) {
+function RightSidebar() {
 	return (
     <Stack spacing="sm" pos='absolute' right={10}>
 		<RightSidebarButton icon={<IconHours24 />}  badge={1} />
@@ -139,7 +139,7 @@ function Layout({ children, ui, user = {}, competitions = {}, pages = [] }) {
 		{ title: 'settings', icon: 'Settings', label: '', action: () => ui.OpenSettings(true) },
 	];
 	return (
-    <Container fluid px={0} h='100vh' display='flex' style={{
+    <Container fluid px={0} h='100vh' w={'100%'} display='flex' style={{
         overflow: 'hidden', backgroundColor: '#e0f0ff', flexDirection: 'column',
     }}>
 		{/* Top bar */}
@@ -175,8 +175,8 @@ export default function Home({ ui = {}, dossier = {}, broadcast = {}, pages = []
 	}
 
 	return (
-	<Layout ui={globalUI} user={dossier.info} competitions={broadcast.events} pages={pages}>
-		<Center h='100%'>
+	<Layout ui={globalUI} user={dossier.info} competitions={broadcast.events} pages={pages} >
+		<Center>
 			<ProfileCard ui={globalUI} data={dossier.info} avatars={broadcast.avatars} />
 			<NewsCard ui={globalUI} />
 			<CalendarCard ui={globalUI} />
