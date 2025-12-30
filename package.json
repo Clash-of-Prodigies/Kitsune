@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:gh": "vite build --base=/Kitsune/",
+    "build:cf": "vite build --base=/",
     "lint": "eslint .",
     "preview": "vite preview"
   },

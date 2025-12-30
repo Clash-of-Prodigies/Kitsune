@@ -8,7 +8,7 @@ import '@mantine/core/styles.css';
 createRoot(document.getElementById('root')).render(
 <StrictMode>
         <MantineProvider withGlobalStyles withNormalizeCSS>
-            <HashRouter><App /></HashRouter>
+            <HashRouter basename={import.meta.env.BASE_URL}><App /></HashRouter>
             <Countdown />
         </MantineProvider>
 </StrictMode>
