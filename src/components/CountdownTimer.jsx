@@ -17,10 +17,10 @@ import {
 
 
 const SOCIALS = {
-  facebook: 'https://facebook.com/your-page',
-  instagram: 'https://instagram.com/your-page',
-  tiktok: 'https://tiktok.com/@your-page',
-  whatsapp: 'https://wa.me/15551234567', // or your WhatsApp short link
+  facebook: 'https://facebook.com/clashofprodigies',
+  instagram: 'https://instagram.com/clashofprodigies',
+  tiktok: 'https://tiktok.com/@clashofprodigies',
+  whatsapp: 'https://chat.whatsapp.com/KZ8XP7j3ECy9zzh8HXRKo3',
 };
 
 
