@@ -31,7 +31,10 @@ export default function App() {
 					"Content-Type": "application/json",
 				},
 				credentials: "include"
-			})
+			}).catch((err) => {
+				if (err.response && err.response.status === 401) {
+				window.location.href = `${import.meta.env.VITE_AUTH_URL}/login?redirect=${window.location.origin}`;
+			}})
 			.then(res => res.json()),
 			fetch(`${import.meta.env.VITE_BACKEND_URL}/broadcast`, {
 				headers: {

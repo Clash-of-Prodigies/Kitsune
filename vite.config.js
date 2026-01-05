@@ -7,7 +7,7 @@ export default defineConfig(({mode}) => {
   var VITE_AUTH_BASE_URL = '';
   var VITE_BACKEND_BASE_URL = '';
   if (mode === 'development') {
-    VITE_AUTH_BASE_URL = 'http://Cerberus:5000'
+    VITE_AUTH_BASE_URL = 'http://clash-of-prodigies.github.io/Cerberus'
     VITE_BACKEND_BASE_URL = 'http://Shadow:5000'
   } else {
     VITE_AUTH_BASE_URL = 'https://auth.clashofprodigies.org'
