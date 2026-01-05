@@ -31,18 +31,23 @@ export default function App() {
 					"Content-Type": "application/json",
 				},
 				credentials: "include"
-			}).catch((err) => {
-				if (err.response && err.response.status === 401) {
-				window.location.href = `${import.meta.env.VITE_AUTH_URL}/login?redirect=${window.location.origin}`;
-			}})
-			.then(res => res.json()),
+			})
+			.then(res => {
+				res.json();
+				if ("redirect" in res) window.location.href = import.meta.env.VITE_AUTH_PAGE_URL;
+				return res.json();
+			}),
 			fetch(`${import.meta.env.VITE_BACKEND_URL}/broadcast`, {
 				headers: {
 					"Content-Type": "application/json",
 				},
 				credentials: "include"
 			})
-			.then(res => res.json()),
+			.then(res => {
+				res.json();
+				if ("redirect" in res) window.location.href = import.meta.env.VITE_AUTH_PAGE_URL;
+				return res.json();
+			}),
 		])
 		.then(([user, announcements, ]) => [user, announcements, ])
 		.then((res) => {Mutate(res[0]); Listen(res[1]); Stream(res[1].playlists[res[0].info.playlist]); /*console.log(res);*/})
