@@ -34,7 +34,15 @@ export default function App() {
 			})
 			.then(res => {
 				let body = res.json();
-				if ("redirect" in body) window.location.href = import.meta.env.VITE_AUTH_PAGE_URL;
+				console.log(res);
+				console.log(body);
+				if (res.status === 401) {
+					if ("redirect" in body) {
+						window.location.href = `https://${body.redirect}?redirect=${window.location.hostname}`;
+					} else {
+						window.location.href = `${import.meta.env.VITE_AUTH_PAGE_URL}?redirect=${window.location.hostname}`;
+					}
+				}
 				return body;
 			}),
 			fetch(`${import.meta.env.VITE_BACKEND_URL}/broadcast`, {
@@ -45,12 +53,20 @@ export default function App() {
 			})
 			.then(res => {
 				let body = res.json();
-				if ("redirect" in body) window.location.href = import.meta.env.VITE_AUTH_PAGE_URL;
+				console.log(res);
+				console.log(body);
+				if (res.status === 401) {
+					if ("redirect" in body) {
+						window.location.href = `https://${body.redirect}?redirect=${window.location.hostname}`;
+					} else {
+						window.location.href = `${import.meta.env.VITE_AUTH_PAGE_URL}?redirect=${window.location.hostname}`;
+					}
+				}
 				return body;
 			}),
 		])
 		.then(([user, announcements, ]) => [user, announcements, ])
-		.then((res) => {Mutate(res[0]); Listen(res[1]); Stream(res[1].playlists[res[0].info.playlist]); /*console.log(res);*/})
+		.then(([d, p, ]) => {Mutate(d); Listen(p); Stream(p.playlists[d.info.playlist]); /*console.log(res);*/})
 		.catch((err) => Spit(err))
 		.finally(() => Load(false));
 	}, [loading]);
