@@ -50,11 +50,11 @@ export default function App() {
 		])
 		.then(([user, announcements, ]) => [user, announcements, ])
 		.then(([d, p, ]) => {
-			if (!d || !d?.info) {
-				removeAuthToken();
-				window.location.href = d?.redirect ?? import.meta.env.VITE_AUTH_PAGE_URL;
-				return;
-			}
+			// if (!d || !d?.info) {
+			// 	removeAuthToken();
+			// 	window.location.href = d?.redirect ?? import.meta.env.VITE_AUTH_PAGE_URL;
+			// 	return;
+			// }
 			Mutate(d); Listen(p); Stream(p.playlists[d?.info?.playlist]);
 			console.log(d);
 		})
