@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, } from 'react';
 import { Route, Routes} from 'react-router-dom';
 
 import '@mantine/core/styles.css';
@@ -51,6 +51,15 @@ export default function App() {
 		if (!musicPlayer.current) return;
 		musicPlayer.current.src = playlist ? `${import.meta.env.VITE_BACKEND_URL}/media/${playlist[0]}.mp3` : null ;
 	}, [playlist])
+
+	useEffect(() => {
+		if (dossier) return;
+		let AUTH_PAGE = import.meta.env.VITE_AUTH_PAGE_URL;
+		if (!dossier?.info) setTimeout(() => {
+			window.location.href = AUTH_PAGE;
+			return <p>Redirecting to authentication page...</p>
+		}, 3000);
+	}, [dossier]);
 
 	if (loading) return null;
 	if (loading) return <p>Loading data...</p>;
