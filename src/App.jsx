@@ -45,7 +45,7 @@ export default function App() {
 		])
 		.then(([user, announcements, ]) => [user, announcements, ])
 		.then(([d, p, ]) => {
-			if (!d || !d?.info) window.location.href = d?.redirect ?? import.meta.env.VITE_AUTH_PAGE_URL;
+			//if (!d || !d?.info) window.location.href = d?.redirect ?? import.meta.env.VITE_AUTH_PAGE_URL;
 			Mutate(d); Listen(p); Stream(p.playlists[d?.info?.playlist]);
 			console.log(d);
 		})
