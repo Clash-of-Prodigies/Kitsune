@@ -33,9 +33,9 @@ export default function App() {
 				credentials: "include"
 			})
 			.then(res => {
-				res.json();
-				if ("redirect" in res) window.location.href = import.meta.env.VITE_AUTH_PAGE_URL;
-				return res.json();
+				let body = res.json();
+				if ("redirect" in body) window.location.href = import.meta.env.VITE_AUTH_PAGE_URL;
+				return body;
 			}),
 			fetch(`${import.meta.env.VITE_BACKEND_URL}/broadcast`, {
 				headers: {
@@ -44,9 +44,9 @@ export default function App() {
 				credentials: "include"
 			})
 			.then(res => {
-				res.json();
-				if ("redirect" in res) window.location.href = import.meta.env.VITE_AUTH_PAGE_URL;
-				return res.json();
+				let body = res.json();
+				if ("redirect" in body) window.location.href = import.meta.env.VITE_AUTH_PAGE_URL;
+				return body;
 			}),
 		])
 		.then(([user, announcements, ]) => [user, announcements, ])
