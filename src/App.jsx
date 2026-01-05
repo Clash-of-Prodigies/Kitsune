@@ -52,17 +52,17 @@ export default function App() {
 				credentials: "include"
 			})
 			.then(res => {
-				let body = res.json();
+				let obj = res.json();
 				console.log(res);
-				console.log(body);
+				console.log(obj);
 				if (res.status === 401) {
-					if ("redirect" in body) {
-						window.location.href = `https://${body.redirect}?redirect=${window.location.hostname}`;
+					if ("redirect" in obj) {
+						window.location.href = `https://${obj.redirect}?redirect=${window.location.hostname}`;
 					} else {
 						window.location.href = `${import.meta.env.VITE_AUTH_PAGE_URL}?redirect=${window.location.hostname}`;
 					}
 				}
-				return body;
+				return obj;
 			}),
 		])
 		.then(([user, announcements, ]) => [user, announcements, ])
