@@ -42,7 +42,7 @@ export default function App() {
 			.then(res => res.json()),
 		])
 		.then(([user, announcements, ]) => [user, announcements, ])
-		.then(([d, p, ]) => {Mutate(d); Listen(p); Stream(p.playlists[d?.info?.playlist]); console.log(d);})
+		.then(([d, p, ]) => {Mutate(d); Listen(p); Stream(p.playlists[d?.info?.playlist]); })
 		.catch((err) => Spit(err))
 		.finally(() => Load(false));
 	}, [loading]);
@@ -53,10 +53,9 @@ export default function App() {
 	}, [playlist])
 
 	useEffect(() => {
-		if (dossier) return;
 		let AUTH_PAGE = import.meta.env.VITE_AUTH_PAGE_URL;
-		if (!dossier?.info) setTimeout(() => {
-			window.location.href = AUTH_PAGE;
+		if (!dossier || dossier?.info) setTimeout(() => {
+			window.location.href = dossier?.redirect ?? AUTH_PAGE;
 			return <p>Redirecting to authentication page...</p>
 		}, 3000);
 	}, [dossier]);
