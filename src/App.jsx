@@ -42,7 +42,7 @@ export default function App() {
 			.then(res => res.json()),
 		])
 		.then(([user, announcements, ]) => [user, announcements, ])
-		.then(([d, p, ]) => {Mutate(d); Listen(p); Stream(p.playlists[d.info.playlist]); /*console.log(res);*/})
+		.then(([d, p, ]) => {Mutate(d); Listen(p); Stream(p.playlists[d.info.playlist]); console.log(d);})
 		.catch((err) => Spit(err))
 		.finally(() => Load(false));
 	}, [loading]);
