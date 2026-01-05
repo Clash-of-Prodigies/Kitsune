@@ -41,8 +41,8 @@ export default function App() {
 	}, [playlist])
 
 	if (loading) return null;
-	// if (loading) return <p>Loading data...</p>;
-	//if (error) return <p>Error: {error.message}</p>;
+	if (loading) return <p>Loading data...</p>;
+	if (error) return <p>Error: {error.message}</p>;
 
 	const globalUI = {
 		musicPlayer,
