@@ -71,7 +71,7 @@ export default function Shop({ ui = {}, dossier = {}, pages = [] }) {
 	useEffect(() => {
 		if (!loading) return;
 		Promise.all([
-			axios.get('http://localhost:5000/shop/items'),
+			axios.get(`${import.meta.env.BACKEND_URL}/shop/items`),
 		])
 		.then((res) => {setItems(res[0].data); console.log(res);})
 		.catch((err) => Spit(err))
@@ -128,7 +128,7 @@ export default function Shop({ ui = {}, dossier = {}, pages = [] }) {
 			overflow: 'hidden',
 		}}>
 			<Group gap={1} onClick={() => OpenLeftDrawer(true)} style={{ cursor: 'pointer'}}>
-				<ActionIcon variant="transparent"><Image src={'http://localhost:5000/media/dark.png'}/></ActionIcon>
+				<ActionIcon variant="transparent"><Image src={`${import.meta.env.BACKEND_URL}/media/dark.png`}/></ActionIcon>
         		<Text fw={900} size="lg">Prodigy</Text>
 			</Group>
 			<Input rightSection={<IconSearch size={16} />} placeholder="Search items..." w={'30vw'} />

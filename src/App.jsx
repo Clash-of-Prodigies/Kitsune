@@ -26,8 +26,8 @@ export default function App() {
 	useEffect(() => {
 		if (!loading) return;
 		Promise.all([
-			fetch('http://localhost:5000/data').then(res => res.json()),
-			fetch('http://localhost:5000/broadcast').then(res => res.json()),
+			fetch(import.meta.env.BACKEND_URL + '/data').then(res => res.json()),
+			fetch(import.meta.env.BACKEND_URL + 'broadcast').then(res => res.json()),
 		])
 		.then(([user, announcements, ]) => [user, announcements, ])
 		.then((res) => {Mutate(res[0]); Listen(res[1]); Stream(res[1].playlists[res[0].info.playlist]); /*console.log(res);*/})
@@ -37,7 +37,7 @@ export default function App() {
 
 	useEffect(() => {
 		if (!musicPlayer.current) return;
-		musicPlayer.current.src = playlist ? `http://localhost:5000/media/${playlist[0]}.mp3` : null ;
+		musicPlayer.current.src = playlist ? `${import.meta.env.BACKEND_URL}/media/${playlist[0]}.mp3` : null ;
 	}, [playlist])
 
 	if (loading) return null;
