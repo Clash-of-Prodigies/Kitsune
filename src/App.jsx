@@ -28,14 +28,14 @@ export default function App() {
 		Promise.all([
 			fetch(`${import.meta.env.VITE_BACKEND_URL}/data`, {
 				headers: {
-					"ngrok-skip-browser-warning": "true",
+					"Content-Type": "application/json",
 				},
 				credentials: "include"
 			})
 			.then(res => res.json()),
 			fetch(`${import.meta.env.VITE_BACKEND_URL}/broadcast`, {
 				headers: {
-					"ngrok-skip-browser-warning": "true",
+					"Content-Type": "application/json",
 				},
 				credentials: "include"
 			})
