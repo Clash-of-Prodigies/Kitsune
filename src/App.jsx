@@ -1,6 +1,8 @@
 import React, {useState, useEffect, useRef, } from 'react';
 import { Route, Routes} from 'react-router-dom';
 
+import { getAuthToken, removeAuthToken } from './utils';
+
 import '@mantine/core/styles.css';
 import './App.css';
 
@@ -23,6 +25,8 @@ export default function App() {
 		{ icon: 'Shop', label: 'Shop', badge: 1, link: 'shop'},
 	];
 
+	const authToken = getAuthToken();
+
 	useEffect(() => {
 		if (!loading) return;
 		Promise.all([
@@ -30,6 +34,7 @@ export default function App() {
 				headers: {
 					"Content-Type": "application/json",
 					"ngrok-skip-browser-warning": "true",
+					"Authorization": `Bearer ${authToken}`,
 				},
 				credentials: "include"
 			})
@@ -45,13 +50,17 @@ export default function App() {
 		])
 		.then(([user, announcements, ]) => [user, announcements, ])
 		.then(([d, p, ]) => {
-			//if (!d || !d?.info) window.location.href = d?.redirect ?? import.meta.env.VITE_AUTH_PAGE_URL;
+			if (!d || !d?.info) {
+				removeAuthToken();
+				window.location.href = d?.redirect ?? import.meta.env.VITE_AUTH_PAGE_URL;
+				return;
+			}
 			Mutate(d); Listen(p); Stream(p.playlists[d?.info?.playlist]);
 			console.log(d);
 		})
 		.catch((err) => Spit(err))
 		.finally(() => Load(false));
-	}, [loading]);
+	}, [loading, authToken]);
 
 	useEffect(() => {
 		if (!musicPlayer.current) return;
