@@ -29,6 +29,7 @@ export default function App() {
 			fetch(`${import.meta.env.VITE_BACKEND_URL}/data`, {
 				headers: {
 					"Content-Type": "application/json",
+					"ngrok-skip-browser-warning": "true",
 				},
 				credentials: "include"
 			})
@@ -36,6 +37,7 @@ export default function App() {
 			fetch(`${import.meta.env.VITE_BACKEND_URL}/broadcast`, {
 				headers: {
 					"Content-Type": "application/json",
+					"ngrok-skip-browser-warning": "true",
 				},
 				credentials: "include"
 			})
