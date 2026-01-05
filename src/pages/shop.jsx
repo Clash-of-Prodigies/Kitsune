@@ -71,7 +71,12 @@ export default function Shop({ ui = {}, dossier = {}, pages = [] }) {
 	useEffect(() => {
 		if (!loading) return;
 		Promise.all([
-			axios.get(`${import.meta.env.BACKEND_URL}/shop/items`),
+			axios.get(`${import.meta.env.BACKEND_URL}/shop/items`, {
+				headers: {
+					"ngrok-skip-browser-warning": "true",
+				},
+				credentials: "include"
+			}),
 		])
 		.then((res) => {setItems(res[0].data); console.log(res);})
 		.catch((err) => Spit(err))
