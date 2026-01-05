@@ -11,7 +11,7 @@ export default defineConfig(({mode}) => {
     VITE_BACKEND_BASE_URL = 'http://Shadow:5000'
   } else {
     VITE_AUTH_BASE_URL = 'https://auth.clashofprodigies.org'
-    VITE_BACKEND_BASE_URL = 'https://sobbingly-hydrochloric-joel.ngrok-free.dev/auth'
+    VITE_BACKEND_BASE_URL = 'https://sobbingly-hydrochloric-joel.ngrok-free.dev/api'
   }
   return {
     define: { 
