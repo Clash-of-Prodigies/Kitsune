@@ -26,8 +26,20 @@ export default function App() {
 	useEffect(() => {
 		if (!loading) return;
 		Promise.all([
-			fetch(`${import.meta.env.VITE_BACKEND_URL}/data`).then(res => res.json()),
-			fetch(`${import.meta.env.VITE_BACKEND_URL}/broadcast`).then(res => res.json()),
+			fetch(`${import.meta.env.VITE_BACKEND_URL}/data`, {
+				headers: {
+					"ngrok-skip-browser-warning": "true",
+				},
+				credentials: "include"
+			})
+			.then(res => res.json()),
+			fetch(`${import.meta.env.VITE_BACKEND_URL}/broadcast`, {
+				headers: {
+					"ngrok-skip-browser-warning": "true",
+				},
+				credentials: "include"
+			})
+			.then(res => res.json()),
 		])
 		.then(([user, announcements, ]) => [user, announcements, ])
 		.then((res) => {Mutate(res[0]); Listen(res[1]); Stream(res[1].playlists[res[0].info.playlist]); /*console.log(res);*/})
