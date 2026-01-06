@@ -4,3 +4,5 @@ function normalizeBase(base, defaultPath = "/auth") {
   if (!trimmed) return defaultPath;
   return trimmed.endsWith("/") ? trimmed.slice(0, -1) : trimmed;
 }
+
+export { normalizeBase };
