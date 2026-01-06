@@ -1,7 +1,10 @@
-import { useState, useEffect, } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Box, Group, Text, Paper, Button, Avatar, Image, Title, Tooltip, } from '@mantine/core';
 import { Badge, Input, ScrollArea, ActionIcon, Stack, } from '@mantine/core';
 import { IconShoppingCart, IconSearch, IconPlus, IconInfoCircleFilled } from '@tabler/icons-react';
+
+import { normalizeBase } from '../utils.js';
+
 import IconOrImage from '../components/IconMap';
 import RightDrawer from '../components/RightShopDrawer';
 import LeftDrawer from '../components/LeftShopDrawer';
@@ -68,10 +71,15 @@ export default function Shop({ ui = {}, dossier = {}, pages = [] }) {
 	const [rightDrawer, OpenRightDrawer] = useState(false);
 	const [category, setCategory] = useState('Me');
 
+	const SHOP_API_URL = useMemo(
+		() => normalizeBase(`${import.meta.env.VITE_BACKEND_URL}/shop`),
+		[]
+	);
+
 	useEffect(() => {
 		if (!loading) return;
 		Promise.all([
-			axios.get(`${import.meta.env.BACKEND_URL}/shop/items`, {
+			axios.get(`${SHOP_API_URL}/items`, {
 				headers: {
 					"ngrok-skip-browser-warning": "true",
 				},
@@ -81,7 +89,7 @@ export default function Shop({ ui = {}, dossier = {}, pages = [] }) {
 		.then((res) => {setItems(res[0].data); console.log(res);})
 		.catch((err) => Spit(err))
 		.finally(() => Load(false));
-	}, [loading]);
+	}, [loading, SHOP_API_URL]);
 
 	useEffect(() => {
 		const options = { rootMargin: '0px', threshold: 0.5 };

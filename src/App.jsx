@@ -1,7 +1,7 @@
-import React, {useState, useEffect, useRef, } from 'react';
+import React, {useState, useEffect, useRef, useMemo } from 'react';
 import { Route, Routes} from 'react-router-dom';
 
-import { getAuthToken, removeAuthToken } from './utils';
+import { normalizeBase } from './utils.js';
 
 import '@mantine/core/styles.css';
 import './App.css';
@@ -19,27 +19,36 @@ export default function App() {
 	const [playlist, Stream] = useState([])
 	const musicPlayer = useRef(null);
 
+	const AUTH_API_URL = useMemo(
+		() => normalizeBase(`${import.meta.env.VITE_BACKEND_URL}/auth`),
+		[]
+	);
+
+	const APP_BASE = useMemo(
+		() => normalizeBase(import.meta.env.VITE_APP_URL, "https://app.clashofprodigies.org"),
+		[]
+	);
+
 	const navButtons = [
 		{ icon: 'Home', label: 'Home', color: 'purple', link: '/' },
 		{ icon: 'Team', label: 'Team', link: 'team-management'},
 		{ icon: 'Shop', label: 'Shop', badge: 1, link: 'shop'},
 	];
 
-	const authToken = getAuthToken();
-
 	useEffect(() => {
 		if (!loading) return;
+		const dossierUrl = new URL('/data', AUTH_API_URL);
+		const broadcastUrl = new URL('/broadcast', AUTH_API_URL);
 		Promise.all([
-			fetch(`${import.meta.env.VITE_BACKEND_URL}/data`, {
+			fetch(dossierUrl, {
 				headers: {
 					"Content-Type": "application/json",
 					"ngrok-skip-browser-warning": "true",
-					"Authorization": `Bearer ${authToken}`,
 				},
 				credentials: "include"
 			})
 			.then(res => res.json()),
-			fetch(`${import.meta.env.VITE_BACKEND_URL}/broadcast`, {
+			fetch(broadcastUrl, {
 				headers: {
 					"Content-Type": "application/json",
 					"ngrok-skip-browser-warning": "true",
@@ -50,17 +59,13 @@ export default function App() {
 		])
 		.then(([user, announcements, ]) => [user, announcements, ])
 		.then(([d, p, ]) => {
-			// if (!d || !d?.info) {
-			// 	removeAuthToken();
-			// 	window.location.href = d?.redirect ?? import.meta.env.VITE_AUTH_PAGE_URL;
-			// 	return;
-			// }
+			if (!d || !d?.info) window.location.href = d?.redirect ?? APP_BASE;
 			Mutate(d); Listen(p); Stream(p.playlists[d?.info?.playlist]);
 			console.log(d);
 		})
 		.catch((err) => Spit(err))
 		.finally(() => Load(false));
-	}, [loading, authToken]);
+	}, [loading, AUTH_API_URL, APP_BASE]);
 
 	useEffect(() => {
 		if (!musicPlayer.current) return;
