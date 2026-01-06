@@ -86,7 +86,7 @@ export default function CalendarCard({ ui = {} }) {
 	const [events, CollectEvents] = useState([])
 
 	const CALENDAR_API_URL = useMemo(
-		() => normalizeBase(`${import.meta.env.VITE_BACKEND_URL}/calendar`),
+		() => normalizeBase(`${import.meta.env.VITE_BACKEND_URL}/api/calendar`),
 		[]
 	);
 

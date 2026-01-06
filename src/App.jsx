@@ -19,8 +19,8 @@ export default function App() {
 	const [playlist, Stream] = useState([])
 	const musicPlayer = useRef(null);
 
-	const AUTH_API_URL = useMemo(
-		() => normalizeBase(`${import.meta.env.VITE_BACKEND_URL}/auth`),
+	const API_URL = useMemo(
+		() => normalizeBase(`${import.meta.env.VITE_BACKEND_URL}/api`),
 		[]
 	);
 
@@ -37,8 +37,8 @@ export default function App() {
 
 	useEffect(() => {
 		if (!loading) return;
-		const dossierUrl = new URL('/data', AUTH_API_URL);
-		const broadcastUrl = new URL('/broadcast', AUTH_API_URL);
+		const dossierUrl = new URL('/data', API_URL);
+		const broadcastUrl = new URL('/broadcast', API_URL);
 		Promise.all([
 			fetch(dossierUrl, {
 				headers: {
@@ -65,7 +65,7 @@ export default function App() {
 		})
 		.catch((err) => Spit(err))
 		.finally(() => Load(false));
-	}, [loading, AUTH_API_URL, APP_BASE]);
+	}, [loading, API_URL, APP_BASE]);
 
 	useEffect(() => {
 		if (!musicPlayer.current) return;

@@ -72,7 +72,7 @@ export default function Shop({ ui = {}, dossier = {}, pages = [] }) {
 	const [category, setCategory] = useState('Me');
 
 	const SHOP_API_URL = useMemo(
-		() => normalizeBase(`${import.meta.env.VITE_BACKEND_URL}/shop`),
+		() => normalizeBase(`${import.meta.env.VITE_BACKEND_URL}/api/shop`),
 		[]
 	);
 

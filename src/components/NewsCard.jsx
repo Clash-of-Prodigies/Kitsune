@@ -83,7 +83,7 @@ export default function NewsCard({ ui = {} }) {
     const [error, Spit] = useState(null);
 
     const NEWS_API_URL = useMemo(
-        () => normalizeBase(`${import.meta.env.VITE_BACKEND_URL}/news`),
+        () => normalizeBase(`${import.meta.env.VITE_BACKEND_URL}/api/news`),
         []
     );
 
