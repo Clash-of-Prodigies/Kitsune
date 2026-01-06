@@ -1,10 +1,12 @@
-import { Modal, Stack, Paper, Text, Box, Group, Badge, ScrollArea, Center, Title, Image, Button } from '@mantine/core';
-import { IconClockHour4, } from '@tabler/icons-react';
-import { useState, useEffect, useMemo } from 'react';
-import IconOrImage from './IconMap';
+import { useState, useEffect, } from 'react';
 import axios from 'axios';
 
-import { normalizeBase } from '../utils.js';
+import { Modal, Stack, Paper, Text, Box, Group, } from '@mantine/core';
+import { Badge, ScrollArea, Center, Title, Image, Button } from '@mantine/core';
+import { IconClockHour4, } from '@tabler/icons-react';
+
+import IconOrImage from './IconMap';
+import { API_URL } from '../utils.js';
 
 function Article({ ui = {} }) {
     return (
@@ -82,13 +84,9 @@ export default function NewsCard({ ui = {} }) {
     const [loading, Load] = useState(true);
     const [error, Spit] = useState(null);
 
-    const NEWS_API_URL = useMemo(
-        () => normalizeBase(`${import.meta.env.VITE_BACKEND_URL}/api/news`),
-        []
-    );
-
     useEffect(() => {
         if (!loading) return;
+        const NEWS_API_URL = new URL('/news', API_URL);
         Promise.all([
                 axios.get(NEWS_API_URL, {
                     headers: {
@@ -100,7 +98,7 @@ export default function NewsCard({ ui = {} }) {
         .then((res) => {GetArticles(res[0].data); console.log(res);})
         .catch((err) => Spit(err))
         .finally(() => Load(false));
-    }, [loading, NEWS_API_URL]);
+    }, [loading]);
 
     const localUI = {
         ...ui,

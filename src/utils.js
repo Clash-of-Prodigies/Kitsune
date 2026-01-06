@@ -1,8 +1,4 @@
-function normalizeBase(base, defaultPath = "/auth") {
-  if (base == null) return defaultPath;
-  const trimmed = String(base).trim();
-  if (!trimmed) return defaultPath;
-  return trimmed.endsWith("/") ? trimmed.slice(0, -1) : trimmed;
-}
+const AUTH_PAGE_BASE = new URL('/auth', import.meta.env.VITE_AUTH_PAGE_URL);
+const API_URL = new URL('/api', import.meta.env.VITE_API_URL);
 
-export { normalizeBase };
+export { AUTH_PAGE_BASE, API_URL };

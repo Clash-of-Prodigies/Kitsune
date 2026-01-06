@@ -1,9 +1,11 @@
-import { Card, Grid, Text, Title, Stack, Center, ScrollArea, Modal, Paper, Group, Button, Box } from '@mantine/core';
-import { IconBox, IconArrowLeft, IconArrowRight } from '@tabler/icons-react';
-import { useEffect, useState, useMemo } from 'react';
-import IconOrImage from './IconMap';
+import { useEffect, useState, } from 'react';
 
-import { normalizeBase } from '../utils.js';
+import { Card, Grid, Text, Title, Stack, Center,} from '@mantine/core';
+import { ScrollArea, Modal, Paper, Group, Button, Box } from '@mantine/core';
+import { IconBox, IconArrowLeft, IconArrowRight } from '@tabler/icons-react';
+
+import IconOrImage from './IconMap';
+import { API_URL } from '../utils.js';
 
 function generateCalendarData(month, calendar) {
 	const year = new Date().getFullYear()
@@ -85,17 +87,15 @@ export default function CalendarCard({ ui = {} }) {
 	const [epoch, SetEpoch] = useState(new Date().getMonth())
 	const [events, CollectEvents] = useState([])
 
-	const CALENDAR_API_URL = useMemo(
-		() => normalizeBase(`${import.meta.env.VITE_BACKEND_URL}/api/calendar`),
-		[]
-	);
+	
 
 	useEffect(() => {
 		const prev_epoch = epoch;
+		const CALENDAR_API_URL = new URL('/calendar', API_URL);
 		fetch(`${CALENDAR_API_URL}?month=${epoch + 1}`).then((res) => res.json())
 		.then((schedule) => CollectEvents(schedule))
 		.catch(() => {if (epoch !== prev_epoch) SetEpoch(prev_epoch);})
-	}, [epoch, CALENDAR_API_URL]);
+	}, [epoch]);
 
 	const localUI = {
 		...ui,

@@ -5,18 +5,18 @@ import tailwindcss from '@tailwindcss/vite';
 // https://vite.dev/config/
 export default defineConfig(({mode}) => {
   var VITE_AUTH_PAGE_URL = '';
-  var VITE_BACKEND_BASE_URL = '';
+  var VITE_API_URL = '';
   if (mode === 'development') {
     VITE_AUTH_PAGE_URL = 'http://clash-of-prodigies.github.io/Cerberus'
-    VITE_BACKEND_BASE_URL = 'http://Shadow:5000'
+    VITE_API_URL = 'http://Shadow:5000'
   } else {
     VITE_AUTH_PAGE_URL = 'https://auth.clashofprodigies.org'
-    VITE_BACKEND_BASE_URL = '/api/'
+    VITE_API_URL = 'https://api.clashofprodigies.org'
   }
   return {
     define: { 
-      'import.meta.env.VITE_AUTH_URL': JSON.stringify(VITE_AUTH_PAGE_URL),
-      'import.meta.env.VITE_BACKEND_URL': JSON.stringify(VITE_BACKEND_BASE_URL),
+      'import.meta.env.VITE_AUTH_PAGE_URL': JSON.stringify(VITE_AUTH_PAGE_URL),
+      'import.meta.env.VITE_API_URL': JSON.stringify(VITE_API_URL),
     },
     plugins: [react(), tailwindcss()],
   }})

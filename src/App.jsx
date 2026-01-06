@@ -1,10 +1,10 @@
-import React, {useState, useEffect, useRef, useMemo } from 'react';
+import {useState, useEffect, useRef, } from 'react';
 import { Route, Routes} from 'react-router-dom';
-
-import { normalizeBase } from './utils.js';
 
 import '@mantine/core/styles.css';
 import './App.css';
+
+import { AUTH_PAGE_BASE, API_URL } from './utils';
 
 import Home from './pages/home';
 import Shop from './pages/shop';
@@ -19,15 +19,6 @@ export default function App() {
 	const [playlist, Stream] = useState([])
 	const musicPlayer = useRef(null);
 
-	const API_URL = useMemo(
-		() => normalizeBase(`${import.meta.env.VITE_BACKEND_URL}/api`),
-		[]
-	);
-
-	const APP_BASE = useMemo(
-		() => normalizeBase(import.meta.env.VITE_APP_URL, "https://app.clashofprodigies.org"),
-		[]
-	);
 
 	const navButtons = [
 		{ icon: 'Home', label: 'Home', color: 'purple', link: '/' },
@@ -59,13 +50,13 @@ export default function App() {
 		])
 		.then(([user, announcements, ]) => [user, announcements, ])
 		.then(([d, p, ]) => {
-			if (!d || !d?.info) window.location.href = d?.redirect ?? APP_BASE;
+			if (!d || !d?.info) window.location.href = d?.redirect ?? AUTH_PAGE_BASE.toString();
 			Mutate(d); Listen(p); Stream(p.playlists[d?.info?.playlist]);
 			console.log(d);
 		})
 		.catch((err) => Spit(err))
 		.finally(() => Load(false));
-	}, [loading, API_URL, APP_BASE]);
+	}, [loading]);
 
 	useEffect(() => {
 		if (!musicPlayer.current) return;
