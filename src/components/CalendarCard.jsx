@@ -87,11 +87,9 @@ export default function CalendarCard({ ui = {} }) {
 	const [epoch, SetEpoch] = useState(new Date().getMonth())
 	const [events, CollectEvents] = useState([])
 
-	
-
 	useEffect(() => {
 		const prev_epoch = epoch;
-		const CALENDAR_API_URL = new URL('/calendar', API_URL);
+		const CALENDAR_API_URL = new URL('calendar', API_URL);
 		fetch(`${CALENDAR_API_URL}?month=${epoch + 1}`).then((res) => res.json())
 		.then((schedule) => CollectEvents(schedule))
 		.catch(() => {if (epoch !== prev_epoch) SetEpoch(prev_epoch);})

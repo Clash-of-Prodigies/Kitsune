@@ -86,7 +86,7 @@ export default function NewsCard({ ui = {} }) {
 
     useEffect(() => {
         if (!loading) return;
-        const NEWS_API_URL = new URL('/news', API_URL);
+        const NEWS_API_URL = new URL('news', API_URL);
         Promise.all([
                 axios.get(NEWS_API_URL, {
                     headers: {

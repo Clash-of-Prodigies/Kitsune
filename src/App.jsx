@@ -28,8 +28,8 @@ export default function App() {
 
 	useEffect(() => {
 		if (!loading) return;
-		const dossierUrl = new URL('/data', API_URL);
-		const broadcastUrl = new URL('/broadcast', API_URL);
+		const dossierUrl = new URL('data', API_URL);
+		const broadcastUrl = new URL('broadcast', API_URL);
 		Promise.all([
 			fetch(dossierUrl, {
 				headers: {
