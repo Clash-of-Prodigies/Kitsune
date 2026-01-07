@@ -9,7 +9,7 @@ createRoot(document.getElementById('root')).render(
 <StrictMode>
         <MantineProvider withGlobalStyles withNormalizeCSS>
             <BrowserRouter basename={import.meta.env.BASE_URL}><App /></BrowserRouter>
-            {/* <Countdown /> */}
+            <Countdown />
         </MantineProvider>
 </StrictMode>
 )
