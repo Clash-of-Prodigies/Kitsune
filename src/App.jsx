@@ -82,6 +82,7 @@ export default function App() {
 		}}/>
 		<Routes>
 			<Route index element={<Home ui={globalUI} dossier={dossier} broadcast={broadcast} pages={navButtons} />} />
+			<Route path="/home" element={<Home ui={globalUI} dossier={dossier} broadcast={broadcast} pages={navButtons} />} />
 			<Route path="/shop" element={<Shop ui={globalUI} dossier={dossier.info} pages={navButtons} />} />
 			<Route path='/lobby' element={<Lobby />} />
 			<Route path="*" element={<Unknown />} />
