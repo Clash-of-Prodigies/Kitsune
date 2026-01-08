@@ -134,8 +134,8 @@ function RightSidebar() {
 function Layout({ children, ui, user = {}, competitions = {}, pages = [] }) {
 	const resources = [
 		{ title: 'avatar', icon: user.avatar, label: user.name, action: () => ui.AdmireProfile(true) },
-		{ icon: 'Coin', label: user.coins },
-		{ icon: 'Ticket', label: user.tickets },
+		{ icon: 'Coin', label: Number(user.coins).toLocaleString() },
+		{ icon: 'Ticket', label: Number(user.tickets).toLocaleString() },
 		{ title: 'settings', icon: 'Settings', label: '', action: () => ui.OpenSettings(true) },
 	];
 	return (
