@@ -136,7 +136,7 @@ function Layout({ children, ui, user = {}, competitions = {}, pages = [] }) {
 		{ title: 'avatar', icon: user.avatar, label: user.name, action: () => ui.AdmireProfile(true) },
 		{ icon: 'Coin', label: Number(user.coins).toLocaleString() },
 		{ icon: 'Ticket', label: Number(user.tickets).toLocaleString() },
-		{ title: 'settings', icon: 'Settings', label: '', action: () => ui.OpenSettings(true) },
+		{ title: 'settings', icon: 'Settings', label: 'Settings', action: () => ui.OpenSettings(true) },
 	];
 	return (
     <Container fluid px={0} h='100vh' w={'100%'} display='flex' style={{
