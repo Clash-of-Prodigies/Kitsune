@@ -8,7 +8,7 @@ export default defineConfig(({mode}) => {
   var VITE_API_URL = '';
   if (mode === 'development') {
     VITE_AUTH_PAGE_URL = 'http://clash-of-prodigies.github.io/Cerberus'
-    VITE_API_URL = 'http://Shadow:5000'
+    VITE_API_URL = 'http://localhost:5000'
   } else {
     VITE_AUTH_PAGE_URL = 'https://auth.clashofprodigies.org'
     VITE_API_URL = 'https://api.clashofprodigies.org'
