@@ -81,8 +81,8 @@ function RightSidebarButton({ ui = {}, icon, badge, childIcons = [], }) {
 	function ChildIcons({ childIcon }) {
 		return (
 		<Paper shadow="xs" radius="lg" withBorder bdrs="50%" w={50} h={50} title={childIcon.name}
-		onClick={() => ui.SpectateEvents(childIcon.competitions)}>
-            <ActionIcon variant="transparent" size="xl" w="100%" h="100%">{IconOrImage(childIcon.icon)}</ActionIcon>
+		onClick={() => ui.SpectateEvents({bannerUrl:childIcon.banner, theme:childIcon.theme, competitions:childIcon.competitions})}>
+            <ActionIcon variant="transparent" size="xl" w="100%" h="100%">{IconOrImage({icon: childIcon.icon, theme: childIcon.theme})}</ActionIcon>
         </Paper>
 		);
 	}
@@ -163,7 +163,7 @@ export default function Home({ ui = {}, dossier = {}, broadcast = {}, pages = []
 	const [readNews, ReadNews] = useState(false);
 	const [viewCalendar, ViewCalendar] = useState(false);
 	const [openSettings, OpenSettings] = useState(false);
-	const [spectateEvents, SpectateEvents] = useState([]);
+	const [spectateEvents, SpectateEvents] = useState({bannerUrl:"", competitions:[]});
 
 	const globalUI = {
 		...ui,
