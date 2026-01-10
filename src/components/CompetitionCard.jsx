@@ -133,7 +133,7 @@ function Competition({ ui = {} }) {
 }
 
 export default function CompetitionCard({ ui = {} }) {
-    const competitions = ui.spectateEvents;
+    const {bannerUrl, theme, competitions} = ui?.spectateEvents || { bannerUrl: "", theme: "", competitions: [] };
     const [viewCompetition, ViewCompetition] = useState({});
 
     const localUI = {
@@ -141,24 +141,28 @@ export default function CompetitionCard({ ui = {} }) {
         viewCompetition, ViewCompetition
     }
 
+    const content = {
+        backgroundImage: `url(${bannerUrl})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        paddingTop: '2vh',
+        paddingBottom: '2vh',
+    }
+
     return (
     <>
-    <Modal radius="xl" size="xl" centered opened={competitions.length > 0}
-    withCloseButton={false} onClose={() => ui.SpectateEvents([])} overlayProps={{ opacity: '0.6' }} styles={{
-        content: {
-            backgroundImage: 'url(http://localhost:5000/media/dark.png)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-        }
-    }}>
-            <Group justify='space-evenly' mb={'xl'} mt={'xl'}>
-                {competitions.map((competition, index) => (
-                    <ActionIcon variant="filled" title={competition.name} radius={'xl'} size={'input-xl'} key={index}
-                    onClick={() => ViewCompetition(competition)}>
-                        {IconOrImage(competition.icon, 100)}
-                    </ActionIcon>
-                ))}
-            </Group>
+    <Modal opened={competitions?.length ?? 0 > 0} radius="xl" size="xl" centered 
+    withCloseButton={false} onClose={() => ui.SpectateEvents("", "", [])} overlayProps={{ opacity: '0.6' }} styles={{ content: {...content} }}>
+        <Group justify='space-evenly'>
+            {(competitions??[]).map((competition, index) => (
+                <ActionIcon key={index} title={competition.name} radius={'xl'} size={'input-sm'} variant="filled"
+                onClick={() => ViewCompetition(competition)} style={{
+                    backgroundColor: theme || '#228be6',
+                    border: '4px double #fff',
+                }}>{IconOrImage(competition.icon, 100)}
+                </ActionIcon>
+            ))}
+        </Group>
     </Modal>
     <Competition ui={localUI} />
     </>
