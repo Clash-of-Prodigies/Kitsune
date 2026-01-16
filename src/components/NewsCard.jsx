@@ -2,11 +2,34 @@ import { useState, useEffect, } from 'react';
 import axios from 'axios';
 
 import { Modal, Stack, Paper, Text, Box, Group, } from '@mantine/core';
-import { Badge, ScrollArea, Center, Title, Image, Button } from '@mantine/core';
-import { IconClockHour4, } from '@tabler/icons-react';
+import { ScrollArea, Center, Title, Image, Button } from '@mantine/core';
+import { IconClockHour4, IconTrash, } from '@tabler/icons-react';
 
 import IconOrImage from './IconMap';
 import { API_URL } from '../utils.js';
+
+function formatSentDate(dateString) {
+    const sentDate = new Date(dateString);
+    const now = new Date();
+    const diffMs = now - sentDate;
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    const diffWeeks = Math.floor(diffMs / (1000 * 60 * 60 * 24 * 7));
+    const diffMonths = Math.floor(diffMs / (1000 * 60 * 60 * 24 * 30));
+    const diffYears = Math.floor(diffMs / (1000 * 60 * 60 * 24 * 365));
+
+    if (diffHours < 24) {
+        return `${diffHours} hr${diffHours !== 1 ? 's' : ''}`;
+    } else if (diffDays < 7) {
+        return `${diffDays} dy${diffDays !== 1 ? 's' : ''}`;
+    } else if (diffWeeks < 4) {
+        return `${diffWeeks} wk${diffWeeks !== 1 ? 's' : ''}`;
+    } else if (diffMonths < 12) {
+        return `${diffMonths} mth${diffMonths !== 1 ? 's' : ''}`;
+    } else {
+        return `${diffYears} yr${diffYears !== 1 ? 's' : ''}`;
+    }
+}
 
 function Article({ ui = {} }) {
     return (
@@ -31,34 +54,35 @@ function Article({ ui = {} }) {
 
 function NewsArticle({ui = {}, article={}}) {
     return (
-    <Box key={article.id} display='flex' mt='xs' mb='xs' bdrs={10} p={3}
-    onClick={() => {article.unread = false; ui.ReadArticle(article)}}  style={{
+    <Box key={article.id} display='flex' mt='xs' mb='xs' bdrs={10} p={3} style={{
         backgroundColor: '#f8fdffff', cursor: 'pointer',
         justifyContent: 'space-between', alignItems: 'center',
         boxShadow:
         `inset 0 -2px 0 #ffffff,
         0 2px 4px rgba(0, 0, 0, 0.15)`,
     }}>
-        <Stack p='md' w='100%' bdrs={10} pos='relative' style={{ backgroundColor: '#c4e1fcff', }}>
-            <Group spacing="sm">
-                {IconOrImage(article.icon)}
-                <Text c='#290dddff' ff='sans-serif' fw={900}>{article.title}</Text>
+        <Stack p='md' w='100%' bdrs={10} style={{ backgroundColor: '#c4e1fcff', }}>
+            <Group justify="space-between" wrap="nowrap" align="center" w="100%">
+                <Group wrap="nowrap" gap="xs" style={{ flex: 1, minWidth: 0, maxWidth: '75%' }}
+                onClick={() => ui.ReadArticle(article)}>
+                    {IconOrImage(article.icon)}
+                    <Text c="#290dddff" ff="sans-serif" fw={900} truncate style={{flex: 1, minWidth: 0 }}>
+                        {article.title}
+                    </Text>
+                </Group>
+
+                <Group w='30%' wrap="nowrap" gap="xs" align="center" style={{ flexShrink: 0 }}>
+                    <Button variant="transparent" p={2} color="blue" size="xs" onClick={() => {}}>
+                        <IconTrash />
+                    </Button>
+
+                    <Group m="0 auto" bdrs={10} px={5} wrap="nowrap" style={{
+                        backgroundColor: "purple", gap: 3
+                    }}>
+                        <Text c='white' size="xs" fw={600}>{formatSentDate(article.sentDate)}</Text>
+                    </Group>
+                </Group>
             </Group>
-            <Group c='white' pos='absolute' bottom={3} right={5} bdrs={10} pl={5} pr={5} style={{
-                backgroundColor: 'purple', '--group-gap': '3px',
-            }}
-            >
-                <IconClockHour4 size={16} />
-                <Text size="xs" fw={700}>{article.timeLeft}</Text>
-            </Group>
-            <Badge color="red" variant="filled" size="xs" pos='absolute' top={0} right={0}
-            display={article.unread ? "default" : "none"} style={{
-                zIndex: 2, border: '2px solid white',
-                boxShadow: 
-                `0 0 4px #070707ff,
-                inset 0 0 1px #070707ff`,
-            }}>
-            </Badge>
         </Stack>
     </Box>
     );

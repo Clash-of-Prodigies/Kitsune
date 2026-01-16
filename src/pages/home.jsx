@@ -115,6 +115,7 @@ function LeftSidebar({ ui = {}, competitions = {} }) {
     <Stack spacing="sm" pos='absolute' left={10} className='left-10'>
 		<RightSidebarButton ui={ui} icon={<IconTrophy />} childIcons={competitions.interhouse} />
 		<RightSidebarButton ui={ui} icon={<IconBuildingCastle />} childIcons={competitions.houses} />
+		<RightSidebarButton icon={<IconHours24 />}  badge={1} />
 		<LeftSidebarButton icon={<IconNews />} action={() => ui.ReadNews(true)} />
 		<LeftSidebarButton icon={<IconCalendar />} action={() => ui.ViewCalendar(true)} />
     </Stack>
@@ -124,7 +125,6 @@ function LeftSidebar({ ui = {}, competitions = {} }) {
 function RightSidebar() {
 	return (
     <Stack spacing="sm" pos='absolute' right={10}>
-		<RightSidebarButton icon={<IconHours24 />}  badge={1} />
 		<RightSidebarButton icon={<IconBarbell />} />
 		<RightSidebarButton icon={<IconSparkles />} />
     </Stack>

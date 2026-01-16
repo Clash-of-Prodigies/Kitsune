@@ -56,10 +56,10 @@ export default function LeftDrawer({ ui = {}, categories = [], pages = [], dossi
               			<Text fw={800}>{dossier?.name || 'Guest'}</Text>
               			<Group gap={6}>
             				<Badge size="md" color="yellow" leftSection={IconOrImage("Coin", 15)}>
-              				{dossier?.coins.toLocaleString()}
+              				{dossier?.coins?.toLocaleString() ?? 0}
             				</Badge>
             				<Badge size="md" color="pink" leftSection={IconOrImage("Ticket", 15)}>
-              				{dossier?.tickets.toLocaleString()}
+              				{dossier?.tickets?.toLocaleString() ?? 0}
             				</Badge>
               			</Group>
             		</Box>

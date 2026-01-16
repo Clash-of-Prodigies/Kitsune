@@ -7,9 +7,8 @@ import './App.css';
 import { AUTH_PAGE_BASE, API_URL } from './utils';
 
 import Home from './pages/home';
-import Shop from './pages/shop';
 import Unknown from './pages/unknown';
-import Lobby from './pages/lobby';
+import Shop from './pages/shop';
 
 export default function App() {
 	const [dossier, Mutate] = useState({});
@@ -22,8 +21,8 @@ export default function App() {
 
 	const navButtons = [
 		{ icon: 'Home', label: 'Home', color: 'purple', link: '/' },
-		{ icon: 'Team', label: 'Team', link: 'team-management'},
-		{ icon: 'Shop', label: 'Shop', badge: 1, link: 'shop'},
+		{ icon: 'Team', label: 'Management', link: 'management'},
+		{ icon: 'Shop', label: 'Shop', link: 'shop'},
 	];
 
 	useEffect(() => {
@@ -83,8 +82,8 @@ export default function App() {
 		<Routes>
 			<Route index element={<Home ui={globalUI} dossier={dossier} broadcast={broadcast} pages={navButtons} />} />
 			<Route path="/home" element={<Home ui={globalUI} dossier={dossier} broadcast={broadcast} pages={navButtons} />} />
-			<Route path="/shop" element={<Shop ui={globalUI} dossier={dossier.info} pages={navButtons} />} />
-			<Route path='/lobby' element={<Lobby />} />
+			<Route path="/management" element={<Unknown />} />
+			<Route path="/shop" element={<Shop />} />
 			<Route path="*" element={<Unknown />} />
 		</Routes>
 	</>		
